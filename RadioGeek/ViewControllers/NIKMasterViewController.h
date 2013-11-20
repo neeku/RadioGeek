@@ -11,7 +11,6 @@
 
 #import "NIKFeedEntry.h"
 #import "NIKFeedParser.h"
-#import "MKPersianFont.h"
 
 @class NIKDetailViewController;
 
@@ -20,7 +19,6 @@
 @interface NIKMasterViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NIKFeedParserDelegate, NSObject>
 {
 	NSMutableArray *allEntries;
-	MKPersianFont *myFont;
 	NIKFeedEntry *entry;
 	NSString *dataPath;
 	NSMutableArray *urlArray;

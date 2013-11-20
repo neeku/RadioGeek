@@ -36,8 +36,6 @@
 	
 	NSString *str = @"نتبلیذمعهلبلاذپمهف نتاعغفباذرن رادیو گیک";//INFO_TEXT;
 	[textView setText:str];
-//	[textView setFont:[fontWithName:@"B Nazanin" size:15]];
-//	str =	[str shapePersianString];
 	[infoLabel setFont:[UIFont fontWithName:@"Arial" size:30]];
 	infoLabel.text = str;
 	[infoLabel setTextAlignment:NSTextAlignmentRight];

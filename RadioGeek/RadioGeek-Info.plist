@@ -52,6 +52,12 @@
 	<array>
 		<string>audio</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BNazanin.ttf</string>
+		<string>X Vahid.ttf</string>
+		<string>X Yekan.ttf</string>
+	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

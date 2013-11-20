@@ -29,7 +29,7 @@
             <objects>
                 <tableViewController title="Master" id="pGg-6v-bdr" customClass="NIKMasterViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="mLL-gJ-YKr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -116,7 +116,7 @@
                         <viewControllerLayoutGuide type="bottom" id="cGw-S7-2mu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="YPX-8n-D0p">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="192" translatesAutoresizingMaskIntoConstraints="NO" id="F5i-CZ-bGw">
@@ -291,84 +291,115 @@
                         <viewControllerLayoutGuide type="bottom" id="Jgd-86-2fO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="MMQ-IT-qOo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3uN-93-tTe" userLabel="Audio Player View">
-                                <rect key="frame" x="0.0" y="454" width="320" height="110"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CYy-gL-7zq" userLabel="DownloadView">
+                                <rect key="frame" x="20" y="349" width="280" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="BfJ-c8-pUj">
-                                        <rect key="frame" x="58" y="38" width="218" height="34"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QrF-Lt-7sU">
+                                        <rect key="frame" x="117" y="40" width="37" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="دریافت">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
                                         <connections>
-                                            <action selector="sliderChanged:" destination="Ah7-4n-0Wa" eventType="valueChanged" id="DOm-XA-sYg"/>
+                                            <action selector="downloadTheFile:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="Rpz-ek-J41"/>
                                         </connections>
+                                    </button>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3gI-9C-uDh">
+                                        <rect key="frame" x="60" y="78" width="150" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </progressView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QbJ-c2-YFs" userLabel="AudioView">
+                                <rect key="frame" x="20" y="349" width="280" height="111"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EVb-V6-smq">
+                                        <rect key="frame" x="124" y="0.0" width="32" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <size key="titleShadowOffset" width="1" height="0.5"/>
+                                        <state key="normal" image="player_play">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="togglePlayingState:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="0MJ-vE-Odc"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y0F-W2-EqG">
+                                        <rect key="frame" x="214" y="0.0" width="32" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <state key="normal" image="player_fastforwardcp">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="forwardAudio:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="U2S-10-JhU"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xj1-rB-iP6">
+                                        <rect key="frame" x="20" y="0.0" width="32" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <state key="normal" image="player_fastrewindcp">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="rewindAudio:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="MCi-ZW-qXB"/>
+                                        </connections>
+                                    </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="0d0-Uq-Zd0">
+                                        <rect key="frame" x="26" y="40" width="229" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </slider>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="apX-xs-EiP">
-                                        <rect key="frame" x="137" y="0.0" width="46" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Play">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="togglePlayingState:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="GeX-iU-t4v"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6HX-Mo-8H5">
-                                        <rect key="frame" x="213" y="0.0" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title=">>">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="forwardAudio:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="Hzi-tG-x5E"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPx-z4-2Eh">
-                                        <rect key="frame" x="69" y="0.0" width="46" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="&lt;&lt;">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="rewindAudio:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="VT9-w1-iFW"/>
-                                        </connections>
-                                    </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ElK-P7-c3v" customClass="MPVolumeView">
-                                        <rect key="frame" x="71" y="79" width="178" height="31"/>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d52-kC-LJf" customClass="MPVolumeView">
+                                        <rect key="frame" x="27" y="91" width="226" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="speaker" translatesAutoresizingMaskIntoConstraints="NO" id="ylo-sV-uAa">
+                                        <rect key="frame" x="261" y="99" width="12" height="12"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="speaker_mute" translatesAutoresizingMaskIntoConstraints="NO" id="5Q6-xP-d7X">
+                                        <rect key="frame" x="5" y="80" width="7" height="12"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zmf-32-HAR">
+                                        <rect key="frame" x="-13" y="46" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jmo-yw-vnh">
+                                        <rect key="frame" x="254" y="46" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NCr-vJ-C8w" userLabel="Download View">
-                                <rect key="frame" x="0.0" y="469" width="320" height="79"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="gl2-Dg-l4b">
+                                <rect key="frame" x="20" y="66" width="280" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zt0-Ik-R4S">
-                                        <rect key="frame" x="85" y="50" width="150" height="2"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </progressView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xrk-Kc-Nds">
-                                        <rect key="frame" x="114" y="12" width="83" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Download">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="downloadTheFile:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="WcO-ON-guU"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nfT-pY-TDX">
-                                <rect key="frame" x="0.0" y="67" width="320" height="361"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="ZOg-dJ-Yxb">
+                                <rect key="frame" x="20" y="126" width="280" height="215"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </webView>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -376,15 +407,21 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="t5U-9O-H8W"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="audioView" destination="3uN-93-tTe" id="pUO-ee-YHq"/>
-                        <outlet property="downloadButton" destination="Xrk-Kc-Nds" id="gKB-Ez-p0b"/>
-                        <outlet property="downloadView" destination="NCr-vJ-C8w" id="VPG-n0-9X4"/>
-                        <outlet property="fastForward" destination="6HX-Mo-8H5" id="f7C-b0-0eh"/>
-                        <outlet property="fastRewind" destination="FPx-z4-2Eh" id="G7e-qH-T3F"/>
-                        <outlet property="playPauseButton" destination="apX-xs-EiP" id="YNT-8X-Yr3"/>
-                        <outlet property="progress" destination="Zt0-Ik-R4S" id="DI1-7r-k0g"/>
-                        <outlet property="seekSlider" destination="BfJ-c8-pUj" id="Y5X-G8-tWq"/>
-                        <outlet property="webView" destination="nfT-pY-TDX" id="tSc-yA-JWm"/>
+                        <outlet property="audioView" destination="QbJ-c2-YFs" id="jyx-df-2wm"/>
+                        <outlet property="currentTime" destination="zmf-32-HAR" id="a82-Ft-bjr"/>
+                        <outlet property="descriptionText" destination="ZOg-dJ-Yxb" id="reE-3g-VRu"/>
+                        <outlet property="downloadButton" destination="QrF-Lt-7sU" id="r4d-Dh-QDB"/>
+                        <outlet property="downloadView" destination="CYy-gL-7zq" id="YLl-ky-Nk8"/>
+                        <outlet property="fastForward" destination="Y0F-W2-EqG" id="HIg-9J-L8f"/>
+                        <outlet property="fastRewind" destination="Xj1-rB-iP6" id="WNd-EJ-mtF"/>
+                        <outlet property="playPauseButton" destination="EVb-V6-smq" id="41Z-xm-6Kr"/>
+                        <outlet property="progress" destination="3gI-9C-uDh" id="dG7-YG-rzG"/>
+                        <outlet property="remainingTime" destination="Jmo-yw-vnh" id="jQI-13-BPJ"/>
+                        <outlet property="seekSlider" destination="0d0-Uq-Zd0" id="k8b-ry-7E2"/>
+                        <outlet property="speakerMaximum" destination="ylo-sV-uAa" id="pjB-qn-SPF"/>
+                        <outlet property="speakerMinimum" destination="5Q6-xP-d7X" id="AkQ-2w-E2I"/>
+                        <outlet property="titleLabel" destination="gl2-Dg-l4b" id="Vsk-5f-Iiz"/>
+                        <outlet property="volumeView" destination="d52-kC-LJf" id="E7p-Ek-YHm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lrm-kH-fPn" sceneMemberID="firstResponder"/>
@@ -392,9 +429,17 @@
             <point key="canvasLocation" x="902" y="64"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="player_fastforwardcp" width="16" height="16"/>
+        <image name="player_fastrewindcp" width="16" height="16"/>
+        <image name="player_play" width="265" height="89"/>
+        <image name="speaker" width="16" height="16"/>
+        <image name="speaker_mute" width="16" height="16"/>
+    </resources>
+    <color key="tintColor" red="0.23921570180000001" green="0.75686281919999998" blue="0.078431375319999996" alpha="1" colorSpace="deviceRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
 </document>

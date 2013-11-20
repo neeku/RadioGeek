@@ -18,7 +18,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+	// Override point for customization after application launch.
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 	{
 	    UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
@@ -37,6 +37,8 @@
 	{
 		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
 	}
+	//for iphone 3.5" and 4" displays
+	self.window.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height);
 	
 
     return YES;

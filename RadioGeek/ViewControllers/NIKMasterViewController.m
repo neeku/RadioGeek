@@ -13,7 +13,6 @@
 #import "NSHFarsiNumerals.h"
 #import "RadioGeek.h"
 //#import "NSString+Shaping.h"
-#import "ArabicConverter.h"
 //#define MAINLABEL_TAG 1
 #import "URLCacheAlert.h"
 
@@ -122,11 +121,12 @@ const double URLCacheInterval = 86400.0;
 
 	[self loadFeedURL];
 
-	//customized font view as the navigation title
-	myFont = [[MKPersianFont alloc] initWithFrame:CGRectMake(0, 0, 75, 30)];
-	[myFont setPersianFont:@"X Vahid" withText:NAV_BAR_TITLE fontSize:20 textAlignment:LEFT textWrapped:YES fontColor:[UIColor whiteColor]];
-	myFont.backgroundColor = [UIColor clearColor];
-	self.navigationItem.titleView = myFont;
+	//navigation bar title with custom font
+	UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
+	self.navigationItem.titleView = titleLabel;
+	titleLabel.text = NAV_BAR_TITLE;
+	titleLabel.font = [UIFont fontWithName:@"X Vahid" size:15.0];
+	titleLabel.textAlignment = NSTextAlignmentCenter;
 	
 	NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
                                                             diskCapacity:0
@@ -251,15 +251,16 @@ const double URLCacheInterval = 86400.0;
 	[formatter setTimeStyle:NSDateFormatterNoStyle];
 	[formatter setDateFormat:@"yyyy/MM/dd"];
 	[formatter setCalendar:jalali];
-//	ArabicConverter *converter = [[ArabicConverter alloc] init];
 	
     UILabel *label;
 	//tags are set for each label in storyboard
     label = (UILabel *)[cell viewWithTag:10];
     label.text =  title;
-	label.font = [UIFont fontWithName:@"Cochin" size:10.0];
+	label.font = [UIFont fontWithName:@"B Nazanin" size:20.0];
     label = (UILabel *)[cell viewWithTag:20];
     label.text = [NSHFarsiNumerals convertNumeralsToFarsi:[formatter stringFromDate:[entry podcastDate]]];
+	label.font = [UIFont fontWithName:@"B Nazanin" size:10.0];
+	NSLog(@"date:%@",[entry podcastDate]);
     return cell;
 }
 

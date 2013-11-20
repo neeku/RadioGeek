@@ -9,8 +9,9 @@
 #import "NIKDetailViewController.h"
 #import "NSString_StripHTML.h"
 #import "RadioGeek.h"
-//#import "NSString+Shaping.h"
 #import "NSHFarsiNumerals.h"
+//#import "SGdownloader.h"
+
 @implementation NIKDetailViewController
 
 @synthesize feedEntry;
@@ -24,11 +25,17 @@
 @synthesize playPauseButton;
 @synthesize fastForward;
 @synthesize fastRewind;
+@synthesize volumeView;
 @synthesize loadRequest;
 @synthesize currentFileName;
 @synthesize downloadView;
 @synthesize audioView;
-//@synthesize volumeControl;
+@synthesize descriptionText;
+@synthesize speakerMinimum;
+@synthesize speakerMaximum;
+@synthesize titleLabel;
+@synthesize currentTime;
+@synthesize remainingTime;
 
 #pragma mark - Managing the view
 
@@ -61,7 +68,8 @@
 
 - (IBAction)downloadTheFile:(id)sender
 {
-	downloadButton.highlighted = YES;
+//	downloadButton.highlighted = YES;
+	downloadButton.enabled = NO;
 	progress.progress = 0.0;
 	
     currentURL=[feedEntry podcastDownloadURL];
@@ -82,24 +90,14 @@
 	
     [operation setCompletionBlock:^{
         NSLog(@"downloadComplete!");
-		downloadView.hidden = YES;
-		audioView.hidden = YES;
-//		downloadButton.hidden = YES;
-//		progress.hidden = YES;
-		
-		
+		[self hideDownloadView];
     }];
     [operation start];
 	
+
 }
 
 #pragma mark - Managing the Audio Playback
-
-- (IBAction)volumeDidChange:(UISlider *)slider
-{
-    //Handle the slider movement
-    [audioPlayer setVolume:[slider value]];
-}
 
 - (IBAction)togglePlayingState:(id)button
 {
@@ -113,14 +111,15 @@
 {
     //Play the audio and set the button to represent the audio is playing
     [audioPlayer play];
-    [playPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+	[playPauseButton setImage:[UIImage imageNamed:@"player_pause"] forState:UIControlStateNormal];
+
 }
 
 - (void)pauseAudio
 {
     //Pause the audio and set the button to represent the audio is paused
     [audioPlayer pause];
-    [playPauseButton setTitle:@"Play" forState:UIControlStateNormal];
+	[playPauseButton setImage:[UIImage imageNamed:@"player_play"] forState:UIControlStateNormal];
 }
 
 - (void)togglePlayPause
@@ -146,6 +145,10 @@
 	NSString* documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString* path = [documentPath stringByAppendingPathComponent:currentFileName];
 	NSURL* movieURL = [NSURL fileURLWithPath: path];
+	
+
+	
+	
 //	url = [NSURL fileURLWithPath:currentFileName];
 //	url = [NSURL fileURLWithPath:[currentFileName, [NSBundle mainBundle] resourcePath]];
 	NSLog(@"%@",currentFileName);
@@ -173,11 +176,21 @@
 	playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
 	// Set the maximum value of the UISlider
 	seekSlider.maximumValue = audioPlayer.duration;
+
+	
+	currentTime.text = [NSString stringWithFormat:@"%d:%02d", (int)audioPlayer.currentTime / 60, (int)audioPlayer.currentTime % 60, nil];
+	remainingTime.text = [NSString stringWithFormat:@"%d:%02d", (int)(audioPlayer.duration - audioPlayer.currentTime) / 60, (int)(audioPlayer.duration - audioPlayer.currentTime) % 60, nil];
+
+
+	
 	// Set the valueChanged target
 	[seekSlider addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
 	
 	[audioPlayer prepareToPlay]; //Add the audio to the memory.
 }
+
+
+
 
 - (void)updateSlider
 {
@@ -257,6 +270,51 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 	self.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
+	
+	
+	
+	[downloadView setHidden:NO];
+
+	
+	downloadView.backgroundColor = [UIColor whiteColor];
+	
+	
+	NSString *content = [[feedEntry podcastContent] stripHtml];
+    
+	NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"–-:"];
+	NSString *podcastName;
+	
+	//gets the podcast mp3 file name
+	NSString *fileName = [[[feedEntry podcastDownloadURL] lastPathComponent] stringByDeletingPathExtension];
+	//fetches the difits out of the file name
+	NSString *fileNumber = [[fileName componentsSeparatedByCharactersInSet:
+							 [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
+							componentsJoinedByString:@""];
+	//converts the fetched decimal string to integer to avoid having '0' at the beginning of a number.
+	NSInteger number = [fileNumber integerValue];
+	
+	//substrings the podcast name from the whole title
+	if ([[feedEntry podcastTitle] rangeOfCharacterFromSet:charSet].location != NSNotFound)
+	{
+		podcastName = [[feedEntry podcastTitle] substringFromIndex:[[feedEntry podcastTitle] rangeOfCharacterFromSet:charSet].location+2];
+	}
+	else
+	{
+		podcastName = [[feedEntry podcastTitle] substringFromIndex:[[feedEntry podcastTitle] rangeOfString:@"،"].location+2];
+	}
+	//merges the podcast number and title
+	NSString *podcastNumber = [NSString stringWithFormat:@"%ld",(long)number];
+	
+	
+	NSString *title = [NSHFarsiNumerals convertNumeralsToFarsi:[podcastNumber stringByAppendingFormat:@". %@",podcastName]];
+
+	
+	descriptionText.text = content;
+	[descriptionText setTextAlignment:NSTextAlignmentRight];
+	[descriptionText setFont:[UIFont fontWithName:@"X Yekan" size:14.0]];
+	titleLabel.text = title;
+	titleLabel.textAlignment = NSTextAlignmentCenter;
+	
 	[downloadView addSubview:downloadButton];
 	[downloadView addSubview:progress];
 	
@@ -264,45 +322,29 @@
 	[audioView addSubview:seekSlider];
 	[audioView addSubview:fastForward];
 	[audioView addSubview:fastRewind];
+	audioView.userInteractionEnabled = YES;
 	
-//	NSString *currentPodcastNumber;
-//	NSString *currentPodcastName;
-//	NSString *currentPodcastTitle;
-//	
-//	currentPodcastTitle = [feedEntry podcastTitle];
-//	NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"–-:،"];
-//	if ([currentPodcastTitle rangeOfCharacterFromSet:charSet].location != NSNotFound)
-//	{
-//		currentPodcastNumber = [currentPodcastTitle substringWithRange:NSMakeRange(0, [currentPodcastTitle rangeOfCharacterFromSet:charSet].location)];
-//		currentPodcastName = [currentPodcastTitle substringFromIndex:[currentPodcastTitle rangeOfCharacterFromSet:charSet].location];
-//	}
-//	else
-//		currentPodcastName = [currentPodcastTitle substringFromIndex:[currentPodcastTitle rangeOfString:@"،"].location+2];
 
 	//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 	[[AVAudioSession sharedInstance] setActive: YES error: nil];
+	
 
+	[self loadWebView];
+	[self streamAudio];
+	
 	
 	//checks to see if the file is already downloaded and exists in the documents folder of the app.
 	NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString* audioFile = [documentsPath stringByAppendingPathComponent:[[feedEntry podcastDownloadURL] lastPathComponent]];
 	BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:audioFile];
-
-	if (fileExists) {
-		downloadView.hidden = YES;
-		audioView.hidden = NO;
-	}
-	else
-	{
-		downloadView.hidden = NO;
-		audioView.hidden = YES;
-	}
 	
-	self.navigationItem.title = NAV_BAR_TITLE;
+	if (fileExists)
+	{
+		[self hideDownloadView];
+	}
 
-	[self loadWebView];
-	[self streamAudio];
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -328,19 +370,13 @@
     [(UIActivityIndicatorView *)[self navigationItem].rightBarButtonItem.customView stopAnimating];
 }
 
-//- (void) toggleSubViews
-//{
-//	if (downloadView.hidden && !audioView.hidden)
-//	{
-//		downloadView.hidden = NO;
-//		audioView.hidden = YES;
-//	}
-//	else if (!downloadView.hidden && audioView.hidden)
-//	{
-//		downloadView.hidden = YES;
-//		audioView.hidden = NO;
-//	}
-//}
+- (void) hideDownloadView
+{
+	if (!downloadView.hidden)
+	{
+		downloadView.hidden = YES;
+	}
+}
 
 
 - (void)didReceiveMemoryWarning
@@ -363,98 +399,6 @@
 
 - (void)loadWebView
 {
-	// If you create your views manually, you MUST override this method and use it to create your views.
-    // If you use Interface Builder to create your views, then you must NOT override this method.
-    NSString *path = [[NSString alloc]initWithString:[[NSBundle mainBundle]pathForResource:@"htmlPattern" ofType:@"html"]];
-    
-    /*
-     /Users/nshamekhi/Library/Application Support/iPhone Simulator/5.0/Applications/FE14D377-4835-4458-A87F-D78FD49775B6/Javan.app */
-	//	NSString *paths = [[NSString alloc]initWithString:[[NSBundle mainBundle]pathForResource:@"table-web-bgP" ofType:@"png"]];
-    //NSLog(@"path=%@",paths);
-    NSError *error;
-    NSString *pattern = [[NSString alloc]initWithContentsOfFile:path
-                                                       encoding:NSUTF8StringEncoding
-                                                          error:&error];
-	//    NSLog(@"pattern=%@",pattern);
-    
-	
-    NSString *backgroundPath = [[NSBundle mainBundle] pathForResource:@"Background" ofType:@"png"];
-    NSURL    *backgroundURL  = [NSURL fileURLWithPath:backgroundPath];
-    NSString *htmlPage;
-    NSString *fullDescription = [[feedEntry podcastContent] stripHtml];
-    //NSLog(@"shortened text:%@", shortenedFullDescription);
-    
-	NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"–-:"];
-	NSString *podcastName;
-	
-	//gets the podcast mp3 file name
-	NSString *fileName = [[[feedEntry podcastDownloadURL] lastPathComponent] stringByDeletingPathExtension];
-	//fetches the difits out of the file name
-	NSString *fileNumber = [[fileName componentsSeparatedByCharactersInSet:
-							 [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
-							componentsJoinedByString:@""];
-	//converts the fetched decimal string to integer to avoid having '0' at the beginning of a number.
-	NSInteger number = [fileNumber integerValue];
-	
-	//substrings the podcast name from the whole title
-	if ([[feedEntry podcastTitle] rangeOfCharacterFromSet:charSet].location != NSNotFound)
-	{
-		podcastName = [[feedEntry podcastTitle] substringFromIndex:[[feedEntry podcastTitle] rangeOfCharacterFromSet:charSet].location+2];
-	}
-	else
-	{
-		podcastName = [[feedEntry podcastTitle] substringFromIndex:[[feedEntry podcastTitle] rangeOfString:@"،"].location+2];
-	}
-	//merges the podcast number and title
-	NSString *podcastNumber = [NSString stringWithFormat:@"%ld",(long)number];
-	NSString *title = [podcastNumber stringByAppendingFormat:@". %@",podcastName];
-	title = [NSHFarsiNumerals convertNumeralsToFarsi:title];
-
-	
-	
-    htmlPage = [[NSString  alloc]initWithFormat:pattern,
-                backgroundURL,
-                title,
-                [feedEntry podcastURL],
-                fullDescription];
-	//    webView = [[UIWebView alloc] initWithFrame:CGRectMake(30, 240, 120, 120)];
-    [webView loadHTMLString:htmlPage baseURL:[NSURL URLWithString:path]];
-    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:pattern]]];
-	
-    
-	webView.userInteractionEnabled  = YES;
-    
-	
-    //if ( [[[UIDevice currentDevice] systemVersion] floatValue] >= __IPHONE_5_0  ) {
-	//       webView.scrollView.contentSize=CGSizeMake(1000, 1500); //NOT COMPATIBLE WITH OLDER iOS VERSIONS.
-	//   webView.scrollView.maximumZoomScale = 6;              //NOT COMPATIBLE WITH OLDER iOS VERSIONS.
-	
-	//  }
-	
-    
-    webView.scalesPageToFit = YES;
-    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth
-    | UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight
-    |UIViewAutoresizingFlexibleBottomMargin ;
-    [webView setOpaque:NO];
-	
-    //webView.scrollView.minimumZoomScale = 0.5;            //NOT COMPATIBLE WITH OLDER iOS VERSIONS.
-    
-	//    webView.backgroundColor = [UIColor whiteColor];
-    
-    self.webView.delegate = self;
-	//    self.view =webView;
-	//
-	//    if (!globalFeedName)
-	//    {
-	//        globalCategoryName = [[NSString alloc] init];
-	//    }
-    
-    
-	
-	//    UIView *titleView = [[UIView alloc]initWithFrame:TITLE_Frame];
-	//    titleView.backgroundColor = [UIColor clearColor];
-	//    titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
 #pragma mark - Shared Instance

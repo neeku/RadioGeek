@@ -33,19 +33,28 @@
 @property (nonatomic, retain) IBOutlet UIButton *fastForward;
 @property (nonatomic, retain) IBOutlet UIButton *fastRewind;
 @property (nonatomic, retain) IBOutlet UIView *downloadView;
+@property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
 @property (nonatomic, retain) IBOutlet UIView *audioView;
+@property (weak, nonatomic) IBOutlet UITextView *descriptionText;
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 //@property (nonatomic, retain) IBOutlet UISlider *volumeControl; //Sets the volume for the audio player
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
+@property (weak, nonatomic) IBOutlet UIImageView *speakerMinimum;
+@property (weak, nonatomic) IBOutlet UIImageView *speakerMaximum;
+@property (weak, nonatomic) IBOutlet UILabel *currentTime;
+@property (weak, nonatomic) IBOutlet UILabel *remainingTime;
+
+
 
 @property (nonatomic, retain) NSURLRequest * loadRequest;
 
 
 
 
-@property (nonatomic, retain) UIProgressView *progress;
+@property (nonatomic, retain) IBOutlet UIProgressView *progress;
 @property (nonatomic, retain) NSString *currentURL;
 @property (nonatomic, retain) NSString *currentFileName;
 
@@ -53,7 +62,6 @@
 
 
 - (IBAction)downloadTheFile:(id)sender;
-- (IBAction)volumeDidChange:(id)slider; //handle the slider movement
 - (IBAction)togglePlayingState:(id)button; //handle the button tapping
 - (IBAction)forwardAudio:(id)sender;
 - (IBAction)rewindAudio:(id)sender;
