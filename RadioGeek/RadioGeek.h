@@ -14,7 +14,7 @@
 //error alert view
 #define ALERT_TITLE @"خطا"
 #define CANCEL_BUTTON_TITLE @"بسیار خوب"
-
+#define ERROR_MESSAGE @"۴۰۴ - فایل بر روی سرور موجود نیست"
 //navigation bar title
 #define NAV_BAR_TITLE @"رادیو گیک"
 

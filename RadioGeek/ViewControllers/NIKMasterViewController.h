@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-
+#import <AVFoundation/AVFoundation.h>
 #import "NIKFeedEntry.h"
 #import "NIKFeedParser.h"
 
@@ -23,6 +23,7 @@
 	NSString *dataPath;
 	NSMutableArray *urlArray;
 	NSError *errooor;
+	
 
 
 }
@@ -43,6 +44,8 @@
 
 @property (nonatomic, copy) NSString *dataPath;
 @property (nonatomic, retain) NSMutableArray *urlArray;
+
+@property (nonatomic) BOOL isAlreadyLoaded;
 
 - (id)initWithFeedURL:(NSString *)feedURL;
 

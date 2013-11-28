@@ -8,16 +8,28 @@
 
 #import <UIKit/UIKit.h>
 #import "NIKFeedEntry.h"
-#import "AFNetworking.h"
+//#import "AFNetworking.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "NIKMasterViewController.h"
+#import "NIKPlayer.h"
 
-@interface NIKDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate, NSURLConnectionDelegate>
+@interface NIKDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate, NSURLConnectionDelegate, AVAudioPlayerDelegate>
 {
 	NSURL *url;
 	NSTimer	*playbackTimer;
 	UIWebView *webView;
 	NSURLRequest * loadRequest;
+	NSTimer	*updateTimer;
+	int tapCounter;
+	NSString* documentPath;
+	NSString* filePath;
+	NSURL* audioURL;
+	int viewDidLoadCounter;
+	NSMutableData *responseData;
+	NSUInteger responseDataSize;
+	NSFileHandle *file;
+	UIAlertView *alertView;
 //	UISlider *volumeControl; //Sets the volume for the audio player
 
 }
@@ -29,7 +41,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *downloadButton;
 @property (nonatomic, retain) IBOutlet UIButton *playPauseButton;
 @property (nonatomic, retain) IBOutlet UISlider *seekSlider;
-@property (nonatomic, strong) AVAudioPlayer* audioPlayer;
 @property (nonatomic, retain) IBOutlet UIButton *fastForward;
 @property (nonatomic, retain) IBOutlet UIButton *fastRewind;
 @property (nonatomic, retain) IBOutlet UIView *downloadView;
@@ -54,23 +65,23 @@
 
 
 
-@property (nonatomic, retain) IBOutlet UIProgressView *progress;
+@property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 @property (nonatomic, retain) NSString *currentURL;
 @property (nonatomic, retain) NSString *currentFileName;
 
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton *playerButton;
 
 - (IBAction)downloadTheFile:(id)sender;
 - (IBAction)togglePlayingState:(id)button; //handle the button tapping
 - (IBAction)forwardAudio:(id)sender;
 - (IBAction)rewindAudio:(id)sender;
+- (IBAction)showAudioPlayerView:(id)sender;
 
 - (void)playAudio; //play the audio
 - (void)pauseAudio; //pause the audio
-- (void)togglePlayPause; //toggle the state of the audio
 - (void)streamAudio;
-
+- (void)togglePlayPause;
 - (void)startActivity:(id)sender;
 
 - (void)stopActivity:(id)sender;

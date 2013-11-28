@@ -12,16 +12,17 @@
 #import "NSHFarsiNumerals.h"
 //#import "SGdownloader.h"
 
+static AVAudioPlayer *soundPlayer;
+
 @implementation NIKDetailViewController
 
 @synthesize feedEntry;
 @synthesize selectedItem;
 @synthesize webView;
 @synthesize downloadButton;
-@synthesize progress;
+@synthesize progressView;
 @synthesize currentURL;
 @synthesize seekSlider;
-@synthesize audioPlayer;
 @synthesize playPauseButton;
 @synthesize fastForward;
 @synthesize fastRewind;
@@ -36,7 +37,7 @@
 @synthesize titleLabel;
 @synthesize currentTime;
 @synthesize remainingTime;
-
+@synthesize playerButton;
 #pragma mark - Managing the view
 
 
@@ -49,51 +50,128 @@
     }
     return self;
 }
+/*
+ NSMutableURLRequest * request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:URL_TO_DOWNLOAD]] autorelease];
+ [request setHTTPMethod:@"GET"];
+ 
+ NSURLConnection * conn = [NSURLConnection connectionWithRequest:request delegate:self];
+ if(conn)
+ responseData = [[NSMutableData data] retain];
+ else
+ NSLog(@":(");
+*/
 
 
 #pragma mark - Managing the File Download
 
-- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    //make sure we have a 2xx reponse code
+	//This method is called when the download begins.
+    //You can get all the response headers
+	//make sure we have a 2xx reponse code
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
 	
     if ([httpResponse statusCode]/100 == 2)
 	{
-        NSLog(@"file exists");
+		//file exists on the server
+		[responseData setLength:0];
+		responseDataSize = (NSUInteger)[response expectedContentLength];
+		
+
     } else {
-        NSLog(@"file does not exist");
+		//file does not exist on the server - Error 404
+		[connection cancel];
+		//show error alert view
+		alertView = [[UIAlertView alloc] initWithTitle:ALERT_TITLE message:ERROR_MESSAGE delegate:self cancelButtonTitle:CANCEL_BUTTON_TITLE otherButtonTitles:Nil, nil];
+		[alertView show];
+		
+		//reset download view
+		downloadButton.enabled = YES;
+		progressView.progress = 0.0;
+
+		
     }
 }
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    
+    float progress = (float)[responseData length] / (float)responseDataSize;
+    progressView.progress = progress;
+	[responseData appendData:data];
+	
+	
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    alertView = [[UIAlertView alloc] initWithTitle:@"Done"
+                                                         message:@"Download complete."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"Cool" otherButtonTitles:nil];
+    [alertView show];
+	
+	//creates the file in Documents folder and writes it there
+	currentURL=[feedEntry podcastDownloadURL];
+	currentFileName = [currentURL lastPathComponent];
+	NSString *fileName = currentFileName;
+    NSArray *pathArr = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *folder = [pathArr objectAtIndex:0];
+	
+    NSString *path = [folder stringByAppendingPathComponent:fileName];
+    NSURL *fileURL = [NSURL fileURLWithPath:path];
+    NSError *writeError = nil;
+	
+    [responseData writeToURL: fileURL options:0 error:&writeError];
+	downloadView.hidden = YES; //hide the download view once downloading is finished
+    if( writeError) {
+        NSLog(@" Error in writing file %@' : \n %@ ", path , writeError );
+        return;
+    }
+    NSLog(@"%@",fileURL);
+	
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+	[error localizedDescription];
+	NSLog(@"%@", [error localizedDescription]);
+	NSInteger errorCode = [error code];
+
+	//persian error messages file full path
+	NSString * persianErrorsListFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Persian.strings"];
+	//Load file as dictionary
+	NSDictionary * persianErrorsList = [[NSDictionary alloc] initWithContentsOfFile:persianErrorsListFile];
+	
+	NSString *errorKey = [NSString stringWithFormat:@"Err%ld", (long)errorCode];
+	NSString *errorMessage = persianErrorsList[errorKey];
+	alertView = [[UIAlertView alloc] initWithTitle:ALERT_TITLE message:errorMessage delegate:self cancelButtonTitle:CANCEL_BUTTON_TITLE otherButtonTitles:nil, nil];
+	[alertView show];
+	downloadButton.enabled = YES;
+	progressView.progress = 0.0;
+	
+}
+
 
 - (IBAction)downloadTheFile:(id)sender
 {
 //	downloadButton.highlighted = YES;
 	downloadButton.enabled = NO;
-	progress.progress = 0.0;
+	progressView.progress = 0.0;
 	
     currentURL=[feedEntry podcastDownloadURL];
 	currentFileName = [currentURL lastPathComponent];
 	
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:currentURL]];
-    AFURLConnectionOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:currentFileName];
-
-    operation.outputStream = [NSOutputStream outputStreamToFileAtPath:filePath append:NO];
-
-    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
-        progress.progress = (float)totalBytesRead / totalBytesExpectedToRead;
-		
-    }];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:currentURL]];
+	[request setHTTPMethod:@"GET"];
 	
-    [operation setCompletionBlock:^{
-        NSLog(@"downloadComplete!");
-		[self hideDownloadView];
-    }];
-    [operation start];
+	NSURLConnection * conn = [NSURLConnection connectionWithRequest:request delegate:self];
+	if(conn)
+		responseData = [NSMutableData data];
 	
+	else
+		NSLog(@":(");
 
 }
 
@@ -102,60 +180,75 @@
 - (IBAction)togglePlayingState:(id)button
 {
     //Handle the button pressing
-    [self togglePlayPause];
+//	NSLog(@"player url:%@",soundPlayer.url.lastPathComponent);
+//	NSLog(@"my url:%@",filePath.lastPathComponent);
+//	if (tapCounter == 0)
+//	{
+//		if (!soundPlayer.url && !filePath.lastPathComponent && soundPlayer.url.lastPathComponent != audioURL.lastPathComponent)
+//		{
+//			[self streamAudio];
+//		}
+//	}
+//	tapCounter++;
+	
+	[self togglePlayPause];
 }
 
 
 
+- (IBAction)showAudioPlayerView:(id)sender
+{
+	if (audioView.hidden)
+	{
+		audioView.hidden = NO;
+		[self streamAudio];
+		playerButton.hidden = YES;
+	}
+}
+
 - (void)playAudio
 {
+
+	
     //Play the audio and set the button to represent the audio is playing
-    [audioPlayer play];
-	[playPauseButton setImage:[UIImage imageNamed:@"player_pause"] forState:UIControlStateNormal];
+	if ([soundPlayer isPlaying])
+    {
+        [soundPlayer pause];
+		[playPauseButton setImage:[UIImage imageNamed:@"player_play"] forState:UIControlStateNormal];
+        [self deleteTimer];
+    }
+    else
+    {
+        [self createTimer];
+        [soundPlayer play];
+		[playPauseButton setImage:[UIImage imageNamed:@"player_pause"] forState:UIControlStateNormal];
+    }
+	
 
 }
 
 - (void)pauseAudio
 {
     //Pause the audio and set the button to represent the audio is paused
-    [audioPlayer pause];
+    [soundPlayer pause];
 	[playPauseButton setImage:[UIImage imageNamed:@"player_play"] forState:UIControlStateNormal];
+	[self deleteTimer];
 }
 
-- (void)togglePlayPause
-{
-    //Toggle if the music is playing or paused
-    if (!self.audioPlayer.playing)
-	{
-        [self playAudio];
-    }
-	else if (self.audioPlayer.playing)
-	{
-        [self pauseAudio];
-    }
-}
-
+//- (void)stopAudio
+//{
+//	if(audioPlayer && [audioPlayer isPlaying]){
+//		[audioPlayer stop];
+//		audioPlayer=nil;
+//	}
+//}
 
 - (void)streamAudio
 {
-//	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"jadi" ofType:@"mp3"];
-	
-	currentFileName = [[feedEntry podcastDownloadURL] lastPathComponent];
-	
-	NSString* documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	NSString* path = [documentPath stringByAppendingPathComponent:currentFileName];
-	NSURL* movieURL = [NSURL fileURLWithPath: path];
 	
 
-	
-	
-//	url = [NSURL fileURLWithPath:currentFileName];
-//	url = [NSURL fileURLWithPath:[currentFileName, [NSBundle mainBundle] resourcePath]];
-	NSLog(@"%@",currentFileName);
-	
-	audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:movieURL error:nil];
-//	[theSound setDelegate:self];
-	[audioPlayer setVolume:1.0];
+	soundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioURL error:nil];
+	[soundPlayer setVolume:1.0];
 	
 	
 	NSError *error;
@@ -172,44 +265,50 @@
 //        [[self alertLabel] setText:[NSString stringWithFormat:@"%@ has loaded", @"HeadspinLong.caf"]];
 //        [[self alertLabel] setHidden:NO];
     }
-	// Set a timer which keep getting the current music time and update the UISlider in 1 sec interval
-	playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
-	// Set the maximum value of the UISlider
-	seekSlider.maximumValue = audioPlayer.duration;
-
-	
-	currentTime.text = [NSString stringWithFormat:@"%d:%02d", (int)audioPlayer.currentTime / 60, (int)audioPlayer.currentTime % 60, nil];
-	remainingTime.text = [NSString stringWithFormat:@"%d:%02d", (int)(audioPlayer.duration - audioPlayer.currentTime) / 60, (int)(audioPlayer.duration - audioPlayer.currentTime) % 60, nil];
-
-
-	
-	// Set the valueChanged target
-	[seekSlider addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
-	
-	[audioPlayer prepareToPlay]; //Add the audio to the memory.
+		
 }
 
 
+- (void)getTime:(NSTimer *)timer
+{
+    [seekSlider setValue:soundPlayer.currentTime];
+   
+    remainingTime.text = [NSString stringWithFormat:@"%d:%02d", (int)(soundPlayer.duration - soundPlayer.currentTime) / 60, (int)(soundPlayer.duration - soundPlayer.currentTime) % 60, nil];
+	currentTime.text = [NSString stringWithFormat:@"%d:%02d", (int) soundPlayer.currentTime/60, (int)soundPlayer.currentTime % 60, nil];
+}
 
+- (void)createTimer
+{
+    playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(getTime:) userInfo:nil repeats:YES];
+}
+
+- (void)deleteTimer
+{
+    [playbackTimer invalidate];
+	playbackTimer = nil;
+}
 
 - (void)updateSlider
 {
 	// Update the slider about the music time
-	seekSlider.value = audioPlayer.currentTime;
+	seekSlider.value = soundPlayer.currentTime;
 }
 
-- (IBAction)sliderChanged:(UISlider *)sender {
+- (IBAction)sliderChanged:(UISlider *)sender
+{
 	// Fast skip the music when user scrolls the slider
-	[audioPlayer stop];
-	[audioPlayer setCurrentTime:seekSlider.value];
-	[audioPlayer prepareToPlay];
-	[audioPlayer play];
+	[soundPlayer stop];
+	[soundPlayer setCurrentTime:seekSlider.value];
+	[soundPlayer prepareToPlay];
+	[soundPlayer play];
 }
 
 // Stop the timer when the music is finished (Need to implement the AVAudioPlayerDelegate in the Controller header)
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
 	// Music completed
-	if (flag) {
+	if (flag)
+	{
 		[playbackTimer invalidate];
 	}
 }
@@ -217,14 +316,28 @@
 
 - (IBAction)forwardAudio:(id)sender
 {
-	int currentTime = [audioPlayer currentTime];
-	[audioPlayer setCurrentTime:currentTime+10];
+	int current = [soundPlayer currentTime];
+	[soundPlayer setCurrentTime:current+10];
 }
 
 - (IBAction)rewindAudio:(id)sender
 {
-	int currentTime = [audioPlayer currentTime];
-	[audioPlayer setCurrentTime:currentTime-10];
+	int current = [soundPlayer currentTime];
+	[soundPlayer setCurrentTime:current-10];
+}
+
+- (void) togglePlayPause
+{
+    //Toggle if the music is playing or paused
+    if (!soundPlayer.playing)
+	{
+		
+        [self playAudio];
+    }
+	else if (soundPlayer.playing)
+	{
+        [self pauseAudio];
+    }
 }
 
 
@@ -268,13 +381,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+		
+	tapCounter = 0;
 	// Do any additional setup after loading the view, typically from a nib.
 	self.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
 	
-	
-	
+	//todo: change it to yes
 	[downloadView setHidden:NO];
-
+	[audioView setHidden:YES];
 	
 	downloadView.backgroundColor = [UIColor whiteColor];
 	
@@ -307,16 +422,16 @@
 	
 	
 	NSString *title = [NSHFarsiNumerals convertNumeralsToFarsi:[podcastNumber stringByAppendingFormat:@". %@",podcastName]];
-
 	
-	descriptionText.text = content;
-	[descriptionText setTextAlignment:NSTextAlignmentRight];
-	[descriptionText setFont:[UIFont fontWithName:@"X Yekan" size:14.0]];
 	titleLabel.text = title;
 	titleLabel.textAlignment = NSTextAlignmentCenter;
 	
+	descriptionText.text = content;
+	[descriptionText setTextAlignment:NSTextAlignmentCenter];
+	[descriptionText setFont:[UIFont fontWithName:@"BNazanin" size:14.0]];
+	
 	[downloadView addSubview:downloadButton];
-	[downloadView addSubview:progress];
+	[downloadView addSubview:progressView];
 	
 	[audioView addSubview:playPauseButton];
 	[audioView addSubview:seekSlider];
@@ -329,9 +444,6 @@
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 	[[AVAudioSession sharedInstance] setActive: YES error: nil];
 	
-
-	[self loadWebView];
-	[self streamAudio];
 	
 	
 	//checks to see if the file is already downloaded and exists in the documents folder of the app.
@@ -343,9 +455,34 @@
 	{
 		[self hideDownloadView];
 	}
-
+	
+	currentFileName = [[feedEntry podcastDownloadURL] lastPathComponent];
+	
+	documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+	filePath = [documentPath stringByAppendingPathComponent:currentFileName];
+	audioURL = [NSURL fileURLWithPath: filePath];
+//	if (soundPlayer.isPlaying)
+//	{
+//		if (![soundPlayer.url isEqual:audioURL])
+//		{
+////			[soundPlayer stop];
+//			soundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioURL error:nil];
+//			[soundPlayer prepareToPlay];
+//			
+//		}
+//	
+//	if (!soundPlayer)
+//	{
+//		
+//		[self streamAudio];
+//	}
+//	else if (![soundPlayer.url isEqual:audioURL])
+//	{
+//		[self streamAudio];
+//	}
 	
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -358,6 +495,19 @@
     UIBarButtonItem * barButton = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
     //Set the bar button the navigation bar
     [self navigationItem].rightBarButtonItem = barButton;
+	
+	// Set a timer which keep getting the current music time and update the UISlider in 1 sec interval
+	playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+	// Set the maximum value of the UISlider
+	seekSlider.maximumValue = soundPlayer.duration;
+	
+	
+	
+	
+	// Set the valueChanged target
+	[seekSlider addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
+
+	
 }
 
 -(void)startActivity:(id)sender{

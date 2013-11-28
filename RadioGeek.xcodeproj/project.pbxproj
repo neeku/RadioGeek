@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D9178519181CFD8E00C7F811 /* NIKFeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D9178518181CFD8E00C7F811 /* NIKFeedParser.m */; };
+		D9305EA31844D0FE0019DA08 /* NIKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9305EA21844D0FE0019DA08 /* NIKPlayer.m */; };
 		D930972018361A2800DC1BCE /* NIKDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D930971B18361A2800DC1BCE /* NIKDetailViewController.m */; };
 		D930972118361A2800DC1BCE /* NIKInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D930971D18361A2800DC1BCE /* NIKInfoViewController.m */; };
 		D930972218361A2800DC1BCE /* NIKMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D930971F18361A2800DC1BCE /* NIKMasterViewController.m */; };
@@ -44,8 +44,12 @@
 		D954538518243C5D00B2C440 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D954538418243C5D00B2C440 /* QuartzCore.framework */; };
 		D954538718243C6500B2C440 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D954538618243C6500B2C440 /* AudioToolbox.framework */; };
 		D99447151831131000D54C64 /* NSString_StripHTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D99447141831131000D54C64 /* NSString_StripHTML.m */; };
+		D9A6DD0B183FE88700816C59 /* NIKAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A6DD0A183FE88700816C59 /* NIKAudioManager.m */; };
+		D9A6DD0E183FE8FF00816C59 /* NIKFeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A6DD0D183FE8FF00816C59 /* NIKFeedParser.m */; };
+		D9A6DD11183FE97600816C59 /* NIKAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A6DD10183FE97600816C59 /* NIKAudioFile.m */; };
+		D9A6DD181840BFDA00816C59 /* jadi5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D9A6DD161840BFDA00816C59 /* jadi5.mp3 */; };
+		D9A6DD191840BFDA00816C59 /* jadi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D9A6DD171840BFDA00816C59 /* jadi.mp3 */; };
 		D9AA8389183AD73400FBB827 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AA8388183AD73400FBB827 /* URLCacheAlert.m */; };
-		D9AA838B183B688000FBB827 /* URLCache.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9AA838A183B688000FBB827 /* URLCache.plist */; };
 		D9AA838E183CDBBF00FBB827 /* player_pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA838C183CDBBF00FBB827 /* player_pause@2x.png */; };
 		D9AA838F183CDBBF00FBB827 /* player_play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA838D183CDBBF00FBB827 /* player_play@2x.png */; };
 		D9AA8393183CF55600FBB827 /* SGdownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AA8392183CF55600FBB827 /* SGdownloader.m */; };
@@ -97,8 +101,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D9178517181CFD8E00C7F811 /* NIKFeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKFeedParser.h; sourceTree = "<group>"; };
-		D9178518181CFD8E00C7F811 /* NIKFeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKFeedParser.m; sourceTree = "<group>"; };
+		D9305EA11844D0FE0019DA08 /* NIKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKPlayer.h; sourceTree = "<group>"; };
+		D9305EA21844D0FE0019DA08 /* NIKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKPlayer.m; sourceTree = "<group>"; };
 		D930971A18361A2800DC1BCE /* NIKDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKDetailViewController.h; sourceTree = "<group>"; };
 		D930971B18361A2800DC1BCE /* NIKDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKDetailViewController.m; sourceTree = "<group>"; };
 		D930971C18361A2800DC1BCE /* NIKInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKInfoViewController.h; sourceTree = "<group>"; };
@@ -139,9 +143,16 @@
 		D954538618243C6500B2C440 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D99447131831131000D54C64 /* NSString_StripHTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSString_StripHTML.h; path = Components/HTMLStripper/NSString_StripHTML.h; sourceTree = "<group>"; };
 		D99447141831131000D54C64 /* NSString_StripHTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSString_StripHTML.m; path = Components/HTMLStripper/NSString_StripHTML.m; sourceTree = "<group>"; };
+		D9A6DD09183FE88700816C59 /* NIKAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKAudioManager.h; sourceTree = "<group>"; };
+		D9A6DD0A183FE88700816C59 /* NIKAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKAudioManager.m; sourceTree = "<group>"; };
+		D9A6DD0C183FE8FF00816C59 /* NIKFeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKFeedParser.h; sourceTree = "<group>"; };
+		D9A6DD0D183FE8FF00816C59 /* NIKFeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKFeedParser.m; sourceTree = "<group>"; };
+		D9A6DD0F183FE97600816C59 /* NIKAudioFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKAudioFile.h; sourceTree = "<group>"; };
+		D9A6DD10183FE97600816C59 /* NIKAudioFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKAudioFile.m; sourceTree = "<group>"; };
+		D9A6DD161840BFDA00816C59 /* jadi5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jadi5.mp3; sourceTree = "<group>"; };
+		D9A6DD171840BFDA00816C59 /* jadi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jadi.mp3; sourceTree = "<group>"; };
 		D9AA8387183AD73400FBB827 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		D9AA8388183AD73400FBB827 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
-		D9AA838A183B688000FBB827 /* URLCache.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = URLCache.plist; sourceTree = "<group>"; };
 		D9AA838C183CDBBF00FBB827 /* player_pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_pause@2x.png"; sourceTree = "<group>"; };
 		D9AA838D183CDBBF00FBB827 /* player_play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_play@2x.png"; sourceTree = "<group>"; };
 		D9AA8391183CF55600FBB827 /* SGdownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGdownloader.h; sourceTree = "<group>"; };
@@ -248,6 +259,8 @@
 			children = (
 				D930972F18361A9400DC1BCE /* NIKFeedEntry.h */,
 				D930973018361A9400DC1BCE /* NIKFeedEntry.m */,
+				D9A6DD0F183FE97600816C59 /* NIKAudioFile.h */,
+				D9A6DD10183FE97600816C59 /* NIKAudioFile.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -292,6 +305,19 @@
 			name = HTMLSTripper;
 			sourceTree = "<group>";
 		};
+		D9A6DD08183FE88700816C59 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D9A6DD09183FE88700816C59 /* NIKAudioManager.h */,
+				D9A6DD0A183FE88700816C59 /* NIKAudioManager.m */,
+				D9A6DD0C183FE8FF00816C59 /* NIKFeedParser.h */,
+				D9A6DD0D183FE8FF00816C59 /* NIKFeedParser.m */,
+				D9305EA11844D0FE0019DA08 /* NIKPlayer.h */,
+				D9305EA21844D0FE0019DA08 /* NIKPlayer.m */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		D9AA8390183CF55600FBB827 /* SGdownloadManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,10 +330,11 @@
 		D9ABA7F2183559350073E431 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D9A6DD161840BFDA00816C59 /* jadi5.mp3 */,
+				D9A6DD171840BFDA00816C59 /* jadi.mp3 */,
 				D930973C18361B6500DC1BCE /* Persian.strings */,
 				D930973618361B1D00DC1BCE /* Feed.plist */,
 				D930973718361B1D00DC1BCE /* htmlPattern.html */,
-				D9AA838A183B688000FBB827 /* URLCache.plist */,
 				D9ABA7F6183559600073E431 /* Fonts */,
 				D9ABA7F3183559350073E431 /* Images */,
 			);
@@ -428,6 +455,7 @@
 			children = (
 				D930973218361ADC00DC1BCE /* AppDelegate */,
 				D930972E18361A9400DC1BCE /* Models */,
+				D9A6DD08183FE88700816C59 /* Managers */,
 				D930971918361A2800DC1BCE /* ViewControllers */,
 				D954537D18243B7F00B2C440 /* Components */,
 				D9ABA7F2183559350073E431 /* Resources */,
@@ -436,8 +464,6 @@
 				D9F3B0A8181C40740042A44A /* Images.xcassets */,
 				D9F3B09F181C40740042A44A /* RadioGeek.xcdatamodeld */,
 				D9F3B08E181C40740042A44A /* Supporting Files */,
-				D9178517181CFD8E00C7F811 /* NIKFeedParser.h */,
-				D9178518181CFD8E00C7F811 /* NIKFeedParser.m */,
 				D9F8D3CB183193CE00A33E46 /* RadioGeek.h */,
 			);
 			path = RadioGeek;
@@ -573,10 +599,10 @@
 				D93097581837C38100DC1BCE /* BNazanin.ttf in Resources */,
 				D945F6361838F61900B5814C /* X Yekan Italic.ttf in Resources */,
 				D93097621837C59500DC1BCE /* Tahoma.ttf in Resources */,
+				D9A6DD181840BFDA00816C59 /* jadi5.mp3 in Resources */,
 				D930975E1837C52E00DC1BCE /* Arial Bold.ttf in Resources */,
 				D93097641837C5D100DC1BCE /* Times New Roman.ttf in Resources */,
 				D93097541837909A00DC1BCE /* BTabassom.ttf in Resources */,
-				D9AA838B183B688000FBB827 /* URLCache.plist in Resources */,
 				D930974518365AA700DC1BCE /* iRate.bundle in Resources */,
 				D9AA83D7183D370B00FBB827 /* player_fastforward@2x.png in Resources */,
 				D945F62C1838F5B500B5814C /* X Nazanin Bold.ttf in Resources */,
@@ -594,6 +620,7 @@
 				D945F6341838F61900B5814C /* X Vahid Italic.ttf in Resources */,
 				D930973918361B1D00DC1BCE /* htmlPattern.html in Resources */,
 				D9AA83DA183D39BB00FBB827 /* player_fastforwardcp@2x.png in Resources */,
+				D9A6DD191840BFDA00816C59 /* jadi.mp3 in Resources */,
 				D9309756183791FF00DC1BCE /* Mj_Tye.ttf in Resources */,
 				D945F62F1838F5B500B5814C /* X Nazanin.ttf in Resources */,
 				D9AA838E183CDBBF00FBB827 /* player_pause@2x.png in Resources */,
@@ -620,9 +647,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9A6DD0E183FE8FF00816C59 /* NIKFeedParser.m in Sources */,
 				D9B34DBF181EA2FE003D3B17 /* AFURLConnectionOperation.m in Sources */,
+				D9A6DD11183FE97600816C59 /* NIKAudioFile.m in Sources */,
 				D930973118361A9400DC1BCE /* NIKFeedEntry.m in Sources */,
-				D9178519181CFD8E00C7F811 /* NIKFeedParser.m in Sources */,
 				D99447151831131000D54C64 /* NSString_StripHTML.m in Sources */,
 				D930972218361A2800DC1BCE /* NIKMasterViewController.m in Sources */,
 				D930972018361A2800DC1BCE /* NIKDetailViewController.m in Sources */,
@@ -631,6 +659,8 @@
 				D9AA8393183CF55600FBB827 /* SGdownloader.m in Sources */,
 				D9F3B094181C40740042A44A /* main.m in Sources */,
 				D930973518361ADC00DC1BCE /* NIKAppDelegate.m in Sources */,
+				D9A6DD0B183FE88700816C59 /* NIKAudioManager.m in Sources */,
+				D9305EA31844D0FE0019DA08 /* NIKPlayer.m in Sources */,
 				D9B34DC0181EA2FE003D3B17 /* AFURLRequestSerialization.m in Sources */,
 				D9B34DBE181EA2FE003D3B17 /* AFSecurityPolicy.m in Sources */,
 				D9B34DBA181EA2FE003D3B17 /* AFHTTPRequestOperation.m in Sources */,

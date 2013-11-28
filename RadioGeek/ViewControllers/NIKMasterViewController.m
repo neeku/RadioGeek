@@ -35,6 +35,7 @@ const double URLCacheInterval = 86400.0;
 @synthesize refreshButton;
 @synthesize dataPath;
 @synthesize urlArray;
+@synthesize isAlreadyLoaded;
 
 - (id)initWithFeedURL:(NSString *)feedURL{
 	if (self) {
@@ -100,7 +101,11 @@ const double URLCacheInterval = 86400.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	
+	//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
+	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+	[[AVAudioSession sharedInstance] setActive: YES error: nil];
+	
 	// Do any additional setup after loading the view, typically from a nib.
 	//Create an instance of activity indicator view
     activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -127,26 +132,6 @@ const double URLCacheInterval = 86400.0;
 	titleLabel.text = NAV_BAR_TITLE;
 	titleLabel.font = [UIFont fontWithName:@"X Vahid" size:15.0];
 	titleLabel.textAlignment = NSTextAlignmentCenter;
-	
-	NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
-                                                            diskCapacity:0
-                                                                diskPath:nil];
-    [NSURLCache setSharedURLCache:sharedCache];
-    /* prepare to use our own on-disk cache */
-	[self initCache];
-	
-    /* create and load the URL array using the strings stored in URLCache.plist */
-	
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"URLCache" ofType:@"plist"];
-    if (path) {
-        NSArray *array = [[NSArray alloc] initWithContentsOfFile:path];
-        self.urlArray = [NSMutableArray array];
-        for (NSString *element in array) {
-            [self.urlArray addObject:[NSURL URLWithString:element]];
-        }
-    }
-
-	
 }
 
 - (void)loadRefreshButton
@@ -163,29 +148,6 @@ const double URLCacheInterval = 86400.0;
 	self.navigationItem.rightBarButtonItem = barButton;
 
 }
-
-- (void) initCache
-{
-	/* create path to cache directory inside the application's Documents directory */
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    self.dataPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"URLCache"];
-	
-	/* check for existence of cache directory */
-	if ([[NSFileManager defaultManager] fileExistsAtPath:dataPath]) {
-		return;
-	}
-	
-	/* create a new cache directory */
-//	if (![[NSFileManager defaultManager] createDirectoryAtPath:dataPath
-//								   withIntermediateDirectories:NO
-//													attributes:nil
-//														 error:&errooor])
-//	{
-//		URLCacheAlertWithError(errooor);
-//		return;
-//	}
-}
-
 
 -(void)stopActivity:(id)sender
 {
@@ -260,7 +222,6 @@ const double URLCacheInterval = 86400.0;
     label = (UILabel *)[cell viewWithTag:20];
     label.text = [NSHFarsiNumerals convertNumeralsToFarsi:[formatter stringFromDate:[entry podcastDate]]];
 	label.font = [UIFont fontWithName:@"B Nazanin" size:10.0];
-	NSLog(@"date:%@",[entry podcastDate]);
     return cell;
 }
 
@@ -273,8 +234,9 @@ const double URLCacheInterval = 86400.0;
 		NIKDetailViewController *detailViewController = (NIKDetailViewController *) segue.destinationViewController;
 		
 		[detailViewController setFeedEntry:[[[self feedParser] feedItems] objectAtIndex:indexPath.row]];
-		
-    } else {
+    }
+	else
+	{
         NSLog(@"Segue Identifier: %@", segue.identifier);
     }
 	
@@ -285,6 +247,48 @@ const double URLCacheInterval = 86400.0;
 {
    
 }
+
+#pragma mark - Audio control
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    //Once the view has loaded then we can register to begin recieving controls and we can become the first responder
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [self becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    //End recieving events
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
+}
+
+
+
+//Make sure we can recieve remote control events
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
+    //if it is a remote control event handle it correctly
+    if (event.type == UIEventTypeRemoteControl) {
+        if (event.subtype == UIEventSubtypeRemoteControlPlay) {
+            [[NIKDetailViewController sharedController] playAudio];
+        } else if (event.subtype == UIEventSubtypeRemoteControlPause) {
+            [[NIKDetailViewController sharedController] pauseAudio];
+        } else if (event.subtype == UIEventSubtypeRemoteControlTogglePlayPause) {
+            [[NIKDetailViewController sharedController] togglePlayPause];
+        }
+    }
+}
+
 
 + (NIKMasterViewController *)sharedController
 {

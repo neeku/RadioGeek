@@ -12,7 +12,7 @@
 			<key>IMG-S</key>
 			<string>http://192.168.2.1/radiojadi.xml</string>
 			<key>URL</key>
-			<string>http://192.168.2.1/radiojadi.xml</string>
+			<string>http://feeds.feedburner.com/radiojadi</string>
 		</dict>
 	</array>
 </dict>
