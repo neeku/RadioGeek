@@ -131,7 +131,7 @@ NIKMasterViewController *masterVC;
     [downloadedData appendData:data];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection\
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     //This method is called once the download is complete
     
@@ -141,10 +141,45 @@ NIKMasterViewController *masterVC;
 	fileName = @"SavedURL.xml";
     path = [folder stringByAppendingPathComponent:fileName];
     fileURL = [NSURL fileURLWithPath:path];
-    NSError *writeError = nil;
-    [downloadedData writeToURL: fileURL options:0 error:&writeError];
+
 	
 	
+	
+	/*	const UInt8 OPEN_TAG_TO_FIND[] = "<lastBuildDate>";
+	const UInt8 CLOSE_TAG_TO_FIND[] = "</lastBuildDate>";
+	
+	NSData *openTagData = [NSData dataWithBytes:OPEN_TAG_TO_FIND length:sizeof(OPEN_TAG_TO_FIND)-1];
+	NSData *closeTagData = [NSData dataWithBytes:CLOSE_TAG_TO_FIND length:sizeof(CLOSE_TAG_TO_FIND)-1];
+
+	NSRange openRange = [downloadedData rangeOfData:openTagData options:kNilOptions range:NSMakeRange(0u, downloadedData.length)];
+	if (openRange.location == NSNotFound)
+	{
+		NSLog(@"Open Range Not Found!");
+		return;
+	}
+	NSRange closeRange = [downloadedData rangeOfData:closeTagData options:kNilOptions range:NSMakeRange(openRange.location, downloadedData.length-openRange.location)];
+	if (closeRange.location == NSNotFound)
+	{
+		NSLog(@"Close Range Not Found!");
+		return;
+	}
+	
+	NSData *lastBuildData = [downloadedData subdataWithRange:NSMakeRange(openRange.location+openRange.length, closeRange.location-openRange.location-openRange.length)];
+	NSString *dateString = [[NSString alloc] initWithData:lastBuildData encoding:NSUTF8StringEncoding];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss Z"];
+	NSDate *lastDate = [dateFormatter dateFromString:dateString];
+
+	NSDate *lastSavedDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"Date"];
+	NSComparisonResult comparisonResult;
+	comparisonResult = [lastDate compare:lastSavedDate];
+	if (comparisonResult == NSOrderedDescending) {
+		NSLog(@"true");
+	}
+	
+	 [downloadedData writeToURL: fileURL options:0 error:&writeError];
+	[downloadedData app]
+*/
 	//The next step is parse the downloaded xml feed
 	NSXMLParser * xmlParser = [[NSXMLParser alloc] initWithData:[NSData dataWithContentsOfURL:fileURL]];
 	[xmlParser setDelegate:self];
@@ -195,6 +230,11 @@ NIKMasterViewController *masterVC;
 		elementName = qualifiedName;
 	}
     parseElement = NO;
+	if ([elementName isEqualToString:@"lastBuildDate"])
+	{
+		lbd = [[NSString alloc] init];
+	}
+
 	if ([elementName isEqualToString:@"item"])
 	{
         currentItem = [[NIKFeedEntry alloc] init];
@@ -206,7 +246,8 @@ NIKMasterViewController *masterVC;
 			  [elementName isEqualToString:@"category"] ||
 			  [elementName isEqualToString:@"dc:creator"] ||
 			  [elementName isEqualToString:@"pubDate"] ||
-			  [elementName isEqualToString:@"enclosure"])
+			  [elementName isEqualToString:@"enclosure"] ||
+			  [elementName isEqualToString:@"lastBuildDate"])
 	{
 		NSString *urlValue=[attributeDict valueForKey:@"url"];
 		NSString *urlType=[attributeDict valueForKey:@"type"];
@@ -236,7 +277,14 @@ NIKMasterViewController *masterVC;
     } else if (parsedElementString != nil) {
         parsedElementContent = [[NSString alloc] initWithString:parsedElementString];
     }
-    
+	if ([elementName isEqualToString:@"lastBuildDate"]) {
+		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+		[formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss Z"];
+        NSDate *lastSavedBuildDate = [formatter dateFromString:[self trimString:parsedElementContent]];
+		[[NSUserDefaults standardUserDefaults] setObject:lastSavedBuildDate forKey:@"Date"];
+		NSLog(@"date:%@", lastSavedBuildDate);
+
+	}
 	if([elementName isEqualToString:@"title"])
 	{
         [currentItem setPodcastTitle:[self trimString:parsedElementContent]];
@@ -276,7 +324,7 @@ NIKMasterViewController *masterVC;
         [feedItems addObject:currentItem];
         currentItem = nil;
 	}
-    
+	
     if (parsedElementContent!=nil)
 	{
         parsedElementContent = nil;
@@ -291,6 +339,7 @@ NIKMasterViewController *masterVC;
 	{
         parsedElementData = nil;
     }
+	
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
@@ -306,7 +355,7 @@ NIKMasterViewController *masterVC;
     [parsedElementString appendString:string];
 }
 
-- (void)parser:(NSXMLParser *)parser foundCDATA:(NSData *)CDATABlock
+/*- (void)parser:(NSXMLParser *)parser foundCDATA:(NSData *)CDATABlock
 {
     if (!parseElement)
 	{
@@ -373,10 +422,11 @@ NIKMasterViewController *masterVC;
 	
 	
 }
-
+*/
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
-    NSLog(@"parseErrorOccured: %@",[parseError description]);
+    NSLog(@"parseErrorOccured: %@",[parseError localizedDescription]);
+
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser

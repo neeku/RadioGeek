@@ -10,6 +10,7 @@
 
 @implementation NIKFeedEntry
 
+@synthesize lastBuildDate;
 @synthesize radioTitle;
 @synthesize podcastTitle;
 @synthesize podcastDate;
@@ -23,7 +24,7 @@
 @synthesize podcastSummary;
 @synthesize categories;
 
-- (id)initWithRadioTitle:(NSString*)radioTitle podcastTitle:(NSString*)podcastTitle podcastFile:(NSString*)podcastFile podcastDate:(NSDate*)podcastDate podcastDownloadURL:(NSString*)podcastDownloadURL
+- (id)initWithRadioTitle:(NSString*)radioTitle lastBuildDate:(NSDate*)lastBuildDate podcastTitle:(NSString*)podcastTitle podcastFile:(NSString*)podcastFile podcastDate:(NSDate*)podcastDate podcastDownloadURL:(NSString*)podcastDownloadURL
 {
 	return self;
 }

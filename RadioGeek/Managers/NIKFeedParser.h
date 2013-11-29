@@ -23,8 +23,9 @@
 	NSOperationQueue *retrieverQueue;
 	NSUInteger parsingFeedsWithNumbers;
 	NSOperationQueue *queue;
-	
-	
+	NIKFeedEntry *lbDate;
+	NSDate *RSSLastBuildDate;
+	NSString *lbd;
     NSString *feedURL;
 	NSMutableData *downloadedData;
     BOOL parseElement;

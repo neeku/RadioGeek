@@ -62,6 +62,12 @@ const double URLCacheInterval = 86400.0;
 {
     [self.tableView reloadData];
     [self stopActivity:nil];
+	GUIDs = [[NSMutableArray alloc] init];
+	for (int i=0; i<feedParser.feedItems.count; i++) {
+		[GUIDs addObject:[[feedParser.feedItems objectAtIndex:i] podcastGUID]];
+	}
+	//todo: save the array
+
 }
 
 -(void)parserHasError:(NSError *)error
@@ -69,7 +75,7 @@ const double URLCacheInterval = 86400.0;
 	NSInteger errorCode = [error code];
 	[self stopActivity:nil];
 //	[(UIActivityIndicatorView *)[self navigationItem].rightBarButtonItem.customView stopAnimating];
-	
+	NSLog(@"error:%@",[error localizedRecoverySuggestion]);
 	
 	//persian error messages file full path
     NSString * persianErrorsListFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Persian.strings"];
@@ -101,7 +107,6 @@ const double URLCacheInterval = 86400.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
 	//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 	[[AVAudioSession sharedInstance] setActive: YES error: nil];

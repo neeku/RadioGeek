@@ -23,7 +23,7 @@
 	NSString *dataPath;
 	NSMutableArray *urlArray;
 	NSError *errooor;
-	
+	NSMutableArray *GUIDs;
 
 
 }
