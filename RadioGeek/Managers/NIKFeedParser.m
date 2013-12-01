@@ -33,6 +33,17 @@ NIKMasterViewController *masterVC;
 @synthesize feedURL;
 @synthesize downloadURL;
 @synthesize lastModified;
+@synthesize RSSURL;
+@synthesize updatedGUIDs;
+
+- (id)initWithRSSURL:(NSURL *)rssURL{
+    self = [super init];
+    if (self) {
+        feedItems = [[NSMutableArray alloc]init];
+        RSSURL = rssURL;
+    }
+    return self;
+}
 
 
 - (NSOperationQueue *)retrieverQueue
@@ -46,17 +57,15 @@ NIKMasterViewController *masterVC;
     return retrieverQueue;
 }
 
-- (void) startProcess
+- (void) startDownloading
 {
-	feedItems = [[NSMutableArray alloc] init];
-
 //  	[feedItems removeAllObjects];
     NSString *file = [[NSBundle  mainBundle] pathForResource:@"Feed"
 													  ofType:@"plist"];
 	NSDictionary *item = [[NSDictionary alloc]initWithContentsOfFile:file];
 	NSArray *array = [item objectForKey:@"Root"];
 	NSString *theURL = [[array objectAtIndex:selectedCategory.intValue] objectForKey:@"URL"];
-	
+	NSLog(@"url:%@",theURL);
     NSURL * url = [NSURL URLWithString:theURL];
     NSURLRequest * urlRequest = [NSURLRequest requestWithURL:url];
     
@@ -135,18 +144,18 @@ NIKMasterViewController *masterVC;
 {
     //This method is called once the download is complete
     
-	//save the xml to a file for offline access
-    paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    folder = [paths objectAtIndex:0];
-	fileName = @"SavedURL.xml";
-    path = [folder stringByAppendingPathComponent:fileName];
-    fileURL = [NSURL fileURLWithPath:path];
+//	//save the xml to a file for offline access
+//    paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+//    folder = [paths objectAtIndex:0];
+//	fileName = @"SavedURL.xml";
+//    path = [folder stringByAppendingPathComponent:fileName];
+//    fileURL = [NSURL fileURLWithPath:path];
 
 	
 	
-	
-	/*	const UInt8 OPEN_TAG_TO_FIND[] = "<lastBuildDate>";
-	const UInt8 CLOSE_TAG_TO_FIND[] = "</lastBuildDate>";
+/*
+	const UInt8 OPEN_TAG_TO_FIND[] = "<guid>";
+	const UInt8 CLOSE_TAG_TO_FIND[] = "</guid>";
 	
 	NSData *openTagData = [NSData dataWithBytes:OPEN_TAG_TO_FIND length:sizeof(OPEN_TAG_TO_FIND)-1];
 	NSData *closeTagData = [NSData dataWithBytes:CLOSE_TAG_TO_FIND length:sizeof(CLOSE_TAG_TO_FIND)-1];
@@ -164,34 +173,43 @@ NIKMasterViewController *masterVC;
 		return;
 	}
 	
-	NSData *lastBuildData = [downloadedData subdataWithRange:NSMakeRange(openRange.location+openRange.length, closeRange.location-openRange.location-openRange.length)];
-	NSString *dateString = [[NSString alloc] initWithData:lastBuildData encoding:NSUTF8StringEncoding];
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss Z"];
-	NSDate *lastDate = [dateFormatter dateFromString:dateString];
-
-	NSDate *lastSavedDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"Date"];
+	NSData *GUIDData = [downloadedData subdataWithRange:NSMakeRange(openRange.location+openRange.length, closeRange.location-openRange.location-openRange.length)];
+	NSString *GUIDString = [[NSString alloc] initWithData:GUIDData encoding:NSUTF8StringEncoding];
+*/
+	
+/*	NSDate *lastSavedDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"Date"];
 	NSComparisonResult comparisonResult;
 	comparisonResult = [lastDate compare:lastSavedDate];
 	if (comparisonResult == NSOrderedDescending) {
 		NSLog(@"true");
 	}
-	
+
 	 [downloadedData writeToURL: fileURL options:0 error:&writeError];
 	[downloadedData app]
 */
 	//The next step is parse the downloaded xml feed
-	NSXMLParser * xmlParser = [[NSXMLParser alloc] initWithData:[NSData dataWithContentsOfURL:fileURL]];
+	[feedItems removeAllObjects];
+	NSXMLParser * xmlParser = [[NSXMLParser alloc] initWithData:downloadedData];
 	[xmlParser setDelegate:self];
 	[xmlParser setShouldProcessNamespaces:YES];
 	[xmlParser setShouldReportNamespacePrefixes:YES];
 	[xmlParser setShouldResolveExternalEntities:NO];
     [xmlParser parse];
+	
+	
+	updatedGUIDs = [[NSMutableArray alloc] init];
+
+	for (int i = 0; i < feedItems.count; i++) {
+		[updatedGUIDs insertObject: [[feedItems objectAtIndex:i]podcastGUID]  atIndex:i];
+	}
+	
+	NSLog(@"updated count:%d",updatedGUIDs.count);
+
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	paths = NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, YES);
     folder = [paths objectAtIndex:0];
 	fileName = @"SavedURL.xml";
     path = [folder stringByAppendingPathComponent:fileName];
@@ -221,7 +239,15 @@ NIKMasterViewController *masterVC;
 
 #pragma mark -
 #pragma mark NSXMLParserDelegate
-
+- (void) startParsing
+{
+	NSXMLParser * xmlParser = [[NSXMLParser alloc] initWithData:[NSData dataWithContentsOfURL:RSSURL]];
+	[xmlParser setDelegate:self];
+	[xmlParser setShouldProcessNamespaces:YES];
+	[xmlParser setShouldReportNamespacePrefixes:YES];
+	[xmlParser setShouldResolveExternalEntities:NO];
+    [xmlParser parse];
+}
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
 {
@@ -282,7 +308,6 @@ NIKMasterViewController *masterVC;
 		[formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss Z"];
         NSDate *lastSavedBuildDate = [formatter dateFromString:[self trimString:parsedElementContent]];
 		[[NSUserDefaults standardUserDefaults] setObject:lastSavedBuildDate forKey:@"Date"];
-		NSLog(@"date:%@", lastSavedBuildDate);
 
 	}
 	if([elementName isEqualToString:@"title"])

@@ -12,12 +12,6 @@
 #import "RadioGeek.h"
 #import "NSHFarsiNumerals.h"
 #import "RadioGeek.h"
-//#import "NSString+Shaping.h"
-//#define MAINLABEL_TAG 1
-#import "URLCacheAlert.h"
-
-/* cache update interval in seconds */
-const double URLCacheInterval = 86400.0;
 
 @interface NIKMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -36,23 +30,77 @@ const double URLCacheInterval = 86400.0;
 @synthesize dataPath;
 @synthesize urlArray;
 @synthesize isAlreadyLoaded;
+@synthesize RSSURL;
 
-- (id)initWithFeedURL:(NSString *)feedURL{
-	if (self) {
-		
-    }
-    return self;
+- (NSString *)applicationSupportDirectory
+{
+	NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+
+    return appSupportDir;	//[NSURL fileURLWithPath:appSupportDir];
 }
 
 
-- (void) loadFeedURL
+- (void) setFeedURL:(NSURL*)feedURL{
+	feedParser = [[NIKFeedParser alloc] initWithRSSURL:feedURL];
+}
+
+-(void)saveData :(NSMutableArray *)dataArray
 {
-	feedParser = [[NIKFeedParser alloc] init];
+    NSFileManager *filemgr;
+    NSString *docsDir;
+    NSArray *dirPaths;
+	
+    filemgr = [NSFileManager defaultManager];
+	
+    // Get the documents directory
+    dirPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    docsDir = [dirPaths objectAtIndex:0];
+	
+    // Build the path to the data file
+	NSString *dataFilePath = [[NSString alloc] initWithString: [docsDir
+																stringByAppendingPathComponent: @"GUIDs.archive"]];
+	
+    [NSKeyedArchiver archiveRootObject: dataArray toFile:dataFilePath];
+}
+
+
+-(NSMutableArray *)loadData
+{
+    NSFileManager *filemgr;
+    NSString *appSupportDir;
+    NSArray *dirPaths;
+	
+    filemgr = [NSFileManager defaultManager];
+	
+    // Get the documents directory
+    dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                   NSDocumentDirectory, NSUserDomainMask, YES);
+	
+    appSupportDir = [dirPaths objectAtIndex:0];
+	
+    // Build the path to the data file
+    NSString *dataFilePath = [[NSString alloc] initWithString: [appSupportDir
+																stringByAppendingPathComponent: @"GUIDs.archive"]];
+	
+    // Check if the file already exists
+    if ([filemgr fileExistsAtPath: dataFilePath])
+    {
+        NSMutableArray *dataArray;
+		
+        dataArray = [NSKeyedUnarchiver
+                     unarchiveObjectWithFile: dataFilePath];
+		
+        return dataArray;
+    }
+    return NULL;
+}
+
+- (void) startParsing
+{
 	
 	[feedParser setDelegate:self];
-    [feedParser startProcess];
+    [feedParser startParsing];
     [self startActivity:nil];
-		
 }
 
 #pragma mark -
@@ -60,21 +108,29 @@ const double URLCacheInterval = 86400.0;
 
 -(void)parserDidCompleteParsing
 {
-    [self.tableView reloadData];
-    [self stopActivity:nil];
-	GUIDs = [[NSMutableArray alloc] init];
-	for (int i=0; i<feedParser.feedItems.count; i++) {
-		[GUIDs addObject:[[feedParser.feedItems objectAtIndex:i] podcastGUID]];
+	
+	if ([feedParser updatedGUIDs]) {
+		NSLog(@"yay");
+		
 	}
-	//todo: save the array
+	
+	
+	[self.tableView reloadData];
 
+	
+	//main thread
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self stopActivity:Nil];
+	});
+	
+    
 }
 
 -(void)parserHasError:(NSError *)error
 {
 	NSInteger errorCode = [error code];
 	[self stopActivity:nil];
-//	[(UIActivityIndicatorView *)[self navigationItem].rightBarButtonItem.customView stopAnimating];
+	//	[(UIActivityIndicatorView *)[self navigationItem].rightBarButtonItem.customView stopAnimating];
 	NSLog(@"error:%@",[error localizedRecoverySuggestion]);
 	
 	//persian error messages file full path
@@ -84,10 +140,10 @@ const double URLCacheInterval = 86400.0;
 	
 	NSString *errorKey = [NSString stringWithFormat:@"Err%ld", (long)errorCode];
 	NSString *errorMessage = persianErrorsList[errorKey];
-		
+	
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ALERT_TITLE message:errorMessage delegate:self cancelButtonTitle:CANCEL_BUTTON_TITLE otherButtonTitles:Nil, nil];
 	[alertView show];
-
+	
 }
 
 
@@ -123,14 +179,83 @@ const double URLCacheInterval = 86400.0;
 	barButton = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
 	//Set the bar button the navigation bar
     [self navigationItem].rightBarButtonItem = barButton;
-
+	
+	//checks to see if it's the first launch for the app.
+	
+	NSString *destinationPath;
+	NSURL *destinationURL;
+	
+	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"])
 	{
 		// first launch code
+		//If there isn't an App Support Directory yet ...
+		if (![[NSFileManager defaultManager] fileExistsAtPath:[self applicationSupportDirectory] isDirectory:NULL]) {
+			NSError *error = nil;
+			//Create one
+			if (![[NSFileManager defaultManager] createDirectoryAtPath:[self applicationSupportDirectory] withIntermediateDirectories:YES attributes:nil error:&error]) {
+				NSLog(@"%@", error.localizedDescription);
+			}
+			else {
+				// *** OPTIONAL *** Mark the directory as excluded from iCloud backups
+				NSURL *url = [NSURL fileURLWithPath:[self applicationSupportDirectory]];
+				if (![url setResourceValue:[NSNumber numberWithBool:YES]
+									forKey:NSURLIsExcludedFromBackupKey
+									 error:&error])
+				{
+					NSLog(@"Error excluding %@ from backup %@", [url lastPathComponent], error.localizedDescription);
+				}
+				else {
+					NSLog(@"Yay");
+				}
+			}
+		}
+		
+		// file URL in our bundle
+		NSURL *fileFromBundle = [[NSBundle mainBundle]URLForResource:@"RadioGeek" withExtension:@"rss"];
+		NSLog(@"file path:%@",fileFromBundle);
+		
+		// Destination URL
+		destinationPath = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeek.rss"];
+		destinationURL = [NSURL fileURLWithPath:destinationPath];
+		
+		// copy it over
+		[[NSFileManager defaultManager]copyItemAtURL:fileFromBundle toURL:destinationURL error:nil];
 	}
+	NSLog(@"%@",[[self applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeek.rss"]);
+	[self setFeedURL:[NSURL fileURLWithPath:[[self applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeek.rss"]]];
+	[self startParsing];
 
-	[self loadFeedURL];
+	//	NSMutableArray *GUIDs;
 
+	GUIDs = [[NSMutableArray alloc] init];
+	
+//	NSLog(@"%@",[[NIKFeedEntry sharedEntry] podcastGUID]);
+	for (int i = 0; i < [feedParser feedItems].count; i++) {
+		[GUIDs insertObject:[[[feedParser feedItems] objectAtIndex:i] podcastGUID] atIndex:i];
+	}
+	[self saveData:GUIDs];
+	
+	
+	[feedParser startDownloading];
+	
+		
+	
+	//	NSSet *GUIDSet = [NSSet setWithArray:GUIDs];
+		
+	
+	
+	
+	
+	
+	//load the array of GUIDs from disk to compare it with the GUIDs in the new feed URL.
+//	NSMutableArray *loadedGUIDs = [self loadData];
+//	for (int i=0; i<[self loadData].count; i++) {
+//		NSSet *loadedGUIDSet = [NSSet setWithArray:loadedGUIDs];
+		//		NSSet *newGUIDSet = [NSSet setWithArray:;]
+//	}
+	
+	
 	//navigation bar title with custom font
 	UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
 	self.navigationItem.titleView = titleLabel;
@@ -141,7 +266,7 @@ const double URLCacheInterval = 86400.0;
 
 - (void)loadRefreshButton
 {
-	barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(loadFeedURL)];
+	barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(startParsing)];
 	self.navigationItem.rightBarButtonItem = barButton;
 }
 
@@ -151,7 +276,6 @@ const double URLCacheInterval = 86400.0;
 	[activityIndicator startAnimating];
 	barButton = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
 	self.navigationItem.rightBarButtonItem = barButton;
-
 }
 
 -(void)stopActivity:(id)sender
@@ -159,7 +283,6 @@ const double URLCacheInterval = 86400.0;
     //Send stopAnimating message to the view
 	[activityIndicator stopAnimating];
 	[self loadRefreshButton];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -182,7 +305,6 @@ const double URLCacheInterval = 86400.0;
 {
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FeedItemCell"];
 	entry = [[[self feedParser] feedItems] objectAtIndex:indexPath.row];
-
 	//Podcast number and name separator character
 	NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"–-:"];
 	NSString *podcastName;
@@ -210,7 +332,7 @@ const double URLCacheInterval = 86400.0;
 	NSString *title = [podcastNumber stringByAppendingFormat:@". %@",podcastName];
 	title = [NSHFarsiNumerals convertNumeralsToFarsi:title];
 	
-
+	
 	//converts the podcast date from gregorian calendar to persian calendar, with the correct formatting
 	NSCalendar *jalali = [[NSCalendar alloc] initWithCalendarIdentifier:NSPersianCalendar];
 	NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
@@ -250,7 +372,7 @@ const double URLCacheInterval = 86400.0;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-   
+	
 }
 
 #pragma mark - Audio control

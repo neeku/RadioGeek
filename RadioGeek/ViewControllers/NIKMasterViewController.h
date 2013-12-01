@@ -25,7 +25,6 @@
 	NSError *errooor;
 	NSMutableArray *GUIDs;
 
-
 }
 @property (strong, nonatomic) NIKDetailViewController *detailViewController;
 
@@ -44,11 +43,12 @@
 
 @property (nonatomic, copy) NSString *dataPath;
 @property (nonatomic, retain) NSMutableArray *urlArray;
+@property (nonatomic, strong) NSURL *RSSURL;
 
 @property (nonatomic) BOOL isAlreadyLoaded;
 
-- (id)initWithFeedURL:(NSString *)feedURL;
-
+- (void) setFeedURL:(NSURL*)feedURL;
+- (void) startParsing;
 + (NIKMasterViewController *)sharedController;
 
 

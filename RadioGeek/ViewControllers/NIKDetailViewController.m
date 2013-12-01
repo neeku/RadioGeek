@@ -420,7 +420,6 @@ static AVAudioPlayer *soundPlayer;
 	//merges the podcast number and title
 	NSString *podcastNumber = [NSString stringWithFormat:@"%ld",(long)number];
 	
-	
 	NSString *title = [NSHFarsiNumerals convertNumeralsToFarsi:[podcastNumber stringByAppendingFormat:@". %@",podcastName]];
 	
 	titleLabel.text = title;

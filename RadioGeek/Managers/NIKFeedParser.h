@@ -38,6 +38,7 @@
 	NSString *fileName;
 	NSString *path;
 	NSURL *fileURL;
+	
 }
 
 @property (strong, nonatomic) NIKFeedEntry *currentItem;
@@ -55,10 +56,13 @@
 @property (strong, nonatomic) NSString *downloadURL;
 
 @property (nonatomic, retain) NSDate *lastModified;
+@property(nonatomic, retain) NSURL * RSSURL;
+@property (nonatomic) NSMutableArray *updatedGUIDs;
 
 
-- (void) startProcess;
-
+- (void) startDownloading;
+- (void) startParsing;
+- (id)initWithRSSURL:(NSURL *)rssURL;
 + (NIKFeedParser *)sharedParser;
 
 
