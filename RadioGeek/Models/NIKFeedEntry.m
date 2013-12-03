@@ -24,8 +24,15 @@
 @synthesize podcastSummary;
 @synthesize categories;
 
-- (id)initWithRadioTitle:(NSString*)radioTitle lastBuildDate:(NSDate*)lastBuildDate podcastTitle:(NSString*)podcastTitle podcastFile:(NSString*)podcastFile podcastDate:(NSDate*)podcastDate podcastDownloadURL:(NSString*)podcastDownloadURL
+- (id)initWithPodcastTitle:(NSString *)podcastTitle podcastDate:(NSDate *)podcastDate podcastGUID:(NSString *)podcastGUID podcastSummary:(NSString *)podcastSummary podcastContent:(NSString *)podcastContent podcastDownloadURL:(NSString *)podcastDownloadURL
 {
+	[self setPodcastTitle: podcastTitle];
+	[self setPodcastDate: podcastDate];
+	[self setPodcastGUID: podcastGUID];
+	[self setPodcastSummary: podcastSummary];
+	[self setPodcastContent: podcastContent];
+	[self setPodcastDownloadURL: podcastDownloadURL];
+	
 	return self;
 }
 

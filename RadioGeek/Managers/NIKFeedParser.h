@@ -14,7 +14,7 @@
 @protocol NIKFeedParserDelegate;
 
 
-@interface NIKFeedParser : NSObject <NSXMLParserDelegate>
+@interface NIKFeedParser : NSObject <NSXMLParserDelegate, NSCoding>
 {
 	NIKFeedEntry *currentItem;
 	NSMutableString *currentItemValue;
@@ -58,9 +58,10 @@
 @property (nonatomic, retain) NSDate *lastModified;
 @property(nonatomic, retain) NSURL * RSSURL;
 @property (nonatomic) NSMutableArray *updatedGUIDs;
-
-
-- (void) startDownloading;
+@property (nonatomic) NSMutableArray *items;
+@property (nonatomic) NSDictionary *item;
+@property (nonatomic) NSMutableDictionary *guidDictionary;
+- (void) startProcess;
 - (void) startParsing;
 - (id)initWithRSSURL:(NSURL *)rssURL;
 + (NIKFeedParser *)sharedParser;

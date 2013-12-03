@@ -35,6 +35,9 @@ NIKMasterViewController *masterVC;
 @synthesize lastModified;
 @synthesize RSSURL;
 @synthesize updatedGUIDs;
+@synthesize items;
+@synthesize item;
+@synthesize guidDictionary;
 
 - (id)initWithRSSURL:(NSURL *)rssURL{
     self = [super init];
@@ -57,15 +60,16 @@ NIKMasterViewController *masterVC;
     return retrieverQueue;
 }
 
-- (void) startDownloading
+- (void) startProcess
 {
-//  	[feedItems removeAllObjects];
+	feedItems = [[NSMutableArray alloc] init];
+	
     NSString *file = [[NSBundle  mainBundle] pathForResource:@"Feed"
 													  ofType:@"plist"];
-	NSDictionary *item = [[NSDictionary alloc]initWithContentsOfFile:file];
-	NSArray *array = [item objectForKey:@"Root"];
+	NSDictionary *theItem = [[NSDictionary alloc]initWithContentsOfFile:file];
+	NSArray *array = [theItem objectForKey:@"Root"];
 	NSString *theURL = [[array objectAtIndex:selectedCategory.intValue] objectForKey:@"URL"];
-	NSLog(@"url:%@",theURL);
+	
     NSURL * url = [NSURL URLWithString:theURL];
     NSURLRequest * urlRequest = [NSURLRequest requestWithURL:url];
     
@@ -188,22 +192,17 @@ NIKMasterViewController *masterVC;
 	[downloadedData app]
 */
 	//The next step is parse the downloaded xml feed
-	[feedItems removeAllObjects];
 	NSXMLParser * xmlParser = [[NSXMLParser alloc] initWithData:downloadedData];
 	[xmlParser setDelegate:self];
 	[xmlParser setShouldProcessNamespaces:YES];
 	[xmlParser setShouldReportNamespacePrefixes:YES];
 	[xmlParser setShouldResolveExternalEntities:NO];
     [xmlParser parse];
-	
-	
-	updatedGUIDs = [[NSMutableArray alloc] init];
 
-	for (int i = 0; i < feedItems.count; i++) {
-		[updatedGUIDs insertObject: [[feedItems objectAtIndex:i]podcastGUID]  atIndex:i];
-	}
 	
-	NSLog(@"updated count:%d",updatedGUIDs.count);
+	
+	
+	/* */
 
 }
 
@@ -264,6 +263,9 @@ NIKMasterViewController *masterVC;
 	if ([elementName isEqualToString:@"item"])
 	{
         currentItem = [[NIKFeedEntry alloc] init];
+		
+
+		
 	} else if([elementName isEqualToString:@"title"] ||
 			  [elementName isEqualToString:@"guid"] ||
 			  [elementName isEqualToString:@"description"] ||
@@ -278,10 +280,9 @@ NIKMasterViewController *masterVC;
 		NSString *urlValue=[attributeDict valueForKey:@"url"];
 		NSString *urlType=[attributeDict valueForKey:@"type"];
 		parseElement = YES;
-		if ([urlType  isEqualToString:@"audio/ogg"] && ([urlValue rangeOfString:@"jadi.net"].length != 0))
+		if ([urlType  isEqualToString:@"audio/mpeg"] && ([urlValue rangeOfString:@"http://jadi.net"].length != 0))
 		{
-			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"jadi.net" withString:@"192.168.2.1"];
-			downloadURL = [downloadURL stringByReplacingOccurrencesOfString:@"ogg" withString:@"mp3"];
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadi.net" withString:@"http://192.168.2.1"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
 	}
@@ -346,7 +347,9 @@ NIKMasterViewController *masterVC;
 	}
 	else if([elementName isEqualToString:@"item"])
 	{
-        [feedItems addObject:currentItem];
+		[feedItems addObject:currentItem];
+		
+
         currentItem = nil;
 	}
 	
@@ -460,7 +463,91 @@ NIKMasterViewController *masterVC;
 	{
         downloadedData = nil;
     }
-    [self.delegate parserDidCompleteParsing];
+	
+
+
+//	item = [[NSDictionary alloc] init];
+//	items = [[NSMutableArray alloc] init];
+//	
+//	
+//	for (int i=feedItems.count; i-->0;)
+//	{
+//		item = @{@"Title": [[feedItems objectAtIndex:i] podcastTitle],
+//				 @"Date": [[feedItems objectAtIndex:i] podcastDate],
+//				 @"GUID": [[feedItems objectAtIndex:i] podcastGUID],
+//				 @"Summary": [[feedItems objectAtIndex:i] podcastSummary],
+//				 @"Content": [[feedItems objectAtIndex:i] podcastContent],
+//				 @"DownloadURL":[[feedItems objectAtIndex:i] podcastDownloadURL]};
+//		[items addObject:item];
+//
+//	}
+	
+	
+	NSString *destinPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"RGeek.plist"];
+//	[items writeToFile:destinPath atomically:YES];
+//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+
+	
+	
+	NSArray *tempArray = [[NSArray alloc] initWithContentsOfFile:destinPath];
+    
+	//local plist file
+	guidDictionary = [[NSMutableDictionary alloc] init];
+	for (int ii = tempArray.count; ii-->0;)
+	{
+	 NIKFeedEntry *feedEntry =	[[NIKFeedEntry alloc] initWithPodcastTitle:[tempArray[ii] objectForKey:@"Title"] podcastDate:[tempArray[ii] objectForKey:@"Date"] podcastGUID:[tempArray[ii] objectForKey:@"GUID"] podcastSummary:[tempArray[ii] objectForKey:@"Summary"] podcastContent:[tempArray[ii] objectForKey:@"Content"] podcastDownloadURL:@"DownloadURL"];
+		[guidDictionary setObject: feedEntry forKey:[tempArray[ii] objectForKey: @"GUID"]];
+	}
+	
+	
+	
+	
+	for (int ii = feedItems.count; ii-->0;)
+	{
+		
+		[guidDictionary setObject: feedItems[ii] forKey:[[feedItems objectAtIndex:ii] podcastGUID]];
+	}
+
+	
+	
+	//	for (int i=tempArray.count; i-->0;) {
+//		[loadedArray set
+//	}
+//	NSSet *loadedSet = [NSSet alloc] initWithArray:loadedArray.
+
+	NSArray *myArray;
+	myArray = [guidDictionary allValues];
+
+	
+	myArray = [myArray sortedArrayUsingComparator: ^(id obj1, id obj2) {
+		return [((NIKFeedEntry *)obj2).podcastDate compare:((NIKFeedEntry *)obj1).podcastDate];
+	}];
+	
+	feedItems = [NSMutableArray arrayWithArray:myArray];
+
+	item = [[NSDictionary alloc] init];
+	items = [[NSMutableArray alloc] init];
+	
+	
+	for (int i=feedItems.count; i-->0;)
+	{
+		item = @{@"Title": [[feedItems objectAtIndex:i] podcastTitle],
+				 @"Date": [[feedItems objectAtIndex:i] podcastDate],
+				 @"GUID": [[feedItems objectAtIndex:i] podcastGUID],
+				 @"Summary": [[feedItems objectAtIndex:i] podcastSummary],
+				 @"Content": [[feedItems objectAtIndex:i] podcastContent]};
+//				 @"DownloadURL":[[feedItems objectAtIndex:i] podcastDownloadURL]};
+		[items addObject:item];
+		
+	}
+	
+	
+	NSString *destinationPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"RadiooGeek.plist"];
+	[items writeToFile:destinationPath atomically:YES];
+	
+	
+	[self.delegate parserDidCompleteParsing];
+
 }
 
 

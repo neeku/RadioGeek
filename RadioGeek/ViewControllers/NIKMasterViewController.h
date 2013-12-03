@@ -47,8 +47,7 @@
 
 @property (nonatomic) BOOL isAlreadyLoaded;
 
-- (void) setFeedURL:(NSURL*)feedURL;
-- (void) startParsing;
+- (void) loadFeedURL;
 + (NIKMasterViewController *)sharedController;
 
 

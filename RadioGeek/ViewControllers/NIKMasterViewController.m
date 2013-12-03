@@ -95,29 +95,27 @@
     return NULL;
 }
 
-- (void) startParsing
+
+- (void) loadFeedURL
 {
+	feedParser = [[NIKFeedParser alloc] init];
 	
 	[feedParser setDelegate:self];
-    [feedParser startParsing];
+    [feedParser startProcess];
     [self startActivity:nil];
+	
 }
+
+
+
+
 
 #pragma mark -
 #pragma mark RSSParserDelegate
 
 -(void)parserDidCompleteParsing
 {
-	
-	if ([feedParser updatedGUIDs]) {
-		NSLog(@"yay");
-		
-	}
-	
-	
 	[self.tableView reloadData];
-
-	
 	//main thread
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self stopActivity:Nil];
@@ -223,8 +221,7 @@
 		[[NSFileManager defaultManager]copyItemAtURL:fileFromBundle toURL:destinationURL error:nil];
 	}
 	NSLog(@"%@",[[self applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeek.rss"]);
-	[self setFeedURL:[NSURL fileURLWithPath:[[self applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeek.rss"]]];
-	[self startParsing];
+	[self loadFeedURL];
 
 	//	NSMutableArray *GUIDs;
 
@@ -236,17 +233,23 @@
 	}
 	[self saveData:GUIDs];
 	
+	NSString *destinPath = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"RDGeek.plist"];
+	[feedParser.feedItems writeToFile:destinPath atomically:YES];
 	
-	[feedParser startDownloading];
+	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	NSLog(@"%@",destinPath);
 	
-		
+	
+	
 	
 	//	NSSet *GUIDSet = [NSSet setWithArray:GUIDs];
 		
 	
-	
-	
-	
+	for (int i=0; i<[feedParser feedItems].count; i++)
+	{
+		[[[[feedParser feedItems] objectAtIndex:i]podcastGUID] writeToFile:destinPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+	}
+
 	
 	//load the array of GUIDs from disk to compare it with the GUIDs in the new feed URL.
 //	NSMutableArray *loadedGUIDs = [self loadData];
@@ -263,6 +266,9 @@
 	titleLabel.font = [UIFont fontWithName:@"X Vahid" size:15.0];
 	titleLabel.textAlignment = NSTextAlignmentCenter;
 }
+
+
+
 
 - (void)loadRefreshButton
 {
@@ -311,7 +317,8 @@
 	
 	//gets the podcast mp3 file name
 	NSString *fileName = [[[entry podcastDownloadURL] lastPathComponent] stringByDeletingPathExtension];
-	//fetches the difits out of the file name
+	NSLog(@"%@",fileName);
+	//fetches the digits out of the file name
 	NSString *fileNumber = [[fileName componentsSeparatedByCharactersInSet:
 							 [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
 							componentsJoinedByString:@""];

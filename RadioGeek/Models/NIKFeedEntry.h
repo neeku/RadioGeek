@@ -39,7 +39,7 @@
 @property (nonatomic) NSMutableArray *categories;
 
 
-- (id)initWithRadioTitle:(NSString*)radioTitle lastBuildDate:(NSDate*)lastBuildDate podcastTitle:(NSString*)podcastTitle podcastFile:(NSString*)podcastFile podcastDate:(NSDate*)podcastDate podcastDownloadURL:(NSString*)podcastDownloadURL;
+- (id)initWithPodcastTitle:(NSString*)podcastTitle podcastDate:(NSDate*)podcastDate podcastGUID:(NSString*)podcastGUID podcastSummary:(NSString*)podcastSummary podcastContent:(NSString*)podcastContent podcastDownloadURL:(NSString*)podcastDownloadURL;
 
 - (void)addPodcastCategory:(NSString *)value;
 
