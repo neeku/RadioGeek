@@ -12,6 +12,8 @@
 #import "RadioGeek.h"
 #import "NSHFarsiNumerals.h"
 #import "RadioGeek.h"
+#import "NIKDownloadManager.h"
+#import "NIKAudioManager.h"
 
 @interface NIKMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -32,67 +34,16 @@
 @synthesize isAlreadyLoaded;
 @synthesize RSSURL;
 
-- (NSString *)applicationSupportDirectory
+- (NIKAppDelegate *) appDelegate
 {
-	NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-
-    return appSupportDir;	//[NSURL fileURLWithPath:appSupportDir];
+	// Get the instance of your delegate created by the framework when the app starts
+	NIKAppDelegate* appDelegate = (NIKAppDelegate*)[[UIApplication sharedApplication] delegate];
+	return appDelegate;
 }
 
 
 - (void) setFeedURL:(NSURL*)feedURL{
 	feedParser = [[NIKFeedParser alloc] initWithRSSURL:feedURL];
-}
-
--(void)saveData :(NSMutableArray *)dataArray
-{
-    NSFileManager *filemgr;
-    NSString *docsDir;
-    NSArray *dirPaths;
-	
-    filemgr = [NSFileManager defaultManager];
-	
-    // Get the documents directory
-    dirPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    docsDir = [dirPaths objectAtIndex:0];
-	
-    // Build the path to the data file
-	NSString *dataFilePath = [[NSString alloc] initWithString: [docsDir
-																stringByAppendingPathComponent: @"GUIDs.archive"]];
-	
-    [NSKeyedArchiver archiveRootObject: dataArray toFile:dataFilePath];
-}
-
-
--(NSMutableArray *)loadData
-{
-    NSFileManager *filemgr;
-    NSString *appSupportDir;
-    NSArray *dirPaths;
-	
-    filemgr = [NSFileManager defaultManager];
-	
-    // Get the documents directory
-    dirPaths = NSSearchPathForDirectoriesInDomains(
-                                                   NSDocumentDirectory, NSUserDomainMask, YES);
-	
-    appSupportDir = [dirPaths objectAtIndex:0];
-	
-    // Build the path to the data file
-    NSString *dataFilePath = [[NSString alloc] initWithString: [appSupportDir
-																stringByAppendingPathComponent: @"GUIDs.archive"]];
-	
-    // Check if the file already exists
-    if ([filemgr fileExistsAtPath: dataFilePath])
-    {
-        NSMutableArray *dataArray;
-		
-        dataArray = [NSKeyedUnarchiver
-                     unarchiveObjectWithFile: dataFilePath];
-		
-        return dataArray;
-    }
-    return NULL;
 }
 
 
@@ -142,6 +93,8 @@
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ALERT_TITLE message:errorMessage delegate:self cancelButtonTitle:CANCEL_BUTTON_TITLE otherButtonTitles:Nil, nil];
 	[alertView show];
 	
+	[self.tableView reloadData];
+	
 }
 
 
@@ -161,6 +114,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	// Get the instance of your delegate created by the framework when the app starts
+	NIKAppDelegate* appDelegate = (NIKAppDelegate*)[[UIApplication sharedApplication] delegate];
+
 	//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 	[[AVAudioSession sharedInstance] setActive: YES error: nil];
@@ -183,20 +140,22 @@
 	NSString *destinationPath;
 	NSURL *destinationURL;
 	
+
 	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"])
 	{
 		// first launch code
+		NSError *error = nil;
+		
 		//If there isn't an App Support Directory yet ...
-		if (![[NSFileManager defaultManager] fileExistsAtPath:[self applicationSupportDirectory] isDirectory:NULL]) {
-			NSError *error = nil;
+		if (![[NSFileManager defaultManager] fileExistsAtPath:[appDelegate applicationSupportDirectory] isDirectory:NULL]) {
 			//Create one
-			if (![[NSFileManager defaultManager] createDirectoryAtPath:[self applicationSupportDirectory] withIntermediateDirectories:YES attributes:nil error:&error]) {
+			if (![[NSFileManager defaultManager] createDirectoryAtPath:[appDelegate applicationSupportDirectory] withIntermediateDirectories:YES attributes:nil error:&error]) {
 				NSLog(@"%@", error.localizedDescription);
 			}
 			else {
 				// *** OPTIONAL *** Mark the directory as excluded from iCloud backups
-				NSURL *url = [NSURL fileURLWithPath:[self applicationSupportDirectory]];
+				NSURL *url = [NSURL fileURLWithPath:[appDelegate applicationSupportDirectory]];
 				if (![url setResourceValue:[NSNumber numberWithBool:YES]
 									forKey:NSURLIsExcludedFromBackupKey
 									 error:&error])
@@ -207,37 +166,34 @@
 					NSLog(@"Yay");
 				}
 			}
+			// file URL in our bundle
+			NSURL *fileFromBundle = [[NSBundle mainBundle]URLForResource:@"RGeek" withExtension:@"plist"];
+			
+			// Destination URL
+			destinationPath = [[appDelegate applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
+			destinationURL = [NSURL fileURLWithPath:destinationPath];
+			
+			// copy it over
+			[[NSFileManager defaultManager]copyItemAtURL:fileFromBundle toURL:destinationURL error:nil];
+			
 		}
-		
-		// file URL in our bundle
-		NSURL *fileFromBundle = [[NSBundle mainBundle]URLForResource:@"RadioGeek" withExtension:@"rss"];
-		NSLog(@"file path:%@",fileFromBundle);
-		
-		// Destination URL
-		destinationPath = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeek.rss"];
-		destinationURL = [NSURL fileURLWithPath:destinationPath];
-		
-		// copy it over
-		[[NSFileManager defaultManager]copyItemAtURL:fileFromBundle toURL:destinationURL error:nil];
 	}
-	NSLog(@"%@",[[self applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeek.rss"]);
 	[self loadFeedURL];
 
-	//	NSMutableArray *GUIDs;
-
-	GUIDs = [[NSMutableArray alloc] init];
-	
-//	NSLog(@"%@",[[NIKFeedEntry sharedEntry] podcastGUID]);
-	for (int i = 0; i < [feedParser feedItems].count; i++) {
-		[GUIDs insertObject:[[[feedParser feedItems] objectAtIndex:i] podcastGUID] atIndex:i];
-	}
-	[self saveData:GUIDs];
-	
-	NSString *destinPath = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"RDGeek.plist"];
-	[feedParser.feedItems writeToFile:destinPath atomically:YES];
-	
-	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
-	NSLog(@"%@",destinPath);
+//	//	NSMutableArray *GUIDs;
+//
+//	GUIDs = [[NSMutableArray alloc] init];
+//	
+////	NSLog(@"%@",[[NIKFeedEntry sharedEntry] podcastGUID]);
+//	for (int i = 0; i < [feedParser feedItems].count; i++) {
+//		[GUIDs insertObject:[[[feedParser feedItems] objectAtIndex:i] podcastGUID] atIndex:i];
+//	}
+//	[self saveData:GUIDs];
+//	
+//	NSString *destinPath = [[appDelegate applicationSupportDirectory] stringByAppendingPathComponent:@"RDGeek.plist"];
+//	[feedParser.feedItems writeToFile:destinPath atomically:YES];
+//	
+//	NSLog(@"%@",destinPath);
 	
 	
 	
@@ -247,17 +203,10 @@
 	
 	for (int i=0; i<[feedParser feedItems].count; i++)
 	{
-		[[[[feedParser feedItems] objectAtIndex:i]podcastGUID] writeToFile:destinPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+		[[[[feedParser feedItems] objectAtIndex:i]podcastGUID] writeToFile:destinationPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 	}
 
-	
-	//load the array of GUIDs from disk to compare it with the GUIDs in the new feed URL.
-//	NSMutableArray *loadedGUIDs = [self loadData];
-//	for (int i=0; i<[self loadData].count; i++) {
-//		NSSet *loadedGUIDSet = [NSSet setWithArray:loadedGUIDs];
-		//		NSSet *newGUIDSet = [NSSet setWithArray:;]
-//	}
-	
+
 	
 	//navigation bar title with custom font
 	UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
@@ -272,7 +221,7 @@
 
 - (void)loadRefreshButton
 {
-	barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(startParsing)];
+	barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(loadFeedURL)];
 	self.navigationItem.rightBarButtonItem = barButton;
 }
 
@@ -317,11 +266,15 @@
 	
 	//gets the podcast mp3 file name
 	NSString *fileName = [[[entry podcastDownloadURL] lastPathComponent] stringByDeletingPathExtension];
-	NSLog(@"%@",fileName);
 	//fetches the digits out of the file name
-	NSString *fileNumber = [[fileName componentsSeparatedByCharactersInSet:
-							 [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
-							componentsJoinedByString:@""];
+	NSError *error = NULL;
+	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[^0-9]+([0-9]+)[^0-9]"
+																		   options:0
+																			 error:&error];
+	NSTextCheckingResult *match = [regex firstMatchInString:fileName options:0 range:NSMakeRange(0, [fileName length])];
+	NSAssert (match != NULL, @"not prepared to handle odd syntax from Jadi");
+	NSString *fileNumber = [fileName substringWithRange:[match rangeAtIndex:1]];
+	
 	//converts the fetched decimal string to integer to avoid having '0' at the beginning of a number.
 	NSInteger number = [fileNumber integerValue];
 	
@@ -366,8 +319,16 @@
 	{
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
 		NIKDetailViewController *detailViewController = (NIKDetailViewController *) segue.destinationViewController;
+		NIKFeedEntry *feedItem= [[[self feedParser] feedItems] objectAtIndex:indexPath.row];
+		[detailViewController setFeedEntry:feedItem];
 		
-		[detailViewController setFeedEntry:[[[self feedParser] feedItems] objectAtIndex:indexPath.row]];
+		if (feedItem.downloadManager != nil) {
+			((NIKDownloadManager *)feedItem.downloadManager).detailViewController = detailViewController;
+		}
+
+		if (feedItem.audioManager != nil) {
+			((NIKAudioManager *)feedItem.audioManager).detailViewController = detailViewController;
+		}
     }
 	else
 	{
@@ -410,18 +371,32 @@
     return YES;
 }
 
-- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
-    //if it is a remote control event handle it correctly
-    if (event.type == UIEventTypeRemoteControl) {
-        if (event.subtype == UIEventSubtypeRemoteControlPlay) {
-            [[NIKDetailViewController sharedController] playAudio];
-        } else if (event.subtype == UIEventSubtypeRemoteControlPause) {
-            [[NIKDetailViewController sharedController] pauseAudio];
-        } else if (event.subtype == UIEventSubtypeRemoteControlTogglePlayPause) {
-            [[NIKDetailViewController sharedController] togglePlayPause];
-        }
-    }
-}
+//- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
+//    //if it is a remote control event handle it correctly
+//    if (event.type == UIEventTypeRemoteControl)
+//	{
+//        if (event.subtype == UIEventSubtypeRemoteControlPlay)
+//		{
+//            [[NIKDetailViewController sharedController] playAudio];
+//        }
+//		else if (event.subtype == UIEventSubtypeRemoteControlPause)
+//		{
+//            [[NIKDetailViewController sharedController] pauseAudio];
+//        }
+//		else if (event.subtype == UIEventSubtypeRemoteControlTogglePlayPause)
+//		{
+//            [[NIKDetailViewController sharedController] togglePlayPause];
+//        }
+//		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingBackward)
+//		{
+//			[[NIKDetailViewController sharedController] rewindTheAudio];
+//		}
+//		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingForward)
+//		{
+//			[[NIKDetailViewController sharedController] fastForwardTheAudio];
+//		}
+//	}
+//}
 
 
 + (NIKMasterViewController *)sharedController

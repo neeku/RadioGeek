@@ -23,6 +23,8 @@
 @synthesize podcastLinkURL;
 @synthesize podcastSummary;
 @synthesize categories;
+@synthesize downloadManager;
+@synthesize audioManager;
 
 - (id)initWithPodcastTitle:(NSString *)podcastTitle podcastDate:(NSDate *)podcastDate podcastGUID:(NSString *)podcastGUID podcastSummary:(NSString *)podcastSummary podcastContent:(NSString *)podcastContent podcastDownloadURL:(NSString *)podcastDownloadURL
 {
@@ -32,7 +34,7 @@
 	[self setPodcastSummary: podcastSummary];
 	[self setPodcastContent: podcastContent];
 	[self setPodcastDownloadURL: podcastDownloadURL];
-	
+
 	return self;
 }
 

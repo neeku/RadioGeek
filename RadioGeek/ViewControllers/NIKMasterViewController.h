@@ -38,9 +38,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
 @property (strong, nonatomic) UIBarButtonItem *refreshButton;
 
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 @property (nonatomic, copy) NSString *dataPath;
 @property (nonatomic, retain) NSMutableArray *urlArray;
 @property (nonatomic, strong) NSURL *RSSURL;

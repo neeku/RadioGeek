@@ -157,10 +157,11 @@
                                     <action selector="dismiss:" destination="EBY-GD-wRa" eventType="touchUpInside" id="BFs-up-hne"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FUC-jr-nGN">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FUC-jr-nGN">
                                 <rect key="frame" x="20" y="308" width="280" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -335,6 +336,9 @@
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="0d0-Uq-Zd0">
                                         <rect key="frame" x="26" y="40" width="229" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <action selector="sliderChanged:" destination="Ah7-4n-0Wa" eventType="valueChanged" id="LJB-qA-x5D"/>
+                                        </connections>
                                     </slider>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d52-kC-LJf" customClass="MPVolumeView">
                                         <rect key="frame" x="27" y="91" width="226" height="27"/>
@@ -400,16 +404,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnl-Dj-Rjf">
-                                <rect key="frame" x="254" y="311" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="showAudioPlayerView:" destination="Ah7-4n-0Wa" eventType="touchUpInside" id="Rgi-bD-ie4"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -425,7 +419,6 @@
                         <outlet property="fastForward" destination="Y0F-W2-EqG" id="HIg-9J-L8f"/>
                         <outlet property="fastRewind" destination="Xj1-rB-iP6" id="WNd-EJ-mtF"/>
                         <outlet property="playPauseButton" destination="EVb-V6-smq" id="41Z-xm-6Kr"/>
-                        <outlet property="playerButton" destination="cnl-Dj-Rjf" id="m2R-ck-Urt"/>
                         <outlet property="progressView" destination="3gI-9C-uDh" id="7YW-6R-WdJ"/>
                         <outlet property="remainingTime" destination="Jmo-yw-vnh" id="jQI-13-BPJ"/>
                         <outlet property="seekSlider" destination="0d0-Uq-Zd0" id="k8b-ry-7E2"/>

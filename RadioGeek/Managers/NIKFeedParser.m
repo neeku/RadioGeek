@@ -8,7 +8,7 @@
 
 #import "NIKFeedParser.h"
 #import "NIKMasterViewController.h"
-
+#import "NIKAppDelegate.h"
 @class NIKMasterViewController;
 
 NIKMasterViewController *masterVC;
@@ -48,6 +48,12 @@ NIKMasterViewController *masterVC;
     return self;
 }
 
+- (NIKAppDelegate *) appDelegate
+{
+	// Get the instance of your delegate created by the framework when the app starts
+	NIKAppDelegate* appDelegate = (NIKAppDelegate*)[[UIApplication sharedApplication] delegate];
+	return appDelegate;
+}
 
 - (NSOperationQueue *)retrieverQueue
 {
@@ -148,49 +154,7 @@ NIKMasterViewController *masterVC;
 {
     //This method is called once the download is complete
     
-//	//save the xml to a file for offline access
-//    paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-//    folder = [paths objectAtIndex:0];
-//	fileName = @"SavedURL.xml";
-//    path = [folder stringByAppendingPathComponent:fileName];
-//    fileURL = [NSURL fileURLWithPath:path];
-
 	
-	
-/*
-	const UInt8 OPEN_TAG_TO_FIND[] = "<guid>";
-	const UInt8 CLOSE_TAG_TO_FIND[] = "</guid>";
-	
-	NSData *openTagData = [NSData dataWithBytes:OPEN_TAG_TO_FIND length:sizeof(OPEN_TAG_TO_FIND)-1];
-	NSData *closeTagData = [NSData dataWithBytes:CLOSE_TAG_TO_FIND length:sizeof(CLOSE_TAG_TO_FIND)-1];
-
-	NSRange openRange = [downloadedData rangeOfData:openTagData options:kNilOptions range:NSMakeRange(0u, downloadedData.length)];
-	if (openRange.location == NSNotFound)
-	{
-		NSLog(@"Open Range Not Found!");
-		return;
-	}
-	NSRange closeRange = [downloadedData rangeOfData:closeTagData options:kNilOptions range:NSMakeRange(openRange.location, downloadedData.length-openRange.location)];
-	if (closeRange.location == NSNotFound)
-	{
-		NSLog(@"Close Range Not Found!");
-		return;
-	}
-	
-	NSData *GUIDData = [downloadedData subdataWithRange:NSMakeRange(openRange.location+openRange.length, closeRange.location-openRange.location-openRange.length)];
-	NSString *GUIDString = [[NSString alloc] initWithData:GUIDData encoding:NSUTF8StringEncoding];
-*/
-	
-/*	NSDate *lastSavedDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"Date"];
-	NSComparisonResult comparisonResult;
-	comparisonResult = [lastDate compare:lastSavedDate];
-	if (comparisonResult == NSOrderedDescending) {
-		NSLog(@"true");
-	}
-
-	 [downloadedData writeToURL: fileURL options:0 error:&writeError];
-	[downloadedData app]
-*/
 	//The next step is parse the downloaded xml feed
 	NSXMLParser * xmlParser = [[NSXMLParser alloc] initWithData:downloadedData];
 	[xmlParser setDelegate:self];
@@ -202,37 +166,64 @@ NIKMasterViewController *masterVC;
 	
 	
 	
-	/* */
 
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	paths = NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, YES);
-    folder = [paths objectAtIndex:0];
-	fileName = @"SavedURL.xml";
-    path = [folder stringByAppendingPathComponent:fileName];
-    fileURL = [NSURL fileURLWithPath:path];
-
-	if (fileURL)
+	//Reads the presaved data from the plist in application support directory.
+	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
+	//	[items writeToFile:destinPath atomically:YES];
+	//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	
+	
+	
+	NSArray *tempArray = [[NSArray alloc] initWithContentsOfFile:destinPath];
+    
+	//local plist file
+	guidDictionary = [[NSMutableDictionary alloc] init];
+	for (int ii = tempArray.count; ii-->0;)
 	{
-		NSXMLParser * xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:fileURL];
-		NSLog(@"%@:",fileURL);
-		
-		[xmlParser setDelegate:self];
-		[xmlParser setShouldProcessNamespaces:YES];
-		[xmlParser setShouldReportNamespacePrefixes:YES];
-		[xmlParser setShouldResolveExternalEntities:NO];
-		[xmlParser parse];
-		
-		[self.delegate parserDidCompleteParsing];
+		NIKFeedEntry *feedEntry =	[[NIKFeedEntry alloc] initWithPodcastTitle:[tempArray[ii] objectForKey:@"Title"] podcastDate:[tempArray[ii] objectForKey:@"Date"] podcastGUID:[tempArray[ii] objectForKey:@"GUID"] podcastSummary:[tempArray[ii] objectForKey:@"Summary"] podcastContent:[tempArray[ii] objectForKey:@"Content"] podcastDownloadURL: [tempArray[ii] objectForKey:@"DownloadURL"]];
+		[guidDictionary setObject: feedEntry forKey:[tempArray[ii] objectForKey: @"GUID"]];
 	}
-	else
+	
+	for (int ii = feedItems.count; ii-->0;)
 	{
-		[error localizedDescription];
-		NSLog(@"%@", [error localizedDescription]);
-		[self.delegate parserHasError:error];
+		
+		[guidDictionary setObject: feedItems[ii] forKey:[[feedItems objectAtIndex:ii] podcastGUID]];
 	}
+	
+	NSArray *myArray;
+	myArray = [guidDictionary allValues];
+	
+	
+	myArray = [myArray sortedArrayUsingComparator: ^(id obj1, id obj2) {
+		return [((NIKFeedEntry *)obj2).podcastDate compare:((NIKFeedEntry *)obj1).podcastDate];
+	}];
+	
+	feedItems = [NSMutableArray arrayWithArray:myArray];
+	
+	item = [[NSDictionary alloc] init];
+	items = [[NSMutableArray alloc] init];
+	
+	
+	for (int i=feedItems.count; i-->0;)
+	{
+		item = @{@"Title": [[feedItems objectAtIndex:i] podcastTitle],
+				 @"Date": [[feedItems objectAtIndex:i] podcastDate],
+				 @"GUID": [[feedItems objectAtIndex:i] podcastGUID],
+				 @"Summary": [[feedItems objectAtIndex:i] podcastSummary],
+				 @"Content": [[feedItems objectAtIndex:i] podcastContent],
+				 @"DownloadURL":[[feedItems objectAtIndex:i] podcastDownloadURL]};
+		[items addObject:item];
+		
+	}
+	
+	[error localizedDescription];
+	NSLog(@"%@", [error localizedDescription]);
+	[self.delegate parserHasError:error];
+	
 
 }
 
@@ -283,6 +274,11 @@ NIKMasterViewController *masterVC;
 		if ([urlType  isEqualToString:@"audio/mpeg"] && ([urlValue rangeOfString:@"http://jadi.net"].length != 0))
 		{
 			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadi.net" withString:@"http://192.168.2.1"];
+			[currentItem setPodcastDownloadURL:downloadURL];
+		}
+		else if ([urlType isEqualToString:@"audio/mpeg"] && ([urlValue rangeOfString:@"http://jadi2.undo.it"].length!= 0))
+		{
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadie.undo.it" withString:@"http://192.168.2.1"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
 	}
@@ -454,6 +450,54 @@ NIKMasterViewController *masterVC;
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
     NSLog(@"parseErrorOccured: %@",[parseError localizedDescription]);
+	//Reads the presaved data from the plist in application support directory.
+	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
+	//	[items writeToFile:destinPath atomically:YES];
+	//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	
+	
+	
+	NSArray *tempArray = [[NSArray alloc] initWithContentsOfFile:destinPath];
+    
+	//local plist file
+	guidDictionary = [[NSMutableDictionary alloc] init];
+	for (int ii = tempArray.count; ii-->0;)
+	{
+		NIKFeedEntry *feedEntry =	[[NIKFeedEntry alloc] initWithPodcastTitle:[tempArray[ii] objectForKey:@"Title"] podcastDate:[tempArray[ii] objectForKey:@"Date"] podcastGUID:[tempArray[ii] objectForKey:@"GUID"] podcastSummary:[tempArray[ii] objectForKey:@"Summary"] podcastContent:[tempArray[ii] objectForKey:@"Content"] podcastDownloadURL: [tempArray[ii] objectForKey:@"DownloadURL"]];
+		[guidDictionary setObject: feedEntry forKey:[tempArray[ii] objectForKey: @"GUID"]];
+	}
+	
+	for (int ii = feedItems.count; ii-->0;)
+	{
+		
+		[guidDictionary setObject: feedItems[ii] forKey:[[feedItems objectAtIndex:ii] podcastGUID]];
+	}
+	
+	NSArray *myArray;
+	myArray = [guidDictionary allValues];
+	
+	
+	myArray = [myArray sortedArrayUsingComparator: ^(id obj1, id obj2) {
+		return [((NIKFeedEntry *)obj2).podcastDate compare:((NIKFeedEntry *)obj1).podcastDate];
+	}];
+	
+	feedItems = [NSMutableArray arrayWithArray:myArray];
+	
+	item = [[NSDictionary alloc] init];
+	items = [[NSMutableArray alloc] init];
+	
+	
+	for (int i=feedItems.count; i-->0;)
+	{
+		item = @{@"Title": [[feedItems objectAtIndex:i] podcastTitle],
+				 @"Date": [[feedItems objectAtIndex:i] podcastDate],
+				 @"GUID": [[feedItems objectAtIndex:i] podcastGUID],
+				 @"Summary": [[feedItems objectAtIndex:i] podcastSummary],
+				 @"Content": [[feedItems objectAtIndex:i] podcastContent],
+				 @"DownloadURL":[[feedItems objectAtIndex:i] podcastDownloadURL]};
+		[items addObject:item];
+		
+	}
 
 }
 
@@ -464,8 +508,6 @@ NIKMasterViewController *masterVC;
         downloadedData = nil;
     }
 	
-
-
 //	item = [[NSDictionary alloc] init];
 //	items = [[NSMutableArray alloc] init];
 //	
@@ -482,8 +524,8 @@ NIKMasterViewController *masterVC;
 //
 //	}
 	
-	
-	NSString *destinPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"RGeek.plist"];
+	//Reads the presaved data from the plist in application support directory.
+	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
 //	[items writeToFile:destinPath atomically:YES];
 //	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
 
@@ -495,26 +537,16 @@ NIKMasterViewController *masterVC;
 	guidDictionary = [[NSMutableDictionary alloc] init];
 	for (int ii = tempArray.count; ii-->0;)
 	{
-	 NIKFeedEntry *feedEntry =	[[NIKFeedEntry alloc] initWithPodcastTitle:[tempArray[ii] objectForKey:@"Title"] podcastDate:[tempArray[ii] objectForKey:@"Date"] podcastGUID:[tempArray[ii] objectForKey:@"GUID"] podcastSummary:[tempArray[ii] objectForKey:@"Summary"] podcastContent:[tempArray[ii] objectForKey:@"Content"] podcastDownloadURL:@"DownloadURL"];
+	 NIKFeedEntry *feedEntry =	[[NIKFeedEntry alloc] initWithPodcastTitle:[tempArray[ii] objectForKey:@"Title"] podcastDate:[tempArray[ii] objectForKey:@"Date"] podcastGUID:[tempArray[ii] objectForKey:@"GUID"] podcastSummary:[tempArray[ii] objectForKey:@"Summary"] podcastContent:[tempArray[ii] objectForKey:@"Content"] podcastDownloadURL: [tempArray[ii] objectForKey:@"DownloadURL"]];
 		[guidDictionary setObject: feedEntry forKey:[tempArray[ii] objectForKey: @"GUID"]];
 	}
-	
-	
-	
-	
+
 	for (int ii = feedItems.count; ii-->0;)
 	{
 		
 		[guidDictionary setObject: feedItems[ii] forKey:[[feedItems objectAtIndex:ii] podcastGUID]];
 	}
-
 	
-	
-	//	for (int i=tempArray.count; i-->0;) {
-//		[loadedArray set
-//	}
-//	NSSet *loadedSet = [NSSet alloc] initWithArray:loadedArray.
-
 	NSArray *myArray;
 	myArray = [guidDictionary allValues];
 
@@ -535,15 +567,15 @@ NIKMasterViewController *masterVC;
 				 @"Date": [[feedItems objectAtIndex:i] podcastDate],
 				 @"GUID": [[feedItems objectAtIndex:i] podcastGUID],
 				 @"Summary": [[feedItems objectAtIndex:i] podcastSummary],
-				 @"Content": [[feedItems objectAtIndex:i] podcastContent]};
-//				 @"DownloadURL":[[feedItems objectAtIndex:i] podcastDownloadURL]};
+				 @"Content": [[feedItems objectAtIndex:i] podcastContent],
+				 @"DownloadURL":[[feedItems objectAtIndex:i] podcastDownloadURL]};
 		[items addObject:item];
 		
 	}
 	
 	
-	NSString *destinationPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"RadiooGeek.plist"];
-	[items writeToFile:destinationPath atomically:YES];
+//	NSString *destinationPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RadioGeekUpdated.plist"];
+	[items writeToFile:destinPath atomically:YES];
 	
 	
 	[self.delegate parserDidCompleteParsing];

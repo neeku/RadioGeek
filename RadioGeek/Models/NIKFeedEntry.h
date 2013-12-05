@@ -38,6 +38,8 @@
 @property (nonatomic) NSString *podcastLinkURL;
 @property (nonatomic) NSMutableArray *categories;
 
+@property (nonatomic) id downloadManager;
+@property (nonatomic) id audioManager;
 
 - (id)initWithPodcastTitle:(NSString*)podcastTitle podcastDate:(NSDate*)podcastDate podcastGUID:(NSString*)podcastGUID podcastSummary:(NSString*)podcastSummary podcastContent:(NSString*)podcastContent podcastDownloadURL:(NSString*)podcastDownloadURL;
 

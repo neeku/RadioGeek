@@ -62,7 +62,7 @@
 		D9AA83DE183D476300FBB827 /* speaker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA83DC183D476300FBB827 /* speaker@2x.png */; };
 		D9AA83E0183D4D8100FBB827 /* player_fastrewindcp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA83DF183D4D8100FBB827 /* player_fastrewindcp@2x.png */; };
 		D9AA83E2183D529B00FBB827 /* X Yekan.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9AA83E1183D529B00FBB827 /* X Yekan.ttf */; };
-		D9ABA7F5183559350073E431 /* 4bf90246a9e883183879620b3f14d1a6.png in Resources */ = {isa = PBXBuildFile; fileRef = D9ABA7F4183559350073E431 /* 4bf90246a9e883183879620b3f14d1a6.png */; };
+		D9ABA7F5183559350073E431 /* RadioGeekArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = D9ABA7F4183559350073E431 /* RadioGeekArtwork.png */; };
 		D9ABA7F9183559600073E431 /* XB Roya.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9ABA7F7183559600073E431 /* XB Roya.ttf */; };
 		D9ABA7FA183559600073E431 /* XB RoyaBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9ABA7F8183559600073E431 /* XB RoyaBd.ttf */; };
 		D9B34DBA181EA2FE003D3B17 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B34DA8181EA2FE003D3B17 /* AFHTTPRequestOperation.m */; };
@@ -75,6 +75,9 @@
 		D9B34DC1181EA2FE003D3B17 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B34DB7181EA2FE003D3B17 /* AFURLResponseSerialization.m */; };
 		D9B34DC2181EA2FE003D3B17 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B34DB9181EA2FE003D3B17 /* AFURLSessionManager.m */; };
 		D9B34E11181FE3FD003D3B17 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B34E10181FE3FD003D3B17 /* AVFoundation.framework */; };
+		D9C36F4918508C1400B603A4 /* NIKDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C36F4818508C1400B603A4 /* NIKDownloadManager.m */; };
+		D9DC348B184F606100557BDF /* NIKAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DC348A184F606100557BDF /* NIKAudioPlayer.m */; };
+		D9EE23C1184E7CAC001A6C38 /* RGeek.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9EE23C0184E7CAC001A6C38 /* RGeek.plist */; };
 		D9F3B086181C40740042A44A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F3B085181C40740042A44A /* Foundation.framework */; };
 		D9F3B088181C40740042A44A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F3B087181C40740042A44A /* CoreGraphics.framework */; };
 		D9F3B08A181C40740042A44A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F3B089181C40740042A44A /* UIKit.framework */; };
@@ -168,7 +171,7 @@
 		D9AA83DC183D476300FBB827 /* speaker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker@2x.png"; sourceTree = "<group>"; };
 		D9AA83DF183D4D8100FBB827 /* player_fastrewindcp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_fastrewindcp@2x.png"; sourceTree = "<group>"; };
 		D9AA83E1183D529B00FBB827 /* X Yekan.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "X Yekan.ttf"; sourceTree = "<group>"; };
-		D9ABA7F4183559350073E431 /* 4bf90246a9e883183879620b3f14d1a6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4bf90246a9e883183879620b3f14d1a6.png; sourceTree = "<group>"; };
+		D9ABA7F4183559350073E431 /* RadioGeekArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RadioGeekArtwork.png; sourceTree = "<group>"; };
 		D9ABA7F7183559600073E431 /* XB Roya.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "XB Roya.ttf"; sourceTree = "<group>"; };
 		D9ABA7F8183559600073E431 /* XB RoyaBd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "XB RoyaBd.ttf"; sourceTree = "<group>"; };
 		D9B34DA7181EA2FE003D3B17 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -191,6 +194,11 @@
 		D9B34DB8181EA2FE003D3B17 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		D9B34DB9181EA2FE003D3B17 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
 		D9B34E10181FE3FD003D3B17 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D9C36F4718508C1400B603A4 /* NIKDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKDownloadManager.h; sourceTree = "<group>"; };
+		D9C36F4818508C1400B603A4 /* NIKDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKDownloadManager.m; sourceTree = "<group>"; };
+		D9DC3489184F606100557BDF /* NIKAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKAudioPlayer.h; sourceTree = "<group>"; };
+		D9DC348A184F606100557BDF /* NIKAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKAudioPlayer.m; sourceTree = "<group>"; };
+		D9EE23C0184E7CAC001A6C38 /* RGeek.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RGeek.plist; sourceTree = "<group>"; };
 		D9F3B082181C40740042A44A /* RadioGeek.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RadioGeek.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F3B085181C40740042A44A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D9F3B087181C40740042A44A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -219,10 +227,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D954537C1823DD0800B2C440 /* MediaPlayer.framework in Frameworks */,
 				D93097661837D3DD00DC1BCE /* CoreText.framework in Frameworks */,
 				D954538718243C6500B2C440 /* AudioToolbox.framework in Frameworks */,
 				D954538518243C5D00B2C440 /* QuartzCore.framework in Frameworks */,
-				D954537C1823DD0800B2C440 /* MediaPlayer.framework in Frameworks */,
 				D9B34E11181FE3FD003D3B17 /* AVFoundation.framework in Frameworks */,
 				D9F3B088181C40740042A44A /* CoreGraphics.framework in Frameworks */,
 				D9F3B08C181C40740042A44A /* CoreData.framework in Frameworks */,
@@ -316,8 +324,12 @@
 				D9A6DD0A183FE88700816C59 /* NIKAudioManager.m */,
 				D9A6DD0C183FE8FF00816C59 /* NIKFeedParser.h */,
 				D9A6DD0D183FE8FF00816C59 /* NIKFeedParser.m */,
+				D9DC3489184F606100557BDF /* NIKAudioPlayer.h */,
+				D9DC348A184F606100557BDF /* NIKAudioPlayer.m */,
 				D9305EA11844D0FE0019DA08 /* NIKPlayer.h */,
 				D9305EA21844D0FE0019DA08 /* NIKPlayer.m */,
+				D9C36F4718508C1400B603A4 /* NIKDownloadManager.h */,
+				D9C36F4818508C1400B603A4 /* NIKDownloadManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -338,6 +350,7 @@
 				D9A6DD171840BFDA00816C59 /* jadi.mp3 */,
 				D930973C18361B6500DC1BCE /* Persian.strings */,
 				D930973618361B1D00DC1BCE /* Feed.plist */,
+				D9EE23C0184E7CAC001A6C38 /* RGeek.plist */,
 				D930973718361B1D00DC1BCE /* htmlPattern.html */,
 				D9ABA7F6183559600073E431 /* Fonts */,
 				D9ABA7F3183559350073E431 /* Images */,
@@ -357,7 +370,7 @@
 				D9AA838C183CDBBF00FBB827 /* player_pause@2x.png */,
 				D9AA838D183CDBBF00FBB827 /* player_play@2x.png */,
 				D930973A18361B4800DC1BCE /* Background.png */,
-				D9ABA7F4183559350073E431 /* 4bf90246a9e883183879620b3f14d1a6.png */,
+				D9ABA7F4183559350073E431 /* RadioGeekArtwork.png */,
 				D9AA83DF183D4D8100FBB827 /* player_fastrewindcp@2x.png */,
 				D9AA83D9183D39BB00FBB827 /* player_fastforwardcp@2x.png */,
 			);
@@ -604,6 +617,7 @@
 				D930975F1837C52E00DC1BCE /* Arial Italic.ttf in Resources */,
 				D945F62D1838F5B500B5814C /* X Nazanin Italic.ttf in Resources */,
 				D93097581837C38100DC1BCE /* BNazanin.ttf in Resources */,
+				D9EE23C1184E7CAC001A6C38 /* RGeek.plist in Resources */,
 				D945F6361838F61900B5814C /* X Yekan Italic.ttf in Resources */,
 				D93097621837C59500DC1BCE /* Tahoma.ttf in Resources */,
 				D9A6DD181840BFDA00816C59 /* jadi5.mp3 in Resources */,
@@ -635,7 +649,7 @@
 				D930973B18361B4800DC1BCE /* Background.png in Resources */,
 				D9F3B092181C40740042A44A /* InfoPlist.strings in Resources */,
 				D945F62E1838F5B500B5814C /* X Nazanin Outline.ttf in Resources */,
-				D9ABA7F5183559350073E431 /* 4bf90246a9e883183879620b3f14d1a6.png in Resources */,
+				D9ABA7F5183559350073E431 /* RadioGeekArtwork.png in Resources */,
 				D9AA838F183CDBBF00FBB827 /* player_play@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -659,7 +673,9 @@
 				D9B34DBF181EA2FE003D3B17 /* AFURLConnectionOperation.m in Sources */,
 				D9A6DD11183FE97600816C59 /* NIKAudioFile.m in Sources */,
 				D930973118361A9400DC1BCE /* NIKFeedEntry.m in Sources */,
+				D9DC348B184F606100557BDF /* NIKAudioPlayer.m in Sources */,
 				D99447151831131000D54C64 /* NSString_StripHTML.m in Sources */,
+				D9C36F4918508C1400B603A4 /* NIKDownloadManager.m in Sources */,
 				D930972218361A2800DC1BCE /* NIKMasterViewController.m in Sources */,
 				D930972018361A2800DC1BCE /* NIKDetailViewController.m in Sources */,
 				D930972118361A2800DC1BCE /* NIKInfoViewController.m in Sources */,

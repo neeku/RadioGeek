@@ -20,6 +20,8 @@
 @synthesize copyrightLabel;
 @synthesize infoLabel;
 @synthesize textView;
+@synthesize contactButton;
+@synthesize rateButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -48,6 +50,11 @@
 	copyrightLabel.text = [NSString stringWithFormat:@"%@ V. %@ \n ©2013 Neeku Shamekhi",name,version];
     copyrightLabel.font = [UIFont boldSystemFontOfSize:12];
 //    copyrightLabel.userInteractionEnabled = NO;
+	
+	NSString *title = @"עמוד הבית";
+	contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[contactButton setTitle:title forState:UIControlStateNormal];
+	
 }
 
 - (void)didReceiveMemoryWarning

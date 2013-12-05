@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "NIKFeedEntry.h"
-//#import "AFNetworking.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "NIKMasterViewController.h"
@@ -17,19 +16,18 @@
 @interface NIKDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate, NSURLConnectionDelegate, AVAudioPlayerDelegate>
 {
 	NSURL *url;
-	NSTimer	*playbackTimer;
-	UIWebView *webView;
 	NSURLRequest * loadRequest;
-	NSTimer	*updateTimer;
-	int tapCounter;
 	NSString* documentPath;
 	NSString* filePath;
 	NSURL* audioURL;
+	NSTimer	*playbackTimer;
+	NSTimer	*updateTimer;
 	int viewDidLoadCounter;
 	NSMutableData *responseData;
 	NSUInteger responseDataSize;
 	NSFileHandle *file;
 	UIAlertView *alertView;
+	float progress;
 //	UISlider *volumeControl; //Sets the volume for the audio player
 
 }
@@ -52,20 +50,15 @@
 
 //@property (nonatomic, retain) IBOutlet UISlider *volumeControl; //Sets the volume for the audio player
 
-@property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet UIImageView *speakerMinimum;
 @property (weak, nonatomic) IBOutlet UIImageView *speakerMaximum;
 @property (weak, nonatomic) IBOutlet UILabel *currentTime;
 @property (weak, nonatomic) IBOutlet UILabel *remainingTime;
 
 
-
 @property (nonatomic, retain) NSURLRequest * loadRequest;
 
-
-
-
-@property (nonatomic, retain) IBOutlet UIProgressView *progressView;
+@property (strong) IBOutlet UIProgressView *progressView;
 @property (nonatomic, retain) NSString *currentURL;
 @property (nonatomic, retain) NSString *currentFileName;
 
@@ -77,14 +70,7 @@
 - (IBAction)forwardAudio:(id)sender;
 - (IBAction)rewindAudio:(id)sender;
 - (IBAction)showAudioPlayerView:(id)sender;
-
-- (void)playAudio; //play the audio
-- (void)pauseAudio; //pause the audio
-- (void)streamAudio;
-- (void)togglePlayPause;
-- (void)startActivity:(id)sender;
-
-- (void)stopActivity:(id)sender;
+- (IBAction)sliderChanged:(UISlider *)sender;
 
 + (NIKDetailViewController *)sharedController;
 
