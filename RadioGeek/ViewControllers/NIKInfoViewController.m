@@ -53,12 +53,12 @@
 	[contactButton setTitle:CONTACT_BUTTON_TITLE forState:UIControlStateNormal];
 	[rateButton setTitle:RATE_BUTTON_TITLE forState:UIControlStateNormal];
 	
-	MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-	controller.mailComposeDelegate = self;
-	[controller setSubject:@"My Subject"];
-	[controller setMessageBody:@"Hello there." isHTML:NO];
-	if (controller)
-		[self presentModalViewController:controller animated:YES];
+//	MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+//	controller.mailComposeDelegate = self;
+//	[controller setSubject:@"My Subject"];
+//	[controller setMessageBody:@"Hello there." isHTML:NO];
+//	if (controller)
+//		[self presentModalViewController:controller animated:YES];
 	
 }
 
@@ -83,6 +83,11 @@
 	controller.mailComposeDelegate = self;
 	[controller setSubject:@"My Subject"];
 	[controller setMessageBody:@"Hello there." isHTML:NO];
+
+	NSArray *toRecipients = [NSArray arrayWithObjects:@"neeku@shamekhi.net",nil];
+	
+	[controller setToRecipients:toRecipients];
+	
 	if (controller)
 		[self presentViewController:controller animated:YES completion:nil];
 

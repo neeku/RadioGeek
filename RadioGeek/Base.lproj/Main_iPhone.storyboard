@@ -160,6 +160,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FUC-jr-nGN">
                                 <rect key="frame" x="20" y="308" width="280" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="send mail"/>
                                 <connections>
                                     <action selector="launchMailApp:" destination="EBY-GD-wRa" eventType="touchUpInside" id="gIz-S6-fPS"/>
                                 </connections>
