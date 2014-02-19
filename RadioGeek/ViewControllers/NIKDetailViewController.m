@@ -38,6 +38,7 @@
 @synthesize currentTime;
 @synthesize remainingTime;
 @synthesize playerButton;
+@synthesize deleteButton;
 #pragma mark - Managing the view
 
 
@@ -68,6 +69,42 @@
 	currentFileName = [currentURL lastPathComponent];
 	
 	feedEntry.downloadManager = [[NIKDownloadManager alloc] initWithURL:[NSURL URLWithString:currentURL] viewController:self];
+	
+}
+
+- (IBAction)deleteTheFile:(id)sender
+{
+	UIAlertView *deleteAlertView = [[UIAlertView alloc] initWithTitle:DELETE_CONFIRMATION_ALERT_TITLE message:DELETE_WARNING_MESSAGE delegate:self cancelButtonTitle:DELETE_CANCEL_BUTTON_TITLE otherButtonTitles:OTHER_BUTTON_TITLE, nil];
+	[deleteAlertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0)
+	{
+		//cancel clicked ...do your action
+		NSLog(@"cancel");
+    }
+	else
+	{
+		//reset clicked
+		NSLog(@"delete");
+		NSError *error;
+		NSLog(@"url:%@",[feedEntry podcastDownloadURL]);
+		
+		currentFileName = [[feedEntry podcastDownloadURL] lastPathComponent];
+		
+		filePath = [[[self appDelegate] applicationDocumentsDirectory] stringByAppendingPathComponent:currentFileName];
+		
+		if ([[NSFileManager defaultManager] isDeletableFileAtPath:filePath])
+		{
+			BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+			if (!success)
+			{
+				NSLog(@"Error removing file at path: %@", error.localizedDescription);
+			}
+		}
+    }
 }
 
 - (BOOL) fileExists
@@ -274,6 +311,13 @@
 	}
 }
 
+- (void) hideAudioView
+{
+	if (!audioView.hidden)
+	{
+		audioView.hidden = YES;
+	}
+}
 
 - (void)didReceiveMemoryWarning
 {

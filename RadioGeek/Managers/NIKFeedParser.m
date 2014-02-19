@@ -271,18 +271,29 @@ NIKMasterViewController *masterVC;
 		NSString *urlValue=[attributeDict valueForKey:@"url"];
 		NSString *urlType=[attributeDict valueForKey:@"type"];
 		parseElement = YES;
-		if ([urlType  isEqualToString:@"audio/mpeg"] && ([urlValue rangeOfString:@"http://jadi.net"].length != 0))
+		if (([urlType  isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://jadi.net"].length != 0))
 		{
-			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadi.net" withString:@"http://192.168.2.1"];
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadi.net" withString:@"http://rg.tori.ir"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
-		else if ([urlType isEqualToString:@"audio/mpeg"] && ([urlValue rangeOfString:@"http://jadi2.undo.it"].length!= 0))
+		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://jadi2.undo.it"].length!= 0))
 		{
-			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadie.undo.it" withString:@"http://192.168.2.1"];
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadie.undo.it" withString:@"http://rg.tori.ir"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
+		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://thepa.owowspace.com/geek"].length!=0))
+		{
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://thepa.owowspace.com/geek" withString:@"http://rg.tori.ir"];
+			[currentItem setPodcastDownloadURL:downloadURL];
+		}
+		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://cdn.tori.ir"].length != 0))
+		{
+			downloadURL = urlValue;
+			[currentItem setPodcastDownloadURL:downloadURL];
+		}
+//		else
+//			NSLog(@"Upexpected download URL format");
 	}
-	
 }
 
 
@@ -305,7 +316,6 @@ NIKMasterViewController *masterVC;
 		[formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss Z"];
         NSDate *lastSavedBuildDate = [formatter dateFromString:[self trimString:parsedElementContent]];
 		[[NSUserDefaults standardUserDefaults] setObject:lastSavedBuildDate forKey:@"Date"];
-
 	}
 	if([elementName isEqualToString:@"title"])
 	{
@@ -449,7 +459,10 @@ NIKMasterViewController *masterVC;
 */
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
-    NSLog(@"parseErrorOccured: %@",[parseError localizedDescription]);
+    NSLog(@"parseErrorOccured: description: %@",[parseError localizedDescription]);
+	NSLog(@"parseErrorOccured: reason: %@",[parseError localizedFailureReason]);
+	NSLog(@"parseErrorOccured: recovery options: %@",[parseError localizedRecoveryOptions]);
+	NSLog(@"parseErrorOccured: recovery suggestions: %@",[parseError localizedRecoverySuggestion]);
 	//Reads the presaved data from the plist in application support directory.
 	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
 	//	[items writeToFile:destinPath atomically:YES];

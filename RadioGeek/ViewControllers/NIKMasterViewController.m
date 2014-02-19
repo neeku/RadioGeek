@@ -94,7 +94,6 @@
 	[alertView show];
 	
 	[self.tableView reloadData];
-	
 }
 
 
@@ -272,6 +271,7 @@
 																		   options:0
 																			 error:&error];
 	NSTextCheckingResult *match = [regex firstMatchInString:fileName options:0 range:NSMakeRange(0, [fileName length])];
+	//this is such a clever error handler. Awesome Aidan did the job! (: <3
 	NSAssert (match != NULL, @"not prepared to handle odd syntax from Jadi");
 	NSString *fileNumber = [fileName substringWithRange:[match rangeAtIndex:1]];
 	

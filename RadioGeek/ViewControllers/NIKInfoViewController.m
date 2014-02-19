@@ -8,7 +8,6 @@
 
 #import "NIKInfoViewController.h"
 #import "RadioGeek.h"
-//#import "NSString+Shaping.h"
 #import <CoreText/CoreText.h>
 @interface NIKInfoViewController ()
 
@@ -22,6 +21,7 @@
 @synthesize textView;
 @synthesize contactButton;
 @synthesize rateButton;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -36,10 +36,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 	
-	NSString *str = @"نتبلیذمعهلبلاذپمهف نتاعغفباذرن رادیو گیک";//INFO_TEXT;
-	[textView setText:str];
+//	[textView setText:@"email"];
 	[infoLabel setFont:[UIFont fontWithName:@"Arial" size:30]];
-	infoLabel.text = str;
+//	infoLabel.text = recepient;
 	[infoLabel setTextAlignment:NSTextAlignmentRight];
 	infoLabel.autoresizesSubviews = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth;
 	
@@ -51,9 +50,15 @@
     copyrightLabel.font = [UIFont boldSystemFontOfSize:12];
 //    copyrightLabel.userInteractionEnabled = NO;
 	
-	NSString *title = @"עמוד הבית";
-	contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[contactButton setTitle:title forState:UIControlStateNormal];
+	[contactButton setTitle:CONTACT_BUTTON_TITLE forState:UIControlStateNormal];
+	[rateButton setTitle:RATE_BUTTON_TITLE forState:UIControlStateNormal];
+	
+	MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+	controller.mailComposeDelegate = self;
+	[controller setSubject:@"My Subject"];
+	[controller setMessageBody:@"Hello there." isHTML:NO];
+	if (controller)
+		[self presentModalViewController:controller animated:YES];
 	
 }
 
@@ -65,6 +70,29 @@
 
 - (IBAction)dismiss:(id)sender
 {
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)launchMailApp:(id)sender
+{
+//	NSString *email = [EMAIL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:email]];
+//	[UIApplication sharedApplication] pr
+
+	MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+	controller.mailComposeDelegate = self;
+	[controller setSubject:@"My Subject"];
+	[controller setMessageBody:@"Hello there." isHTML:NO];
+	if (controller)
+		[self presentViewController:controller animated:YES completion:nil];
+
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result
+											   error:(NSError*)error
+{
+	if (result == MFMailComposeResultSent)
+		NSLog(@"It's away!");
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 

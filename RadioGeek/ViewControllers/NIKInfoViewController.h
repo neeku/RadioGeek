@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "NIKPersianShaping.h"
-@interface NIKInfoViewController : UIViewController
+#import <MessageUI/MFMailComposeViewController.h>
+
+@interface NIKInfoViewController : UIViewController <MFMailComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *copyrightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
@@ -16,6 +17,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *rateButton;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result
+						error:(NSError*)error;
+
 - (IBAction)dismiss:(id)sender;
+- (IBAction)launchMailApp:(id)sender;
 
 @end

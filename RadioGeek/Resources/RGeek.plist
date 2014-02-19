@@ -2294,7 +2294,7 @@
 		<key>Date</key>
 		<date>2013-06-03T11:47:25Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_026_zakariyaye-raazi.mp3</string>
+		<string>http://localhost/audio/jadi-net_radio-geek_026_zakariyaye-raazi.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=9054</string>
 		<key>Summary</key>

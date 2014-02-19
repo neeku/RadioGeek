@@ -10,9 +10,9 @@
 			<key>IMG-N</key>
 			<string>yad-dashte-sar-dabir</string>
 			<key>IMG-S</key>
-			<string>http://192.168.2.1/radiojadi.xml</string>
+			<string></string>
 			<key>URL</key>
-			<string>http://rg.tori.ir/tag/podcast/feed/</string>
+			<string>http://shamekhi.net/files/rgeek.xml</string>
 		</dict>
 	</array>
 </dict>

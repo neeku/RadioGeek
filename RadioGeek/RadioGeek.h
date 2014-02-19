@@ -26,12 +26,20 @@
 
 #pragma mark - NIKDetailViewController
 
+//error alert view
+#define DELETE_CONFIRMATION_ALERT_TITLE @"هشدار!"
+#define DELETE_CANCEL_BUTTON_TITLE @"نه"
+#define OTHER_BUTTON_TITLE @"بله"
+#define DELETE_WARNING_MESSAGE @"آیا از حدف فایل دانلود شده مطمئنید؟"
 
 
 #pragma mark - NIKInfoViewController
 
 //info label text in info vc
 #define INFO_TEXT @"رادیویی برای کسانی که تکنولوژی براشون فقط تلاش دائمی برای خوندن و حفظ اینکه فلان مدل بهمان چیز فرقش با اون یکی مدل اون یکی کارخونه چیه و تو بازار چنده و شایعه اینکه قراره کی مدل مثلا خفن‌ترش بیاد نیست و ترجیح می‌دن یک پله عمیق تر بشن و تو تقاطع تکنولوژی و جامعه، دغدغه‌های انسانی‌شون رو مطرح کنن. رادیو گیک برای گیک های سرگردان در تقاطع جامعه و تکنولوژی.";
+#define EMAIL @"mailto:neeku@shamekhi.net?subject=رادیو گیک"
+#define CONTACT_BUTTON_TITLE @"ارسال نظرات"
+#define RATE_BUTTON_TITLE @"امتیازدهی در App Store"
 
 #pragma mark - Persian Fonts 
 //Persian font configurations

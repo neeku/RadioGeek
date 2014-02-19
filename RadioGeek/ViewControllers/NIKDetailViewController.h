@@ -13,7 +13,7 @@
 #import "NIKMasterViewController.h"
 #import "NIKPlayer.h"
 
-@interface NIKDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate, NSURLConnectionDelegate, AVAudioPlayerDelegate>
+@interface NIKDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate, NSURLConnectionDelegate, AVAudioPlayerDelegate, UIAlertViewDelegate>
 {
 	NSURL *url;
 	NSURLRequest * loadRequest;
@@ -47,6 +47,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *descriptionText;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 
 //@property (nonatomic, retain) IBOutlet UISlider *volumeControl; //Sets the volume for the audio player
 
@@ -65,12 +66,17 @@
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playerButton;
 
+- (void) hideDownloadView;
+- (void) hideAudioView;
+
+
 - (IBAction)downloadTheFile:(id)sender;
 - (IBAction)togglePlayingState:(id)button; //handle the button tapping
 - (IBAction)forwardAudio:(id)sender;
 - (IBAction)rewindAudio:(id)sender;
 - (IBAction)showAudioPlayerView:(id)sender;
 - (IBAction)sliderChanged:(UISlider *)sender;
+- (IBAction)deleteTheFile:(id)sender;
 
 + (NIKDetailViewController *)sharedController;
 
