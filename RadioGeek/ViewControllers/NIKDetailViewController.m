@@ -120,8 +120,10 @@
 
 - (IBAction)togglePlayingState:(id)button
 {
-	[feedEntry.audioManager togglePlayPause];
-
+	if (feedEntry.audioManager)
+	{
+		[feedEntry.audioManager togglePlayPause];
+	}
 }
 
 //- (void) seekingBegan
@@ -140,19 +142,27 @@
 
 - (IBAction)sliderChanged:(UISlider *)sender
 {
-	[feedEntry.audioManager seekSliderChanged];
+	if (feedEntry.audioManager)
+	{
+		[feedEntry.audioManager seekSliderChanged];
+	}
 }
 
 
 - (IBAction)forwardAudio:(id)sender
 {
-	[feedEntry.audioManager fastForwardTheAudio];
+	if (feedEntry.audioManager)
+	{
+		[feedEntry.audioManager fastForwardTheAudio];
+	}
 }
 
 - (IBAction)rewindAudio:(id)sender
 {
-	[feedEntry.audioManager rewindTheAudio];
-}
+	if (feedEntry.audioManager)
+	{
+		[feedEntry.audioManager rewindTheAudio];
+	}}
 
 
 
@@ -236,11 +246,20 @@
 	//gets the podcast mp3 file name
 	NSString *fileName = [[[feedEntry podcastDownloadURL] lastPathComponent] stringByDeletingPathExtension];
 	//fetches the difits out of the file name
-	NSString *fileNumber = [[fileName componentsSeparatedByCharactersInSet:
-							 [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
-							componentsJoinedByString:@""];
-	//converts the fetched decimal string to integer to avoid having '0' at the beginning of a number.
-	NSInteger number = [fileNumber integerValue];
+	//to avoid having unwanted decimal digits in the file number apart from the actual number
+	NSArray *digitsArray =	[fileName componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]];
+
+	NSInteger number = -1;
+	
+	for (int i=0; i<digitsArray.count; i++)
+	{
+		if ([[digitsArray objectAtIndex:i] length] > 0)
+		{
+			//converts the fetched decimal string to integer to avoid having '0' at the beginning of a number.
+			number = [[digitsArray objectAtIndex:i] integerValue];
+			break;
+		}
+	}
 	
 	//substrings the podcast name from the whole title
 	if ([[feedEntry podcastTitle] rangeOfCharacterFromSet:charSet].location != NSNotFound)
@@ -266,28 +285,36 @@
 	[downloadView addSubview:downloadButton];
 	[downloadView addSubview:progressView];
 
-	if (!feedEntry.audioManager) {
+	if ((!feedEntry.audioManager) && [self fileExists])
+	{
 		currentFileName = [[feedEntry podcastDownloadURL] lastPathComponent];
 		
 		filePath = [[[self appDelegate] applicationDocumentsDirectory] stringByAppendingPathComponent:currentFileName];
 		audioURL = [NSURL fileURLWithPath: filePath];
 
 		feedEntry.audioManager = [[NIKAudioManager alloc] initWithURL:audioURL viewController:self title:[feedEntry podcastTitle]];
-	} else {
+	}
+	else if ([self fileExists])
+	{
 		((NIKAudioManager *)(feedEntry.audioManager)).detailViewController = self;
 	}
 	
 	[audioView addSubview:playPauseButton];
-	[((NIKAudioManager *)(feedEntry.audioManager)) refreshButton];
-	[audioView addSubview:seekSlider];
-	[audioView addSubview:fastForward];
-	[audioView addSubview:fastRewind];
-	audioView.userInteractionEnabled = YES;
-
-	//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
-	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-	[[AVAudioSession sharedInstance] setActive: YES error: nil];
+	if (feedEntry.audioManager)
+	{
+		[((NIKAudioManager *)(feedEntry.audioManager)) refreshButton];
+	}
+	if ([self fileExists])
+	{
+		[audioView addSubview:seekSlider];
+		[audioView addSubview:fastForward];
+		[audioView addSubview:fastRewind];
+		audioView.userInteractionEnabled = YES;
 	
+		//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
+		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+		[[AVAudioSession sharedInstance] setActive: YES error: nil];
+	}
 	if ([self fileExists])
 	{
 		[self hideDownloadView];
@@ -298,9 +325,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	
-   [feedEntry.audioManager setSliderChanges];
-	
+
+	if (feedEntry.audioManager)
+	{
+		[feedEntry.audioManager setSliderChanges];
+	}
 }
 
 - (void) hideDownloadView

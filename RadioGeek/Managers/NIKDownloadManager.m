@@ -8,6 +8,7 @@
 
 #import "NIKDownloadManager.h"
 #import "RadioGeek.h"
+#import "NIKAudioManager.h"
 
 @implementation NIKDownloadManager
 @synthesize fileDoesNotExist;
@@ -81,6 +82,18 @@
 	
     [responseData writeToURL: fileURL options:0 error:&writeError];
 	detailViewController.downloadView.hidden = YES; //hide the download view once downloading is finished
+	detailViewController.feedEntry.audioManager = [[NIKAudioManager alloc] initWithURL:fileURL viewController:detailViewController title:[detailViewController.feedEntry podcastTitle]];
+
+	[detailViewController.audioView addSubview:detailViewController.seekSlider];
+	[detailViewController.audioView addSubview:detailViewController.fastForward];
+	[detailViewController.audioView addSubview:detailViewController.fastRewind];
+	detailViewController.audioView.userInteractionEnabled = YES;
+	
+	//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
+	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+	[[AVAudioSession sharedInstance] setActive: YES error: nil];
+
+	
     if( writeError) {
         NSLog(@" Error in writing file %@' : \n %@ ", path , writeError );
         return;
