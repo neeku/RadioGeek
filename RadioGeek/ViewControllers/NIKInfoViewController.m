@@ -20,6 +20,7 @@
 @synthesize infoLabel;
 @synthesize textView;
 @synthesize contactButton;
+@synthesize shareButton;
 @synthesize rateButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -46,19 +47,12 @@
 	NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
     NSString *name= [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey];
     
-	copyrightLabel.text = [NSString stringWithFormat:@"%@ V. %@ \n ©2013 Neeku Shamekhi",name,version];
+	copyrightLabel.text = [NSString stringWithFormat:@"%@ V. %@ \n %@",name,version, COPYRIGHT_TEXT];
     copyrightLabel.font = [UIFont boldSystemFontOfSize:12];
 //    copyrightLabel.userInteractionEnabled = NO;
 	
 	[contactButton setTitle:CONTACT_BUTTON_TITLE forState:UIControlStateNormal];
 	[rateButton setTitle:RATE_BUTTON_TITLE forState:UIControlStateNormal];
-	
-//	MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-//	controller.mailComposeDelegate = self;
-//	[controller setSubject:@"My Subject"];
-//	[controller setMessageBody:@"Hello there." isHTML:NO];
-//	if (controller)
-//		[self presentModalViewController:controller animated:YES];
 	
 }
 
@@ -75,14 +69,16 @@
 
 - (IBAction)launchMailApp:(id)sender
 {
-//	NSString *email = [EMAIL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:email]];
-//	[UIApplication sharedApplication] pr
 
+	//gets device information to include in the email.
+	NSString *deviceModel = [[UIDevice currentDevice] model];
+	NSString *systemName = [[UIDevice currentDevice] systemName];
+	NSString *iOSVersion = [[UIDevice currentDevice] systemVersion];
+	NSString *deviceInfo = [NSString stringWithFormat:@"\n\n\n\n\n%@\n%@ %@",deviceModel, systemName, iOSVersion];
 	MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
 	controller.mailComposeDelegate = self;
-	[controller setSubject:@"My Subject"];
-	[controller setMessageBody:@"Hello there." isHTML:NO];
+	[controller setSubject:@"درباره اپلیکیشن آیفون رادیوگیک"];
+	[controller setMessageBody:deviceInfo isHTML:NO];
 
 	NSArray *toRecipients = [NSArray arrayWithObjects:@"neeku@shamekhi.net",nil];
 	
@@ -91,6 +87,11 @@
 	if (controller)
 		[self presentViewController:controller animated:YES completion:nil];
 
+}
+
+- (IBAction)shareThisApp:(id)sender
+{
+	
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result

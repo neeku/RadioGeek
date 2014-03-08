@@ -9,6 +9,7 @@
 #import "NIKAppDelegate.h"
 
 #import "NIKMasterViewController.h"
+#import "NIKAudioManager.h"
 
 @implementation NIKAppDelegate
 
@@ -75,36 +76,35 @@
 //    return YES;
 //}
 //
-//- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
-//    //if it is a remote control event handle it correctly
-//    if (event.type == UIEventTypeRemoteControl)
-//	{
-//        if (event.subtype == UIEventSubtypeRemoteControlPlay)
-//		{
-//            [self playAudio];
-//        }
-//		else if (event.subtype == UIEventSubtypeRemoteControlPause)
-//		{
-//            [self pauseAudio];
-//        }
-//		else if (event.subtype == UIEventSubtypeRemoteControlTogglePlayPause)
-//		{
-//            [self togglePlayPause];
-//        }
-//		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingBackward)
-//		{
-//			[self rewindTheAudio];
-//		}
-//		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingForward)
-//		{
-//			[self fastForwardTheAudio];
-//		}
-//		//		else if (event.subtype == UIEventSubtypeRemoteControlEndSeekingBackward)
-//		//		{
-//		//			[self seekingEnded];
-//		//		}
-//    }
-//}
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event
+{
+    //if it is a remote control event handle it correctly
+    if (event.type == UIEventTypeRemoteControl && currentAudioManager != nil)
+	{
+        if (event.subtype == UIEventSubtypeRemoteControlPlay)
+		{
+			[currentAudioManager playAudio];
+			//            [[NIKDetailViewController sharedController].feedEntry.audioManager playAudio];
+			
+        }
+		else if (event.subtype == UIEventSubtypeRemoteControlPause)
+		{
+            [currentAudioManager pauseAudio];
+        }
+		else if (event.subtype == UIEventSubtypeRemoteControlTogglePlayPause)
+		{
+            [currentAudioManager togglePlayPause];
+        }
+		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingBackward)
+		{
+			[currentAudioManager rewindTheAudio];
+		}
+		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingForward)
+		{
+			[currentAudioManager fastForwardTheAudio];
+		}
+	}
+}
 
 #pragma mark - Application's directories
 

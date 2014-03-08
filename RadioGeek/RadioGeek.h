@@ -40,7 +40,7 @@
 #define EMAIL @"mailto:neeku@shamekhi.net?subject=رادیو گیک"
 #define CONTACT_BUTTON_TITLE @"ارسال نظرات"
 #define RATE_BUTTON_TITLE @"امتیازدهی در App Store"
-
+#define COPYRIGHT_TEXT @"©2014 Neeku Shamekhi"
 #pragma mark - Persian Fonts 
 //Persian font configurations
 

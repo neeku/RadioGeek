@@ -171,8 +171,9 @@
     return YES;
 }
 
-- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
-    //if it is a remote control event handle it correctly
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event
+{
+	//if it is a remote control event handle it correctly
     if (event.type == UIEventTypeRemoteControl)
 	{
         if (event.subtype == UIEventSubtypeRemoteControlPlay)

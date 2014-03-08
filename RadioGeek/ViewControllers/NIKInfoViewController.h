@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 @property (weak, nonatomic) IBOutlet UIButton *contactButton;
 @property (weak, nonatomic) IBOutlet UIButton *rateButton;
+@property (weak, nonatomic) IBOutlet UIButton *shareButton;
+
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result
@@ -22,5 +24,6 @@
 
 - (IBAction)dismiss:(id)sender;
 - (IBAction)launchMailApp:(id)sender;
+- (IBAction)shareThisApp:(id)sender;
 
 @end

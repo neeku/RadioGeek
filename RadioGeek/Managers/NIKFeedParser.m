@@ -283,7 +283,7 @@ NIKMasterViewController *masterVC;
 		}
 		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://thepa.owowspace.com/geek"].length!=0))
 		{
-			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://thepa.owowspace.com/geek" withString:@"http://rg.tori.ir"];
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://thepa.owowspace.com/geek" withString:@"http://rg.tori.ir/audio"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
 		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://cdn.tori.ir"].length != 0))

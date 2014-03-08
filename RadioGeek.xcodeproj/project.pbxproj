@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D915B87918B6CDFF00A94919 /* equalizer12.gif in Resources */ = {isa = PBXBuildFile; fileRef = D915B87818B6CDFF00A94919 /* equalizer12.gif */; };
+		D915B88418B76AA900A94919 /* equalizer1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B87A18B76AA900A94919 /* equalizer1@2x.png */; };
+		D915B88518B76AA900A94919 /* equalizer2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B87B18B76AA900A94919 /* equalizer2@2x.png */; };
+		D915B88618B76AA900A94919 /* equalizer3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B87C18B76AA900A94919 /* equalizer3@2x.png */; };
+		D915B88718B76AA900A94919 /* equalizer4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B87D18B76AA900A94919 /* equalizer4@2x.png */; };
+		D915B88818B76AA900A94919 /* equalizer5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B87E18B76AA900A94919 /* equalizer5@2x.png */; };
+		D915B88918B76AA900A94919 /* equalizer6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B87F18B76AA900A94919 /* equalizer6@2x.png */; };
+		D915B88A18B76AA900A94919 /* equalizer7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B88018B76AA900A94919 /* equalizer7@2x.png */; };
+		D915B88B18B76AA900A94919 /* equalizer8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B88118B76AA900A94919 /* equalizer8@2x.png */; };
+		D915B88C18B76AA900A94919 /* equalizer9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B88218B76AA900A94919 /* equalizer9@2x.png */; };
+		D915B88D18B76AA900A94919 /* equalizer10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D915B88318B76AA900A94919 /* equalizer10@2x.png */; };
 		D9305EA31844D0FE0019DA08 /* NIKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9305EA21844D0FE0019DA08 /* NIKPlayer.m */; };
 		D930972018361A2800DC1BCE /* NIKDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D930971B18361A2800DC1BCE /* NIKDetailViewController.m */; };
 		D930972118361A2800DC1BCE /* NIKInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D930971D18361A2800DC1BCE /* NIKInfoViewController.m */; };
@@ -106,6 +117,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D915B87818B6CDFF00A94919 /* equalizer12.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = equalizer12.gif; sourceTree = "<group>"; };
+		D915B87A18B76AA900A94919 /* equalizer1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer1@2x.png"; sourceTree = "<group>"; };
+		D915B87B18B76AA900A94919 /* equalizer2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer2@2x.png"; sourceTree = "<group>"; };
+		D915B87C18B76AA900A94919 /* equalizer3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer3@2x.png"; sourceTree = "<group>"; };
+		D915B87D18B76AA900A94919 /* equalizer4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer4@2x.png"; sourceTree = "<group>"; };
+		D915B87E18B76AA900A94919 /* equalizer5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer5@2x.png"; sourceTree = "<group>"; };
+		D915B87F18B76AA900A94919 /* equalizer6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer6@2x.png"; sourceTree = "<group>"; };
+		D915B88018B76AA900A94919 /* equalizer7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer7@2x.png"; sourceTree = "<group>"; };
+		D915B88118B76AA900A94919 /* equalizer8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer8@2x.png"; sourceTree = "<group>"; };
+		D915B88218B76AA900A94919 /* equalizer9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer9@2x.png"; sourceTree = "<group>"; };
+		D915B88318B76AA900A94919 /* equalizer10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "equalizer10@2x.png"; sourceTree = "<group>"; };
 		D9305EA11844D0FE0019DA08 /* NIKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKPlayer.h; sourceTree = "<group>"; };
 		D9305EA21844D0FE0019DA08 /* NIKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKPlayer.m; sourceTree = "<group>"; };
 		D930971A18361A2800DC1BCE /* NIKDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKDetailViewController.h; sourceTree = "<group>"; };
@@ -363,6 +385,17 @@
 		D9ABA7F3183559350073E431 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D915B87A18B76AA900A94919 /* equalizer1@2x.png */,
+				D915B87B18B76AA900A94919 /* equalizer2@2x.png */,
+				D915B87C18B76AA900A94919 /* equalizer3@2x.png */,
+				D915B87D18B76AA900A94919 /* equalizer4@2x.png */,
+				D915B87E18B76AA900A94919 /* equalizer5@2x.png */,
+				D915B87F18B76AA900A94919 /* equalizer6@2x.png */,
+				D915B88018B76AA900A94919 /* equalizer7@2x.png */,
+				D915B88118B76AA900A94919 /* equalizer8@2x.png */,
+				D915B88218B76AA900A94919 /* equalizer9@2x.png */,
+				D915B88318B76AA900A94919 /* equalizer10@2x.png */,
+				D915B87818B6CDFF00A94919 /* equalizer12.gif */,
 				D9AA83DB183D476300FBB827 /* speaker_mute@2x.png */,
 				D9AA83DC183D476300FBB827 /* speaker@2x.png */,
 				D9AA83D5183D370B00FBB827 /* player_fastforward@2x.png */,
@@ -612,6 +645,7 @@
 				D9ABA7FA183559600073E431 /* XB RoyaBd.ttf in Resources */,
 				D9353C69184B4417009B38DE /* RadioGeekAllEpisodes.rss in Resources */,
 				D930973D18361B6500DC1BCE /* Persian.strings in Resources */,
+				D915B88918B76AA900A94919 /* equalizer6@2x.png in Resources */,
 				D945F6251838E6FF00B5814C /* IranNastaliq.ttf in Resources */,
 				D93097601837C52E00DC1BCE /* Arial.ttf in Resources */,
 				D930975F1837C52E00DC1BCE /* Arial Italic.ttf in Resources */,
@@ -620,20 +654,27 @@
 				D9EE23C1184E7CAC001A6C38 /* RGeek.plist in Resources */,
 				D945F6361838F61900B5814C /* X Yekan Italic.ttf in Resources */,
 				D93097621837C59500DC1BCE /* Tahoma.ttf in Resources */,
+				D915B88418B76AA900A94919 /* equalizer1@2x.png in Resources */,
 				D9A6DD181840BFDA00816C59 /* jadi5.mp3 in Resources */,
 				D9353C67184A10E3009B38DE /* RadioGeek.rss in Resources */,
 				D930975E1837C52E00DC1BCE /* Arial Bold.ttf in Resources */,
+				D915B88518B76AA900A94919 /* equalizer2@2x.png in Resources */,
 				D93097641837C5D100DC1BCE /* Times New Roman.ttf in Resources */,
+				D915B88A18B76AA900A94919 /* equalizer7@2x.png in Resources */,
 				D93097541837909A00DC1BCE /* BTabassom.ttf in Resources */,
 				D930974518365AA700DC1BCE /* iRate.bundle in Resources */,
 				D9AA83D7183D370B00FBB827 /* player_fastforward@2x.png in Resources */,
 				D945F62C1838F5B500B5814C /* X Nazanin Bold.ttf in Resources */,
+				D915B87918B6CDFF00A94919 /* equalizer12.gif in Resources */,
 				D9AA83E2183D529B00FBB827 /* X Yekan.ttf in Resources */,
 				D9AA83D8183D370B00FBB827 /* player_fastrewind@2x.png in Resources */,
 				D9AA83DE183D476300FBB827 /* speaker@2x.png in Resources */,
 				D9AA83E0183D4D8100FBB827 /* player_fastrewindcp@2x.png in Resources */,
 				D945F6351838F61900B5814C /* X Vahid.ttf in Resources */,
+				D915B88B18B76AA900A94919 /* equalizer8@2x.png in Resources */,
 				D945F62B1838F5B500B5814C /* X Nazanin Bold Italic.ttf in Resources */,
+				D915B88D18B76AA900A94919 /* equalizer10@2x.png in Resources */,
+				D915B88C18B76AA900A94919 /* equalizer9@2x.png in Resources */,
 				D930974618378A0200DC1BCE /* Main_iPhone.storyboard in Resources */,
 				D930974718378A0200DC1BCE /* Main_iPad.storyboard in Resources */,
 				D945F6371838F61900B5814C /* X Yekan.ttf in Resources */,
@@ -643,9 +684,12 @@
 				D930973918361B1D00DC1BCE /* htmlPattern.html in Resources */,
 				D9AA83DA183D39BB00FBB827 /* player_fastforwardcp@2x.png in Resources */,
 				D9A6DD191840BFDA00816C59 /* jadi.mp3 in Resources */,
+				D915B88718B76AA900A94919 /* equalizer4@2x.png in Resources */,
 				D9309756183791FF00DC1BCE /* Mj_Tye.ttf in Resources */,
 				D945F62F1838F5B500B5814C /* X Nazanin.ttf in Resources */,
+				D915B88618B76AA900A94919 /* equalizer3@2x.png in Resources */,
 				D9AA838E183CDBBF00FBB827 /* player_pause@2x.png in Resources */,
+				D915B88818B76AA900A94919 /* equalizer5@2x.png in Resources */,
 				D930973B18361B4800DC1BCE /* Background.png in Resources */,
 				D9F3B092181C40740042A44A /* InfoPlist.strings in Resources */,
 				D945F62E1838F5B500B5814C /* X Nazanin Outline.ttf in Resources */,

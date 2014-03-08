@@ -34,6 +34,27 @@
 @synthesize isAlreadyLoaded;
 @synthesize RSSURL;
 
+static NSMutableArray *imageArray;
+static UIImage *frame;
+
++ (void) initialize
+{
+	imageArray = [[NSMutableArray alloc] init];
+	for(NSUInteger i = 1; i <= 10; i++)
+	{
+		UIImage *frame = [UIImage imageNamed:[NSString stringWithFormat:@"equalizer%lu",(unsigned long)i]];
+		if(frame)
+		{
+			[imageArray addObject:frame];
+		}
+		else
+		{
+			// handle if image is not there
+		}
+		frame = nil;
+	}
+}
+
 - (NIKAppDelegate *) appDelegate
 {
 	// Get the instance of your delegate created by the framework when the app starts
@@ -54,12 +75,7 @@
 	[feedParser setDelegate:self];
     [feedParser startProcess];
     [self startActivity:nil];
-	
 }
-
-
-
-
 
 #pragma mark -
 #pragma mark RSSParserDelegate
@@ -309,9 +325,18 @@
     label = (UILabel *)[cell viewWithTag:20];
     label.text = [NSHFarsiNumerals convertNumeralsToFarsi:[formatter stringFromDate:[entry podcastDate]]];
 	label.font = [UIFont fontWithName:@"B Nazanin" size:10.0];
+	
+	
+	//adds a small animating equilizer to whichever podcast that is currently playing.
+	equalizer = (UIImageView *) [cell viewWithTag:30];
+	equalizer.hidden = YES;
+	if (entry.audioManager && [entry.audioManager soundPlayer].isPlaying)
+	{
+		equalizer.hidden = NO;
+		[self animateTheEqualizer];
+	}
     return cell;
 }
-
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -364,6 +389,11 @@
     [self resignFirstResponder];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	[self.tableView reloadData];
+}
 
 
 //Make sure we can recieve remote control events
@@ -371,33 +401,42 @@
     return YES;
 }
 
-//- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
-//    //if it is a remote control event handle it correctly
-//    if (event.type == UIEventTypeRemoteControl)
-//	{
-//        if (event.subtype == UIEventSubtypeRemoteControlPlay)
-//		{
-//            [[NIKDetailViewController sharedController] playAudio];
-//        }
-//		else if (event.subtype == UIEventSubtypeRemoteControlPause)
-//		{
-//            [[NIKDetailViewController sharedController] pauseAudio];
-//        }
-//		else if (event.subtype == UIEventSubtypeRemoteControlTogglePlayPause)
-//		{
-//            [[NIKDetailViewController sharedController] togglePlayPause];
-//        }
-//		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingBackward)
-//		{
-//			[[NIKDetailViewController sharedController] rewindTheAudio];
-//		}
-//		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingForward)
-//		{
-//			[[NIKDetailViewController sharedController] fastForwardTheAudio];
-//		}
-//	}
-//}
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event
+{
+    //if it is a remote control event handle it correctly
+    if (event.type == UIEventTypeRemoteControl && currentAudioManager != nil)
+	{
+        if (event.subtype == UIEventSubtypeRemoteControlPlay)
+		{
+			[currentAudioManager playAudio];
+//            [[NIKDetailViewController sharedController].feedEntry.audioManager playAudio];
+			
+        }
+		else if (event.subtype == UIEventSubtypeRemoteControlPause)
+		{
+            [currentAudioManager pauseAudio];
+        }
+		else if (event.subtype == UIEventSubtypeRemoteControlTogglePlayPause)
+		{
+            [currentAudioManager togglePlayPause];
+        }
+		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingBackward)
+		{
+			[currentAudioManager rewindTheAudio];
+		}
+		else if (event.subtype == UIEventSubtypeRemoteControlBeginSeekingForward)
+		{
+			[currentAudioManager fastForwardTheAudio];
+		}
+	}
+}
 
+//creates an animated equalizer image for the currently playing podcast.
+- (void)animateTheEqualizer
+{
+	equalizer.animationImages = imageArray;
+	[equalizer startAnimating];
+}
 
 + (NIKMasterViewController *)sharedController
 {

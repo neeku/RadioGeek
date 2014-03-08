@@ -24,6 +24,7 @@
 	NSMutableArray *urlArray;
 	NSError *errooor;
 	NSMutableArray *GUIDs;
+	UIImageView *equalizer;
 
 }
 @property (strong, nonatomic) NIKDetailViewController *detailViewController;
@@ -46,6 +47,7 @@
 
 - (void) loadFeedURL;
 + (NIKMasterViewController *)sharedController;
++ (void) initialize;
 
 
 @end
@@ -54,5 +56,6 @@
 
 - (void)parserDidCompleteParsing;
 - (void)parserHasError:(NSError *)error;
+- (void)markEntryAsPlaying: (NIKFeedEntry*)feedEntry;
 
 @end
