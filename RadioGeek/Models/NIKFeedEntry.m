@@ -8,6 +8,7 @@
 
 #import "NIKFeedEntry.h"
 
+
 @implementation NIKFeedEntry
 
 @synthesize lastBuildDate;
@@ -26,14 +27,14 @@
 @synthesize downloadManager;
 @synthesize audioManager;
 
-- (id)initWithPodcastTitle:(NSString *)podcastTitle podcastDate:(NSDate *)podcastDate podcastGUID:(NSString *)podcastGUID podcastSummary:(NSString *)podcastSummary podcastContent:(NSString *)podcastContent podcastDownloadURL:(NSString *)podcastDownloadURL
+- (id)initWithPodcastTitle:(NSString *)aPodcastTitle podcastDate:(NSDate *)aPodcastDate podcastGUID:(NSString *)aPodcastGUID podcastSummary:(NSString *)aPodcastSummary podcastContent:(NSString *)aPodcastContent podcastDownloadURL:(NSString *)aPodcastDownloadURL
 {
-	[self setPodcastTitle: podcastTitle];
-	[self setPodcastDate: podcastDate];
-	[self setPodcastGUID: podcastGUID];
-	[self setPodcastSummary: podcastSummary];
-	[self setPodcastContent: podcastContent];
-	[self setPodcastDownloadURL: podcastDownloadURL];
+	[self setPodcastTitle: aPodcastTitle];
+	[self setPodcastDate: aPodcastDate];
+	[self setPodcastGUID: aPodcastGUID];
+	[self setPodcastSummary: aPodcastSummary];
+	[self setPodcastContent: aPodcastContent];
+	[self setPodcastDownloadURL: aPodcastDownloadURL];
 
 	return self;
 }

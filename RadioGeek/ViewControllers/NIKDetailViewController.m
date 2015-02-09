@@ -39,6 +39,7 @@
 @synthesize remainingTime;
 @synthesize playerButton;
 @synthesize deleteButton;
+
 #pragma mark - Managing the view
 
 
@@ -75,6 +76,7 @@
 - (IBAction)deleteTheFile:(id)sender
 {
 	UIAlertView *deleteAlertView = [[UIAlertView alloc] initWithTitle:DELETE_CONFIRMATION_ALERT_TITLE message:DELETE_WARNING_MESSAGE delegate:self cancelButtonTitle:DELETE_CANCEL_BUTTON_TITLE otherButtonTitles:OTHER_BUTTON_TITLE, nil];
+	
 	[deleteAlertView show];
 }
 
@@ -87,15 +89,18 @@
     }
 	else
 	{
-		//reset clicked
-		NSLog(@"delete");
+		//delete clicked
+		NSLog(@"deleted");
 		NSError *error;
 		NSLog(@"url:%@",[feedEntry podcastDownloadURL]);
 		
 		currentFileName = [[feedEntry podcastDownloadURL] lastPathComponent];
 		
 		filePath = [[[self appDelegate] applicationDocumentsDirectory] stringByAppendingPathComponent:currentFileName];
-		
+
+		[self hideAudioView];
+		self.downloadView.hidden = NO;
+		[self reloadInputViews];
 		if ([[NSFileManager defaultManager] isDeletableFileAtPath:filePath])
 		{
 			BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
@@ -278,13 +283,13 @@
 	
 	titleLabel.text = title;
 	titleLabel.textAlignment = NSTextAlignmentCenter;
-	
+	[titleLabel setFont:[UIFont fontWithName:@"XM Yekan" size:17.0]];
 	descriptionText.text = content;
 	[descriptionText setTextAlignment:NSTextAlignmentCenter];
-	[descriptionText setFont:[UIFont fontWithName:@"BNazanin" size:14.0]];
-	
+	[descriptionText setFont:[UIFont fontWithName:@"XM Yekan" size:12.5]];
 	[downloadView addSubview:downloadButton];
 	[downloadView addSubview:progressView];
+	[downloadButton.titleLabel setFont:[UIFont fontWithName:@"XM Yekan" size:13]];
 
 	if ((!feedEntry.audioManager) && [self fileExists])
 	{
@@ -311,7 +316,7 @@
 		[audioView addSubview:fastForward];
 		[audioView addSubview:fastRewind];
 		audioView.userInteractionEnabled = YES;
-	
+		[deleteButton.titleLabel setFont:[UIFont fontWithName:@"XM Yekan" size:14]];
 		//Make sure the system follows our playback status - to support the playback when the app enters the background mode.
 		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 		[[AVAudioSession sharedInstance] setActive: YES error: nil];
@@ -319,6 +324,20 @@
 	if ([self fileExists])
 	{
 		[self hideDownloadView];
+	}
+	
+	// *** Mark the directory as excluded from iCloud backups
+	NSError *error;
+	NSURL *docsURL = [NSURL fileURLWithPath:[[self appDelegate] applicationDocumentsDirectory]];
+	
+	if (![docsURL setResourceValue:[NSNumber numberWithBool:YES]
+							forKey:NSURLIsExcludedFromBackupKey
+							 error:&error])
+	{
+		NSLog(@"Error excluding %@ from backup %@", [docsURL lastPathComponent], error.localizedDescription);
+	}
+	else {
+		NSLog(@"excluded");
 	}
 	
 }
@@ -346,6 +365,10 @@
 	if (!audioView.hidden)
 	{
 		audioView.hidden = YES;
+//		UIView *parent = self.view.superview;
+//		[self.view removeFromSuperview];
+//		self.view = nil; // unloads the view
+//		[parent addSubview:self.view]; //reloads the view from the nib
 	}
 }
 

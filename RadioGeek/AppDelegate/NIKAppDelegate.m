@@ -10,6 +10,7 @@
 
 #import "NIKMasterViewController.h"
 #import "NIKAudioManager.h"
+#import "Flurry.h"
 
 @implementation NIKAppDelegate
 
@@ -38,7 +39,7 @@
 	//for iphone 3.5" and 4" displays
 	self.window.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height);
 	
-
+	[Flurry startSession:@"ZS3H7JJ5K52RP7M67XZB"];
     return YES;
 }
 							

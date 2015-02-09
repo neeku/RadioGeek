@@ -16,8 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *contactButton;
 @property (weak, nonatomic) IBOutlet UIButton *rateButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
-
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet UITextView *copyrightTextView;
+@property (weak, nonatomic) IBOutlet UIButton *returnButton;
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result
 						error:(NSError*)error;
@@ -25,5 +25,9 @@
 - (IBAction)dismiss:(id)sender;
 - (IBAction)launchMailApp:(id)sender;
 - (IBAction)shareThisApp:(id)sender;
+- (IBAction)rateThisApp:(id)sender;
+
++ (NIKInfoViewController *)sharedController;
+
 
 @end

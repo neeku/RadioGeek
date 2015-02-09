@@ -14,6 +14,7 @@
 #import "RadioGeek.h"
 #import "NIKDownloadManager.h"
 #import "NIKAudioManager.h"
+#import "NIKInfoViewController.h"
 
 @interface NIKMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -155,6 +156,7 @@ static UIImage *frame;
 	NSString *destinationPath;
 	NSURL *destinationURL;
 	
+	NSURL *url = [NSURL fileURLWithPath:[appDelegate applicationSupportDirectory]];
 
 	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"])
@@ -168,19 +170,18 @@ static UIImage *frame;
 			if (![[NSFileManager defaultManager] createDirectoryAtPath:[appDelegate applicationSupportDirectory] withIntermediateDirectories:YES attributes:nil error:&error]) {
 				NSLog(@"%@", error.localizedDescription);
 			}
-			else {
-				// *** OPTIONAL *** Mark the directory as excluded from iCloud backups
-				NSURL *url = [NSURL fileURLWithPath:[appDelegate applicationSupportDirectory]];
-				if (![url setResourceValue:[NSNumber numberWithBool:YES]
-									forKey:NSURLIsExcludedFromBackupKey
-									 error:&error])
-				{
-					NSLog(@"Error excluding %@ from backup %@", [url lastPathComponent], error.localizedDescription);
-				}
-				else {
-					NSLog(@"Yay");
-				}
+			
+			//*** Mark the directory as excluded from iCloud backups
+			if (![url setResourceValue:[NSNumber numberWithBool:YES]
+								forKey:NSURLIsExcludedFromBackupKey
+								 error:&error])
+			{
+				NSLog(@"Error excluding %@ from backup %@", [url lastPathComponent], error.localizedDescription);
 			}
+			else {
+				NSLog(@"Yay");
+			}
+			
 			// file URL in our bundle
 			NSURL *fileFromBundle = [[NSBundle mainBundle]URLForResource:@"RGeek" withExtension:@"plist"];
 			
@@ -195,20 +196,20 @@ static UIImage *frame;
 	}
 	[self loadFeedURL];
 
-//	//	NSMutableArray *GUIDs;
-//
-//	GUIDs = [[NSMutableArray alloc] init];
-//	
-////	NSLog(@"%@",[[NIKFeedEntry sharedEntry] podcastGUID]);
-//	for (int i = 0; i < [feedParser feedItems].count; i++) {
-//		[GUIDs insertObject:[[[feedParser feedItems] objectAtIndex:i] podcastGUID] atIndex:i];
-//	}
-//	[self saveData:GUIDs];
-//	
-//	NSString *destinPath = [[appDelegate applicationSupportDirectory] stringByAppendingPathComponent:@"RDGeek.plist"];
-//	[feedParser.feedItems writeToFile:destinPath atomically:YES];
-//	
-//	NSLog(@"%@",destinPath);
+//	NSMutableArray *GUIDs;
+
+	GUIDs = [[NSMutableArray alloc] init];
+	
+//	NSLog(@"%@",[[NIKFeedEntry sharedEntry] podcastGUID]);
+	for (int i = 0; i < [feedParser feedItems].count; i++) {
+		[GUIDs insertObject:[[[feedParser feedItems] objectAtIndex:i] podcastGUID] atIndex:i];
+	}
+	[self saveData:GUIDs];
+	
+	NSString *destinPath = [[appDelegate applicationSupportDirectory] stringByAppendingPathComponent:@"RDGeek.plist"];
+	[feedParser.feedItems writeToFile:destinPath atomically:YES];
+	
+	NSLog(@"%@",destinPath);
 	
 	
 	
@@ -227,7 +228,10 @@ static UIImage *frame;
 	UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
 	self.navigationItem.titleView = titleLabel;
 	titleLabel.text = NAV_BAR_TITLE;
-	titleLabel.font = [UIFont fontWithName:@"X Vahid" size:15.0];
+//	titleLabel.font = [UIFont fontWithName:@"" size:16.0];
+	[titleLabel setFont:[UIFont fontWithName:@"BTitrBold" size:16]];
+	[titleLabel setShadowOffset:CGSizeMake(-0.5, 0.5)];
+	[titleLabel setShadowColor:[UIColor lightGrayColor]];
 	titleLabel.textAlignment = NSTextAlignmentCenter;
 }
 
@@ -321,10 +325,10 @@ static UIImage *frame;
 	//tags are set for each label in storyboard
     label = (UILabel *)[cell viewWithTag:10];
     label.text =  title;
-	label.font = [UIFont fontWithName:@"B Nazanin" size:20.0];
+	label.font = [UIFont fontWithName:@"XM Yekan" size:14.0];
     label = (UILabel *)[cell viewWithTag:20];
     label.text = [NSHFarsiNumerals convertNumeralsToFarsi:[formatter stringFromDate:[entry podcastDate]]];
-	label.font = [UIFont fontWithName:@"B Nazanin" size:10.0];
+	label.font = [UIFont fontWithName:@"XM Yekan" size:10.0];
 	
 	
 	//adds a small animating equilizer to whichever podcast that is currently playing.
@@ -355,10 +359,13 @@ static UIImage *frame;
 			((NIKAudioManager *)feedItem.audioManager).detailViewController = detailViewController;
 		}
     }
-	else
+	else if ([[segue identifier] isEqualToString:@"showInfo"])
 	{
-        NSLog(@"Segue Identifier: %@", segue.identifier);
-    }
+		NIKInfoViewController *infoViewController;
+//		= (NIKInfoViewController *) segue.destinationViewController;
+		infoViewController = segue.destinationViewController;
+//		[self presentViewController:infoViewController animated:YES completion:NULL];
+	}
 	
 }
 

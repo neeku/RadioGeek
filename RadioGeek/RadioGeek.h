@@ -36,11 +36,13 @@
 #pragma mark - NIKInfoViewController
 
 //info label text in info vc
-#define INFO_TEXT @"رادیویی برای کسانی که تکنولوژی براشون فقط تلاش دائمی برای خوندن و حفظ اینکه فلان مدل بهمان چیز فرقش با اون یکی مدل اون یکی کارخونه چیه و تو بازار چنده و شایعه اینکه قراره کی مدل مثلا خفن‌ترش بیاد نیست و ترجیح می‌دن یک پله عمیق تر بشن و تو تقاطع تکنولوژی و جامعه، دغدغه‌های انسانی‌شون رو مطرح کنن. رادیو گیک برای گیک های سرگردان در تقاطع جامعه و تکنولوژی.";
+#define INFO_TEXT @"رادیو گیک، رادیوییست از گیک خوشحال و خندون، جادی، برای گیک‌ها و رادیویی شاد برای همه هکرها!\nرادیویی برای کسانی که تکنولوژی براشون فقط تلاش دائمی برای خوندن و حفظ اینکه فلان مدل بهمان چیز فرقش با اون یکی مدل اون یکی کارخونه چیه و تو بازار چنده و شایعه اینکه قراره کی مدل مثلا خفن‌ترش بیاد نیست و ترجیح می‌دن یک پله عمیق‌تر بشن و تو تقاطع تکنولوژی و جامعه، دغدغه‌های انسانیشون رو مطرح کنن. رادیو گیک برای گیک‌های سرگردان در تقاطع جامعه و تکنولوژی.";
 #define EMAIL @"mailto:neeku@shamekhi.net?subject=رادیو گیک"
 #define CONTACT_BUTTON_TITLE @"ارسال نظرات"
+#define SHARE_BUTTON_TITLE @"پیشنهاد رادیوگیک به دوستان"
 #define RATE_BUTTON_TITLE @"امتیازدهی در App Store"
-#define COPYRIGHT_TEXT @"©2014 Neeku Shamekhi"
+#define RETURN_BUTTON_TITLE @"بازگشت"
+#define COPYRIGHT_TEXT @"©\u00a02015 Tauris Ltd.\nwww.taur.is"
 #pragma mark - Persian Fonts 
 //Persian font configurations
 
@@ -61,10 +63,12 @@
 #pragma mark - iRate
 //'Rate-Us on App Store' message configuration
 
-#define RATE_US_MESSAGE @"If you enjoy playing %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"
-#define RATE_US_DEFAULT_MESSAGE @"If you enjoy using %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"
-#define CANCEL_BUTTON_LABEL @"No, Thanks"
-#define RATE_BUTTON_LABEL @"Rate It Now"
-#define REMIND_BUTTON_LABEL @"Remind Me Later"
+#define RATE_US_TITLE_MESSAGE @"اگر از %@ لذت می‌برید، لطفاً به آن امتیاز دهید!"
+#define RATE_US_DEFAULT_MESSAGE @""
+#define CANCEL_BUTTON_LABEL @"نه، متشکرم"
+#define RATE_BUTTON_LABEL @"بله، حتماً"
+#define REMIND_BUTTON_LABEL @"بعداً"
+
+
 
 #endif

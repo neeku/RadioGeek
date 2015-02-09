@@ -39,6 +39,17 @@ NIKMasterViewController *masterVC;
 @synthesize item;
 @synthesize guidDictionary;
 
+- (void)encodeWithCoder:(NSCoder *)enCoder {
+
+	return;
+	}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	
+	return self;
+}
+
+
 - (id)initWithRSSURL:(NSURL *)rssURL{
     self = [super init];
     if (self) {
@@ -173,8 +184,8 @@ NIKMasterViewController *masterVC;
 {
 	//Reads the presaved data from the plist in application support directory.
 	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
-	//	[items writeToFile:destinPath atomically:YES];
-	//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	[items writeToFile:destinPath atomically:YES];
+	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
 	
 	
 	
@@ -273,17 +284,17 @@ NIKMasterViewController *masterVC;
 		parseElement = YES;
 		if (([urlType  isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://jadi.net"].length != 0))
 		{
-			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadi.net" withString:@"http://rg.tori.ir"];
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadi.net" withString:@"http://cdn.tori.ir"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
 		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://jadi2.undo.it"].length!= 0))
 		{
-			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadie.undo.it" withString:@"http://rg.tori.ir"];
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://jadie.undo.it" withString:@"http://cdn.tori.ir"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
 		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://thepa.owowspace.com/geek"].length!=0))
 		{
-			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://thepa.owowspace.com/geek" withString:@"http://rg.tori.ir/audio"];
+			downloadURL = [urlValue stringByReplacingOccurrencesOfString:@"http://thepa.owowspace.com/geek" withString:@"http://cdn.tori.ir/audio"];
 			[currentItem setPodcastDownloadURL:downloadURL];
 		}
 		else if (([urlType isEqualToString:@"audio/mpeg"] || [urlType isEqualToString:@"audio/mp3"]) && ([urlValue rangeOfString:@"http://cdn.tori.ir"].length != 0))
@@ -465,8 +476,8 @@ NIKMasterViewController *masterVC;
 	NSLog(@"parseErrorOccured: recovery suggestions: %@",[parseError localizedRecoverySuggestion]);
 	//Reads the presaved data from the plist in application support directory.
 	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
-	//	[items writeToFile:destinPath atomically:YES];
-	//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	[items writeToFile:destinPath atomically:YES];
+	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
 	
 	
 	
@@ -539,8 +550,8 @@ NIKMasterViewController *masterVC;
 	
 	//Reads the presaved data from the plist in application support directory.
 	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
-//	[items writeToFile:destinPath atomically:YES];
-//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	[items writeToFile:destinPath atomically:YES];
+	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
 
 	
 	

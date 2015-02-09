@@ -25,7 +25,7 @@
 		<key>Date</key>
 		<date>2012-03-10T08:58:29Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi.net_radio-geek_000-dragon-pirates.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi.net_radio-geek_000-dragon-pirates.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=6961</string>
 		<key>Summary</key>
@@ -48,7 +48,7 @@
 		<key>Date</key>
 		<date>2012-03-18T06:15:46Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_001_singularity.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_001_singularity.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7031</string>
 		<key>Summary</key>
@@ -112,7 +112,7 @@
 		<key>Date</key>
 		<date>2012-03-25T06:16:10Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_002_space-and-beyond.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_002_space-and-beyond.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7067</string>
 		<key>Summary</key>
@@ -169,7 +169,7 @@
 		<key>Date</key>
 		<date>2012-04-01T08:58:35Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_003_ghoole_bazare_makkare.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_003_ghoole_bazare_makkare.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7119</string>
 		<key>Summary</key>
@@ -226,7 +226,7 @@
 		<key>Date</key>
 		<date>2012-04-08T07:04:11Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_004_ashke-maahi-haa.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_004_ashke-maahi-haa.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7237</string>
 		<key>Summary</key>
@@ -303,7 +303,7 @@
 		<key>Date</key>
 		<date>2012-04-15T06:57:20Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_005_hackers_vs_masters.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_005_hackers_vs_masters.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7347</string>
 		<key>Summary</key>
@@ -372,7 +372,7 @@
 		<key>Date</key>
 		<date>2012-04-22T05:02:09Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_006_shahre_viran.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_006_shahre_viran.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7435</string>
 		<key>Summary</key>
@@ -471,7 +471,7 @@
 		<key>Date</key>
 		<date>2012-05-13T06:02:55Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_007_do_hafte_sokoot.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_007_do_hafte_sokoot.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7497</string>
 		<key>Summary</key>
@@ -567,7 +567,7 @@
 		<key>Date</key>
 		<date>2012-05-20T05:52:45Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_008_mechanical_turk.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_008_mechanical_turk.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7563</string>
 		<key>Summary</key>
@@ -637,7 +637,7 @@
 		<key>Date</key>
 		<date>2012-05-27T07:56:34Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_009_how-to-be-happy.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_009_how-to-be-happy.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7595</string>
 		<key>Summary</key>
@@ -714,7 +714,7 @@
 		<key>Date</key>
 		<date>2012-06-10T05:53:08Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_010_ray_451.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_010_ray_451.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7672</string>
 		<key>Summary</key>
@@ -796,7 +796,7 @@
 		<key>Date</key>
 		<date>2012-06-24T13:10:37Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_011_nalootiha.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_011_nalootiha.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7753</string>
 		<key>Summary</key>
@@ -893,7 +893,7 @@
 		<key>Date</key>
 		<date>2012-07-08T10:37:20Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_012_maloome-khob-shalite.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_012_maloome-khob-shalite.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7813</string>
 		<key>Summary</key>
@@ -994,7 +994,7 @@
 		<key>Date</key>
 		<date>2012-07-28T06:00:09Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_013_deshneh.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_013_deshneh.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7888</string>
 		<key>Summary</key>
@@ -1070,7 +1070,7 @@
 		<key>Date</key>
 		<date>2012-08-12T12:04:49Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_014_nofooze_ettelaat.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_014_nofooze_ettelaat.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=7929</string>
 		<key>Summary</key>
@@ -1160,7 +1160,7 @@
 		<key>Date</key>
 		<date>2012-08-26T15:47:59Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_015_faryad_bekeshid.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_015_faryad_bekeshid.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8000</string>
 		<key>Summary</key>
@@ -1268,7 +1268,7 @@
 		<key>Date</key>
 		<date>2012-09-16T12:18:22Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_016_friedmans_dream.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_016_friedmans_dream.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8037</string>
 		<key>Summary</key>
@@ -1364,7 +1364,7 @@
 		<key>Date</key>
 		<date>2012-10-15T13:08:00Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_017_hash-hash-hash.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_017_hash-hash-hash.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8125</string>
 		<key>Summary</key>
@@ -1394,7 +1394,7 @@
 		<key>Date</key>
 		<date>2012-10-28T14:50:56Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_018_Kurt-Vonnegut_Harrison-Bergeron.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_018_Kurt-Vonnegut_Harrison-Bergeron.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8165</string>
 		<key>Summary</key>
@@ -1497,7 +1497,7 @@
 		<key>Date</key>
 		<date>2012-11-27T08:52:23Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_019_you-are-not-safe.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_019_you-are-not-safe.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8303</string>
 		<key>Summary</key>
@@ -1565,7 +1565,7 @@
 		<key>Date</key>
 		<date>2012-12-10T11:02:48Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_020_ta_ghabr_a_a_a_a.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_020_ta_ghabr_a_a_a_a.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8377</string>
 		<key>Summary</key>
@@ -1685,7 +1685,7 @@
 		<key>Date</key>
 		<date>2013-01-08T11:39:16Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_021_sound_of_one_hand.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_021_sound_of_one_hand.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8481</string>
 		<key>Summary</key>
@@ -1770,7 +1770,7 @@
 		<key>Date</key>
 		<date>2013-02-05T10:40:46Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_022_doost-dokhtar-masnooei.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_022_doost-dokhtar-masnooei.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8589</string>
 		<key>Summary</key>
@@ -1916,7 +1916,7 @@
 		<key>Date</key>
 		<date>2013-03-05T11:17:29Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_023_ghahvei_tire.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_023_ghahvei_tire.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8694</string>
 		<key>Summary</key>
@@ -2007,7 +2007,7 @@
 		<key>Date</key>
 		<date>2013-04-08T09:51:33Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_024_numbers-stations.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_024_numbers-stations.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8790</string>
 		<key>Summary</key>
@@ -2164,7 +2164,7 @@
 		<key>Date</key>
 		<date>2013-04-24T11:35:10Z</date>
 		<key>DownloadURL</key>
-		<string>http://192.168.2.1/audio/jadi-net_radio-geek_025_shish-maah-dige-hame-shadim.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_025_shish-maah-dige-hame-shadim.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=8849</string>
 		<key>Summary</key>
@@ -2294,7 +2294,7 @@
 		<key>Date</key>
 		<date>2013-06-03T11:47:25Z</date>
 		<key>DownloadURL</key>
-		<string>http://localhost/audio/jadi-net_radio-geek_026_zakariyaye-raazi.mp3</string>
+		<string>http://cdn.tori.ir/audio/jadi-net_radio-geek_026_zakariyaye-raazi.mp3</string>
 		<key>GUID</key>
 		<string>http://jadi.net/?p=9054</string>
 		<key>Summary</key>

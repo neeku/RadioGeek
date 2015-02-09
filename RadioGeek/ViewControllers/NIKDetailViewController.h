@@ -41,9 +41,9 @@
 @property (nonatomic, retain) IBOutlet UISlider *seekSlider;
 @property (nonatomic, retain) IBOutlet UIButton *fastForward;
 @property (nonatomic, retain) IBOutlet UIButton *fastRewind;
-@property (nonatomic, retain) IBOutlet UIView *downloadView;
+@property (nonatomic, weak) IBOutlet UIView *downloadView;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
-@property (nonatomic, retain) IBOutlet UIView *audioView;
+@property (nonatomic, weak) IBOutlet UIView *audioView;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionText;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -74,7 +74,7 @@
 - (IBAction)togglePlayingState:(id)button; //handle the button tapping
 - (IBAction)forwardAudio:(id)sender;
 - (IBAction)rewindAudio:(id)sender;
-- (IBAction)showAudioPlayerView:(id)sender;
+//- (IBAction)showAudioPlayerView:(id)sender;
 - (IBAction)sliderChanged:(UISlider *)sender;
 - (IBAction)deleteTheFile:(id)sender;
 

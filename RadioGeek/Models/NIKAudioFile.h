@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSDictionary* fileInfoDict;
 
 - (NIKAudioFile*) initWithPath:(NSURL *)path;
-- (NSDictionary*) getSongID3Tags;
+//- (NSDictionary*) getSongID3Tags;
 - (NSString*) getTitle;
 - (NSString*) getArtist;
 - (NSString*) getAlbum;

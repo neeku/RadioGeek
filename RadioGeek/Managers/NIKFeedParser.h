@@ -65,7 +65,7 @@
 - (void) startParsing;
 - (id)initWithRSSURL:(NSURL *)rssURL;
 + (NIKFeedParser *)sharedParser;
-
+- (id)initWithCoder:(NSCoder *)aDecoder;
 
 @end
 

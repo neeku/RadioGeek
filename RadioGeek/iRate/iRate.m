@@ -185,9 +185,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.onlyPromptIfMainWindowIsAvailable = YES;
         self.promptAgainForEachNewVersion = YES;
         self.promptAtLaunch = YES;
-        self.usesUntilPrompt = 5;
-        self.eventsUntilPrompt = 5;
-        self.daysUntilPrompt = 5.0f;
+        self.usesUntilPrompt = 10;
+        self.eventsUntilPrompt = 10;
+        self.daysUntilPrompt = 10.0f;
         self.usesPerWeekForPrompt = 0.0f;
         self.remindPeriod = 1.0f;
         self.verboseLogging = NO;
@@ -224,7 +224,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (NSString *)messageTitle
 {
-    return [_messageTitle ?: [self localizedStringForKey:iRateMessageTitleKey withDefault:@"Rate %@"] stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
+    return [_messageTitle ?: RATE_US_TITLE_MESSAGE stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
 - (NSString *)message
@@ -232,24 +232,34 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     NSString *message = _message;
     if (!message)
     {
-        message = (self.appStoreGenreID == iRateAppStoreGameGenreID)? [self localizedStringForKey:iRateGameMessageKey withDefault:RATE_US_MESSAGE]: [self localizedStringForKey:iRateAppMessageKey withDefault:RATE_US_DEFAULT_MESSAGE];
+        message = RATE_US_DEFAULT_MESSAGE;
     }
     return [message stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
+- (NSString *)updateMessage
+{
+    NSString *updateMessage = _updateMessage;
+    if (!updateMessage)
+    {
+        updateMessage = [self message];
+    }
+    return [updateMessage stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
+}
+
 - (NSString *)cancelButtonLabel
 {
-    return _cancelButtonLabel ?: [self localizedStringForKey:iRateCancelButtonKey withDefault:CANCEL_BUTTON_LABEL];
+    return _cancelButtonLabel ?: CANCEL_BUTTON_LABEL;
 }
 
 - (NSString *)rateButtonLabel
 {
-    return _rateButtonLabel ?: [self localizedStringForKey:iRateRateButtonKey withDefault:RATE_BUTTON_LABEL];
+    return _rateButtonLabel ?: RATE_BUTTON_LABEL;
 }
 
 - (NSString *)remindButtonLabel
 {
-    return _remindButtonLabel ?: [self localizedStringForKey:iRateRemindButtonKey withDefault:REMIND_BUTTON_LABEL];
+    return _remindButtonLabel ?: REMIND_BUTTON_LABEL;
 }
 
 - (NSURL *)ratingsURL
