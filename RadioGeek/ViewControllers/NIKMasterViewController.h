@@ -16,7 +16,7 @@
 
 
 
-@interface NIKMasterViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NIKFeedParserDelegate, NSObject>
+@interface NIKMasterViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NIKFeedParserDelegate, NSObject, UIScrollViewDelegate>
 {
 	NSMutableArray *allEntries;
 	NIKFeedEntry *entry;

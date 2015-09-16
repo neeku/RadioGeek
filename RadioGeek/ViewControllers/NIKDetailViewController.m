@@ -97,7 +97,11 @@
 		currentFileName = [[feedEntry podcastDownloadURL] lastPathComponent];
 		
 		filePath = [[[self appDelegate] applicationDocumentsDirectory] stringByAppendingPathComponent:currentFileName];
-
+		
+		
+		
+		
+		
 		[self hideAudioView];
 		self.downloadView.hidden = NO;
 		[self reloadInputViews];
@@ -325,21 +329,7 @@
 	{
 		[self hideDownloadView];
 	}
-	
-	// *** Mark the directory as excluded from iCloud backups
-	NSError *error;
-	NSURL *docsURL = [NSURL fileURLWithPath:[[self appDelegate] applicationDocumentsDirectory]];
-	
-	if (![docsURL setResourceValue:[NSNumber numberWithBool:YES]
-							forKey:NSURLIsExcludedFromBackupKey
-							 error:&error])
-	{
-		NSLog(@"Error excluding %@ from backup %@", [docsURL lastPathComponent], error.localizedDescription);
-	}
-	else {
-		NSLog(@"excluded");
-	}
-	
+
 }
 
 

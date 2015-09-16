@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Root</key>
+	<array>
+		<dict>
+			<key>Name</key>
+			<string>رادیو گیک</string>
+			<key>IMG-N</key>
+			<string>yad-dashte-sar-dabir</string>
+			<key>IMG-S</key>
+			<string>yad-dashte-sar-dabir-hover</string>
+			<key>URL</key>
+			<string>http://192.168.2.1/radiojadi.xml</string>
+		</dict>
+	</array>
+</dict>
+</plist>

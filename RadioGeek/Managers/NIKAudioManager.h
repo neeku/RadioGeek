@@ -8,28 +8,39 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-
-@class AVPlayerDemoPlaybackView;
+#import "NIKDetailViewController.h"
 
 @interface NIKAudioManager : NSObject <AVAudioPlayerDelegate>
 {
-	NSString* path;
 	NSURL *url;
-	NSTimer *playbackTimer;
-	AVAudioPlayer *audioPlayer; //Plays the audio
-	NSString *buttonTitle;
+	NSURLRequest * loadRequest;
+	NSString* documentPath;
+	NSString* filePath;
+	NSURL* audioURL;
+	NSTimer	*playbackTimer;
+	NSTimer	*updateTimer;
+	int viewDidLoadCounter;
+	NSMutableData *responseData;
+	NSUInteger responseDataSize;
+	NSFileHandle *file;
+	NSString *podcastTitle;
+
 }
 
-@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
-@property (nonatomic, strong) AVQueuePlayer* backgroundMusicPlayer;
-@property (nonatomic, retain) UISlider *seekSlider;
-@property (nonatomic, retain) NSString *buttonTitle;
+@property (nonatomic, strong) NIKDetailViewController *detailViewController;
+@property (nonatomic, strong) AVAudioPlayer *soundPlayer;
 
-- (void)playAudio; //play the audio
-- (void)pauseAudio; //pause the audio
-- (void)togglePlayPause; //toggle the state of the audio
-- (void)checkAudioSessionCategory;
-- (void)streamAudio;
-+ (NIKAudioManager*) sharedManager;
+-(id) initWithURL: (NSURL *) fileURL viewController: (NIKDetailViewController *) detailVC title:(NSString *) title;
+
+- (void) playAudio; //play the audio
+- (void) pauseAudio; //pause the audio
+- (void) togglePlayPause;
+- (void) fastForwardTheAudio;
+- (void) rewindTheAudio;
+- (void) seekSliderChanged;
+- (void) setSliderChanges;
+- (void) refreshButton;
 
 @end
+
+extern NIKAudioManager *currentAudioManager;

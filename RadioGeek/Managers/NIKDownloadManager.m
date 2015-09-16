@@ -19,10 +19,9 @@
 
 	detailViewController = detailVC;
 	targetURL = url;
-
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:300.0];
+//	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 	[request setHTTPMethod:@"GET"];
-	
 	NSURLConnection * conn = [NSURLConnection connectionWithRequest:request delegate:self];
 	if(conn)
 		responseData = [NSMutableData data];

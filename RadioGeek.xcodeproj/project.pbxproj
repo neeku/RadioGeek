@@ -43,7 +43,6 @@
 		D9AA8389183AD73400FBB827 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AA8388183AD73400FBB827 /* URLCacheAlert.m */; };
 		D9AA838E183CDBBF00FBB827 /* player_pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA838C183CDBBF00FBB827 /* player_pause@2x.png */; };
 		D9AA838F183CDBBF00FBB827 /* player_play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA838D183CDBBF00FBB827 /* player_play@2x.png */; };
-		D9AA8393183CF55600FBB827 /* SGdownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AA8392183CF55600FBB827 /* SGdownloader.m */; };
 		D9AA83D7183D370B00FBB827 /* player_fastforward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA83D5183D370B00FBB827 /* player_fastforward@2x.png */; };
 		D9AA83D8183D370B00FBB827 /* player_fastrewind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA83D6183D370B00FBB827 /* player_fastrewind@2x.png */; };
 		D9AA83DA183D39BB00FBB827 /* player_fastforwardcp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9AA83D9183D39BB00FBB827 /* player_fastforwardcp@2x.png */; };
@@ -138,8 +137,6 @@
 		D9AA8388183AD73400FBB827 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		D9AA838C183CDBBF00FBB827 /* player_pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_pause@2x.png"; sourceTree = "<group>"; };
 		D9AA838D183CDBBF00FBB827 /* player_play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_play@2x.png"; sourceTree = "<group>"; };
-		D9AA8391183CF55600FBB827 /* SGdownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGdownloader.h; sourceTree = "<group>"; };
-		D9AA8392183CF55600FBB827 /* SGdownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGdownloader.m; sourceTree = "<group>"; };
 		D9AA83D5183D370B00FBB827 /* player_fastforward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_fastforward@2x.png"; sourceTree = "<group>"; };
 		D9AA83D6183D370B00FBB827 /* player_fastrewind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_fastrewind@2x.png"; sourceTree = "<group>"; };
 		D9AA83D9183D39BB00FBB827 /* player_fastforwardcp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_fastforwardcp@2x.png"; sourceTree = "<group>"; };
@@ -271,7 +268,6 @@
 		D954537D18243B7F00B2C440 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D9AA8390183CF55600FBB827 /* SGdownloadManager */,
 				D9AA8387183AD73400FBB827 /* URLCacheAlert.h */,
 				D9AA8388183AD73400FBB827 /* URLCacheAlert.m */,
 				D930973E183658D300DC1BCE /* iRate */,
@@ -303,15 +299,6 @@
 				D9C36F4818508C1400B603A4 /* NIKDownloadManager.m */,
 			);
 			path = Managers;
-			sourceTree = "<group>";
-		};
-		D9AA8390183CF55600FBB827 /* SGdownloadManager */ = {
-			isa = PBXGroup;
-			children = (
-				D9AA8391183CF55600FBB827 /* SGdownloader.h */,
-				D9AA8392183CF55600FBB827 /* SGdownloader.m */,
-			);
-			path = SGdownloadManager;
 			sourceTree = "<group>";
 		};
 		D9ABA7F2183559350073E431 /* Resources */ = {
@@ -620,7 +607,6 @@
 				D930972018361A2800DC1BCE /* NIKDetailViewController.m in Sources */,
 				D930972118361A2800DC1BCE /* NIKInfoViewController.m in Sources */,
 				D9BAE8681A7704C300A77EDB /* iRate.m in Sources */,
-				D9AA8393183CF55600FBB827 /* SGdownloader.m in Sources */,
 				D9F3B094181C40740042A44A /* main.m in Sources */,
 				D930973518361ADC00DC1BCE /* NIKAppDelegate.m in Sources */,
 				D9A6DD0B183FE88700816C59 /* NIKAudioManager.m in Sources */,
@@ -767,7 +753,7 @@
 					"$(PROJECT_DIR)/RadioGeek/Resources/Flurry",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c5140711-80a4-4ade-b046-74cf667cae6a";
+				PROVISIONING_PROFILE = "ff7268e0-f0fc-448b-838a-f357248a4e17";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -789,7 +775,7 @@
 					"$(PROJECT_DIR)/RadioGeek/Resources/Flurry",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c5140711-80a4-4ade-b046-74cf667cae6a";
+				PROVISIONING_PROFILE = "ff7268e0-f0fc-448b-838a-f357248a4e17";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -64,7 +64,8 @@ static UIImage *frame;
 }
 
 
-- (void) setFeedURL:(NSURL*)feedURL{
+- (void) setFeedURL:(NSURL*)feedURL
+{
 	feedParser = [[NIKFeedParser alloc] initWithRSSURL:feedURL];
 }
 
@@ -83,12 +84,13 @@ static UIImage *frame;
 
 -(void)parserDidCompleteParsing
 {
-	[self.tableView reloadData];
+	
 	//main thread
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self stopActivity:Nil];
 	});
-	
+	[self.tableView reloadData];
+
     
 }
 
@@ -142,7 +144,8 @@ static UIImage *frame;
 	//Create an instance of activity indicator view
     activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
 	activityIndicator.color = [UIColor whiteColor];
-    //set the initial property
+    
+	//set the initial property
     [activityIndicator stopAnimating];
     [activityIndicator hidesWhenStopped];
 	
@@ -155,8 +158,6 @@ static UIImage *frame;
 	
 	NSString *destinationPath;
 	NSURL *destinationURL;
-	
-	NSURL *url = [NSURL fileURLWithPath:[appDelegate applicationSupportDirectory]];
 
 	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"])
@@ -165,23 +166,13 @@ static UIImage *frame;
 		NSError *error = nil;
 		
 		//If there isn't an App Support Directory yet ...
-		if (![[NSFileManager defaultManager] fileExistsAtPath:[appDelegate applicationSupportDirectory] isDirectory:NULL]) {
+		if (![[NSFileManager defaultManager] fileExistsAtPath:[appDelegate applicationSupportDirectory] isDirectory:NULL])
+		{
 			//Create one
 			if (![[NSFileManager defaultManager] createDirectoryAtPath:[appDelegate applicationSupportDirectory] withIntermediateDirectories:YES attributes:nil error:&error]) {
 				NSLog(@"%@", error.localizedDescription);
 			}
-			
-			//*** Mark the directory as excluded from iCloud backups
-			if (![url setResourceValue:[NSNumber numberWithBool:YES]
-								forKey:NSURLIsExcludedFromBackupKey
-								 error:&error])
-			{
-				NSLog(@"Error excluding %@ from backup %@", [url lastPathComponent], error.localizedDescription);
-			}
-			else {
-				NSLog(@"Yay");
-			}
-			
+		
 			// file URL in our bundle
 			NSURL *fileFromBundle = [[NSBundle mainBundle]URLForResource:@"RGeek" withExtension:@"plist"];
 			
@@ -195,21 +186,46 @@ static UIImage *frame;
 		}
 	}
 	[self loadFeedURL];
-
-//	NSMutableArray *GUIDs;
-
-	GUIDs = [[NSMutableArray alloc] init];
 	
-//	NSLog(@"%@",[[NIKFeedEntry sharedEntry] podcastGUID]);
-	for (int i = 0; i < [feedParser feedItems].count; i++) {
-		[GUIDs insertObject:[[[feedParser feedItems] objectAtIndex:i] podcastGUID] atIndex:i];
+	// *** Mark the directory as excluded from iCloud backups
+	NSError *excludeError;
+	NSURL *url = [NSURL fileURLWithPath:[appDelegate applicationSupportDirectory]];
+	if (![url setResourceValue:[NSNumber numberWithBool:YES]
+						forKey:NSURLIsExcludedFromBackupKey
+						 error:&excludeError])
+	{
+		NSLog(@"Error excluding %@ from backup %@", [url lastPathComponent], excludeError.localizedDescription);
 	}
-	[self saveData:GUIDs];
-	
-	NSString *destinPath = [[appDelegate applicationSupportDirectory] stringByAppendingPathComponent:@"RDGeek.plist"];
-	[feedParser.feedItems writeToFile:destinPath atomically:YES];
-	
-	NSLog(@"%@",destinPath);
+	else {
+		NSLog(@"AppSUpportDir Excluded!");
+	}
+
+	// *** Mark the directory as excluded from iCloud backups
+	NSURL *DocsURL = [NSURL fileURLWithPath:[[self appDelegate] applicationDocumentsDirectory]];
+	if (![DocsURL setResourceValue:[NSNumber numberWithBool:YES]
+							forKey:NSURLIsExcludedFromBackupKey
+							 error:&excludeError])
+	{
+		NSLog(@"Error excluding %@ from backup %@", [DocsURL lastPathComponent], excludeError.localizedDescription);
+	}
+	else {
+		NSLog(@"AppDocsDir Excluded!");
+	}
+
+//	//	NSMutableArray *GUIDs;
+//
+//	GUIDs = [[NSMutableArray alloc] init];
+//	
+////	NSLog(@"%@",[[NIKFeedEntry sharedEntry] podcastGUID]);
+//	for (int i = 0; i < [feedParser feedItems].count; i++) {
+//		[GUIDs insertObject:[[[feedParser feedItems] objectAtIndex:i] podcastGUID] atIndex:i];
+//	}
+//	[self saveData:GUIDs];
+//	
+//	NSString *destinPath = [[appDelegate applicationSupportDirectory] stringByAppendingPathComponent:@"RDGeek.plist"];
+//	[feedParser.feedItems writeToFile:destinPath atomically:YES];
+//	
+//	NSLog(@"%@",destinPath);
 	
 	
 	
@@ -241,6 +257,7 @@ static UIImage *frame;
 - (void)loadRefreshButton
 {
 	barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(loadFeedURL)];
+	self.tableView.userInteractionEnabled = YES;
 	self.navigationItem.rightBarButtonItem = barButton;
 }
 
@@ -249,6 +266,7 @@ static UIImage *frame;
     //Send startAnimating message to the view
 	[activityIndicator startAnimating];
 	barButton = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
+	self.tableView.userInteractionEnabled = NO;
 	self.navigationItem.rightBarButtonItem = barButton;
 }
 
@@ -256,7 +274,18 @@ static UIImage *frame;
 {
     //Send stopAnimating message to the view
 	[activityIndicator stopAnimating];
+	self.tableView.userInteractionEnabled = YES;
 	[self loadRefreshButton];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)activeScrollView
+{
+	barButton.enabled = NO;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+	barButton.enabled = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -339,6 +368,7 @@ static UIImage *frame;
 		equalizer.hidden = NO;
 		[self animateTheEqualizer];
 	}
+		
     return cell;
 }
 

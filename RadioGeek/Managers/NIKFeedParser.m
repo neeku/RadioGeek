@@ -88,7 +88,15 @@ NIKMasterViewController *masterVC;
 	NSString *theURL = [[array objectAtIndex:selectedCategory.intValue] objectForKey:@"URL"];
 	
     NSURL * url = [NSURL URLWithString:theURL];
-    NSURLRequest * urlRequest = [NSURLRequest requestWithURL:url];
+    NSURLRequest * urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:300.0];
+	
+	// Create a mutable copy of the immutable request and add more headers
+	NSMutableURLRequest *mutableRequest = [urlRequest mutableCopy];
+	[mutableRequest addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+	
+	// Now set our request variable with an (immutable) copy of the altered request
+	urlRequest = [mutableRequest copy];
+	
     
     NSURLConnection * download = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
     [download start];
@@ -184,8 +192,8 @@ NIKMasterViewController *masterVC;
 {
 	//Reads the presaved data from the plist in application support directory.
 	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
-	[items writeToFile:destinPath atomically:YES];
-	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	//	[items writeToFile:destinPath atomically:YES];
+	//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
 	
 	
 	
@@ -476,8 +484,8 @@ NIKMasterViewController *masterVC;
 	NSLog(@"parseErrorOccured: recovery suggestions: %@",[parseError localizedRecoverySuggestion]);
 	//Reads the presaved data from the plist in application support directory.
 	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
-	[items writeToFile:destinPath atomically:YES];
-	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+	//	[items writeToFile:destinPath atomically:YES];
+	//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
 	
 	
 	
@@ -550,8 +558,8 @@ NIKMasterViewController *masterVC;
 	
 	//Reads the presaved data from the plist in application support directory.
 	NSString *destinPath = [[[self appDelegate] applicationSupportDirectory] stringByAppendingPathComponent:@"RGeek.plist"];
-	[items writeToFile:destinPath atomically:YES];
-	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
+//	[items writeToFile:destinPath atomically:YES];
+//	NSURL *destinURL = [NSURL fileURLWithPath:destinPath];
 
 	
 	
